@@ -55,6 +55,10 @@ public class SkillShieldBash extends TargettedSkill
 
 	public SkillResult use(Hero hero, LivingEntity target, String[] args) 
 	{
+		if (hero.getPlayer() == target) {
+			return SkillResult.FAIL;
+		}
+		
 		int maxdistance = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE, Integer.valueOf(10), false);
 		
 		final Player player = hero.getPlayer();
@@ -75,6 +79,7 @@ public class SkillShieldBash extends TargettedSkill
 		}
 		
 		Vector vector = target.getLocation().toVector().subtract(player.getLocation().toVector());
+		vector.multiply(1.75);
 		
 		player.setVelocity(vector);
 		
