@@ -47,7 +47,7 @@ public class SkillParry extends PassiveSkill {
 		if (level < 1) {
 			level = 1;
 		}
-		return  getDescription().replace("$1", Util.stringDouble((chance + chanceLvl * level) * 100);
+		return  getDescription().replace("$1", Util.stringDouble((chance + chanceLvl * level) * 100));
 	}
 	
 	public class SkillParryListener implements Listener {
