@@ -13,6 +13,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillArrowRain/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCamouflage/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCompanion/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillCritical/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillDualShot/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillEnrage/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFarsight/build.xml" target="makejar" />
@@ -29,6 +30,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillPinDown/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRapidFire/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSharpshooter/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillShieldBash/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSlash/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSmoke/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSnipe/build.xml" target="makejar" />
@@ -39,7 +41,6 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTrinityShot/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTaunt/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillVault/build.xml" target="makejar" />
-        <ant antfile="Smudgecraft-Heroes-Skills/SkillShieldBash/build.xml" target="makejar" />
 	</target>
 	
 	<target name="zip">
