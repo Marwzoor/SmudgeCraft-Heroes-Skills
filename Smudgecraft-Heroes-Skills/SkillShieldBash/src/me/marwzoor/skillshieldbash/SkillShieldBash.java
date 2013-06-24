@@ -75,7 +75,6 @@ public class SkillShieldBash extends TargettedSkill
 		}
 		
 		Vector vector = target.getLocation().toVector().subtract(player.getLocation().toVector());
-		vector.setY(vector.getY() + 0.5);
 		
 		player.setVelocity(vector);
 		
