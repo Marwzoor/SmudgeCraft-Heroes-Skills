@@ -13,6 +13,7 @@ import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Messaging;
 
 public class SkillCritical extends PassiveSkill {
 
@@ -72,6 +73,8 @@ public class SkillCritical extends PassiveSkill {
 				double damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, 20, false) +
 		                (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE_INCREASE, 0.05, false) * hero.getSkillLevel(skill)));
 				event.setDamage((int) (event.getDamage() * damage));
+				
+				Messaging.send(hero.getPlayer(), "You performed a critial hit!");
 			}
 			
 		}
