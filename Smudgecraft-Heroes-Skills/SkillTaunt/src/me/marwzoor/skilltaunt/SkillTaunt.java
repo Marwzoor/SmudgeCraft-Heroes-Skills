@@ -20,7 +20,7 @@ public class SkillTaunt extends ActiveSkill {
 	
 	public SkillTaunt(Heroes instance) {
 		super(instance, "Taunt");
-		setDescription("Makes all nearby mobs target you.");
+		setDescription("You force all nearby enemies to target you.");
 		setIdentifiers(new String[] {
 			"skill taunt"
 		});
@@ -32,19 +32,19 @@ public class SkillTaunt extends ActiveSkill {
 		
 	public String getDescription(Hero hero) {
 		String desc = super.getDescription();
-		int radius = SkillConfigManager.getUseSetting(hero, this, "radius", Integer.valueOf(10), false);
+		int radius = SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS, Integer.valueOf(10), false);
 		desc.replace("%r", radius + "");
 		return desc;
 	}
 	
 	public ConfigurationSection getDefaultConfig() {
 		ConfigurationSection node = super.getDefaultConfig();
-		node.set("radius", Integer.valueOf(10));
+		node.set(SkillSetting.RADIUS.node(), Integer.valueOf(10));
 		return node;
 	}
 	
 	public SkillResult use(Hero hero, String[] args) {
-		int radius = SkillConfigManager.getUseSetting(hero, this, "radius", Integer.valueOf(10), false);
+		int radius = SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS, Integer.valueOf(10), false);
 		
 		List<Entity> entities = hero.getPlayer().getNearbyEntities(radius, radius, radius);
 		for(Entity entity : entities) {
