@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -15,6 +16,7 @@ import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.CharacterTemplate;
 import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.effects.common.SlowEffect;
 import com.herocraftonline.heroes.characters.effects.common.StunEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -134,11 +136,21 @@ public class SkillStab extends ActiveSkill
 					{
 						StabEffect sEffect = (StabEffect) hero.getEffect("Stab");
 						
-						StunEffect stEffect = new StunEffect(skill, sEffect.getStunDuration());
-						
-						CharacterTemplate ct = plugin.getCharacterManager().getCharacter((LivingEntity) event.getEntity());
-						
-						ct.addEffect(stEffect);
+						if(event.getEntity() instanceof Player)
+						{
+							Player tplayer = (Player) event.getEntity();
+							Hero thero = plugin.getCharacterManager().getHero(tplayer);
+							
+							thero.addEffect(new StunEffect(skill, sEffect.getStunDuration()));
+						}
+						else
+						{
+							LivingEntity target = (LivingEntity) event.getEntity();
+							
+							CharacterTemplate ct = plugin.getCharacterManager().getCharacter(target);
+							
+							ct.addEffect(new SlowEffect(skill, sEffect.getStunDuration(), 2, true, Messaging.getLivingEntityName(target) + ChatColor.GRAY + " has been slowed by " + sEffect.getPlayer().getDisplayName(), Messaging.getLivingEntityName(target) + ChatColor.GRAY + " is no longer slowed by " + sEffect.getPlayer().getDisplayName(), hero));
+						}
 						
 						double damage = event.getDamage()*sEffect.getPercent();
 						
