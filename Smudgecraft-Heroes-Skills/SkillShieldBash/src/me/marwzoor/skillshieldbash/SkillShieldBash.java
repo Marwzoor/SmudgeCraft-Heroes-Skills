@@ -74,9 +74,8 @@ public class SkillShieldBash extends TargettedSkill
 			return SkillResult.FAIL;
 		}
 		
-		Vector vector = target.getLocation().toVector().subtract(player.getLocation().toVector());
-		vector.setY(vector.getY() + 0.5);
-		vector.multiply(0.5);
+		Vector vector = target.getLocation().toVector().subtract(player.getLocation().toVector()).normalize();
+		vector.setY(vector.getY() + 1);
 		
 		player.setVelocity(vector);
 		
