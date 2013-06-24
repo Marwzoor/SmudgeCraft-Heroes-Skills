@@ -13,7 +13,6 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
-import com.herocraftonline.heroes.characters.CharacterDamageManager.ProjectileType;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -90,6 +89,7 @@ public class SkillRapidFire extends ActiveSkill
 	    node.set("min-rate", Integer.valueOf(2));
 	    node.set("max-rate", Integer.valueOf(20));
 	    node.set("arrows-per-level", Double.valueOf(0.0D));
+	    node.set("damage", Integer.valueOf(30));
 	    node.set(SkillSetting.COOLDOWN.node(), Integer.valueOf(1000));
 	    node.set(SkillSetting.MANA.node(), Integer.valueOf(10));
 	    return node;
@@ -179,12 +179,13 @@ public class SkillRapidFire extends ActiveSkill
 	    final Hero h = hero;
 	    final Player p = player;
 	    final Skill s = skill;
+	    final int damage = SkillConfigManager.getUseSetting(hero, s, "damage", 30, false);
 	    Messaging.send(player, "Casting $1 at a rate of $2 per second", new Object[] { Integer.valueOf(preTotalArrows), Float.valueOf(rate) });
 	    this.shootingPlayers.put(hero, Integer.valueOf(this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.plugin, new Runnable()
 	    {
 	      public void run() {
 	        Arrow ar = p.launchProjectile(Arrow.class);
-	        ar.setDamage(h.getHeroClass().getProjectileDamage(ProjectileType.ARROW));
+	        ar.setDamage(damage);
 	      }
 	    }
 	    , 0L, sleepTime)));
