@@ -12,18 +12,14 @@ import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
 
 public class SkillTaunt extends ActiveSkill {
 	
-	public static Heroes plugin;
-	public static SkillTaunt skill;
-	
 	public SkillTaunt(Heroes instance) {
 		super(instance, "Taunt");
-		plugin = instance;
-		skill = this;
 		setDescription("Makes all nearby mobs target you.");
 		setIdentifiers(new String[] {
 			"skill taunt"
@@ -36,7 +32,7 @@ public class SkillTaunt extends ActiveSkill {
 		
 	public String getDescription(Hero hero) {
 		String desc = super.getDescription();
-		int radius = SkillConfigManager.getUseSetting(hero, skill, "radius", Integer.valueOf(10), false);
+		int radius = SkillConfigManager.getUseSetting(hero, this, "radius", Integer.valueOf(10), false);
 		desc.replace("%r", radius + "");
 		return desc;
 	}
@@ -48,7 +44,7 @@ public class SkillTaunt extends ActiveSkill {
 	}
 	
 	public SkillResult use(Hero hero, String[] args) {
-		int radius = SkillConfigManager.getUseSetting(hero, skill, "radius", Integer.valueOf(10), false);
+		int radius = SkillConfigManager.getUseSetting(hero, this, "radius", Integer.valueOf(10), false);
 		
 		List<Entity> entities = hero.getPlayer().getNearbyEntities(radius, radius, radius);
 		for(Entity entity : entities) {
