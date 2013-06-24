@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Companions" default="makejar" basedir=".">
+	
+	<path id="classpath">
+		<fileset dir="libs" includes="**/*.jar"/>
+	</path>
+	
+	<target name="makejar" depends="clean, compile, compress"/>
+	
+	<target name="clean">
+		<delete failonerror="false">
+			<fileset dir="bin" includes="**/*"/>
+		</delete>
+		<delete file="Skills/Companions.jar"/>
+		<mkdir dir="bin"/>
+	</target>
+	
+	<target name="compile">
+		<javac srcdir="Smudgecraft-Heroes-Skills/Companions" destdir="bin" classpathref="classpath" includeantruntime="false"/>
+		<copy file="Smudgecraft-Heroes-Skills/Companions/src/plugin.yml" tofile="bin/plugin.yml"/>
+	</target>
+	
+	<target name="compress">
+		<jar jarfile="Skills/Companions.jar" includes="**/*, plugin.yml" basedir="bin"/>
+		<copy file="Skills/Companions.jar" tofile="libs/Companions.jar"/>
+		<delete dir="bin"/>
+	</target>
+	
+</project>
