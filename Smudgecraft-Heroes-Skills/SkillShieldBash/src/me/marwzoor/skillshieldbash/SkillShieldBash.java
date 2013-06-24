@@ -33,7 +33,7 @@ public class SkillShieldBash extends TargettedSkill
 	public ConfigurationSection getDefaultConfig()
 	{
 		ConfigurationSection node = super.getDefaultConfig();
-		node.set(SkillSetting.MAX_DISTANCE.node(), Integer.valueOf(10));
+		node.set(SkillSetting.MAX_DISTANCE.node(), Integer.valueOf(8));
 		node.set(SkillSetting.DURATION.node(), Integer.valueOf(1000));
 		node.set(SkillSetting.DURATION_INCREASE.node(), Integer.valueOf(10));
 		node.set(SkillSetting.DAMAGE.node(), Integer.valueOf(70));
@@ -59,7 +59,7 @@ public class SkillShieldBash extends TargettedSkill
 			return SkillResult.FAIL;
 		}
 		
-		int maxdistance = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE, Integer.valueOf(10), false);
+		int maxdistance = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE, Integer.valueOf(8), false);
 		
 		final Player player = hero.getPlayer();
 		
@@ -79,7 +79,7 @@ public class SkillShieldBash extends TargettedSkill
 		}
 		
 		Vector vector = target.getLocation().toVector().subtract(player.getLocation().toVector());
-		vector.multiply(1.75);
+		vector.multiply(1.6);
 		
 		player.setVelocity(vector);
 		
