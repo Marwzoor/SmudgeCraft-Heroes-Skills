@@ -1,5 +1,7 @@
 package me.marwzoor.skillfletchbow;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -17,6 +19,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +31,6 @@ public class SkillFletchBow extends ActiveSkill
   public static Heroes plugin;
   public static SkillFletchBow skill;
 
-	
   public SkillFletchBow(Heroes instance)
   {
     super(plugin, "FletchBow");
@@ -46,17 +49,81 @@ public class SkillFletchBow extends ActiveSkill
     node.set(SkillSetting.AMOUNT.node(), Integer.valueOf(1));
     node.set("enchantment", "noenchant");
     node.set("enchantment-level", -1);
-    node.set("namelist", Integer.valueOf(1));
+    node.set("namelist", "bows1");
+    
+	File file = new File(plugin.getDataFolder() + "/bows.yml");
+	
+	if(!file.exists())
+	{
+		try
+		{
+			file.createNewFile();
+		}
+		catch(Exception e)
+		{
+
+		}
+	}
+	
+	FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+	
+	ConfigurationSection section = config.createSection("bows1");
+	
+	section.set("crude-oak-shortbow.name", "Crude Oak Shortbow");
+	List<String> desc = new ArrayList<String>();
+	desc.add("A poorly fletched bow, but by hands eager to use it against enemies.");
+	section.set("crude-oak-shortbow.desc", desc);
+	
+	try
+	{
+		config.save(file);
+	}
+	catch(Exception e)
+	{
+		
+	}
+    
     return node;
   }
 
   public SkillResult use(Hero hero, String[] args)
   {
-	String[] names1 = new String[]{"Athena's bow"};
-	String[] lores1 = new String[]{"The very bow from the godess athena"};
+	File file = new File(plugin.getDataFolder() + "/bows.yml");
 	
-	String[] names2 = new String[]{"Athena's bow"};
-	String[] lores2 = new String[]{"The very bow from the godess athena"};
+	if(!file.exists())
+	{
+		try
+		{
+			file.createNewFile();
+		}
+		catch(Exception e)
+		{
+			return SkillResult.FAIL;
+		}
+	}
+	
+	FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+	
+	String lname = SkillConfigManager.getUseSetting(hero, skill, "namelist", "bows1");
+	
+	ConfigurationSection list = config.getConfigurationSection(lname);
+	
+	if(list==null)
+	{
+		return SkillResult.FAIL;
+	}
+	
+	List<String> names = new ArrayList<String>();
+	List<List<String>> lores = new ArrayList<List<String>>();
+	
+	for(String k : list.getKeys(true))
+	{
+		String key = k.split(".")[0];
+		
+		names.add(list.getString(key + ".name"));
+		List<String> lore = list.getStringList(key + ".desc");
+		lores.add(lore);
+	}
 	
 	int amount = SkillConfigManager.getUseSetting(hero, this, "amount", 1, false);
 	String enchname = SkillConfigManager.getUseSetting(hero, this, "enchantment", "noenchant");
@@ -77,29 +144,14 @@ public class SkillFletchBow extends ActiveSkill
     }
     ItemMeta im = dropItem.getItemMeta();
     
-    if(SkillConfigManager.getUseSetting(hero, skill, "namelist", Integer.valueOf(1), false)==1)
-    {
-    	int random = new Random().nextInt(names1.length);
-    	im.setDisplayName(getBowName(names1[random]));
-    	im.setLore(getBowLore(lores1[random]));
-    	dropItem.setItemMeta(im);
-    	world.dropItem(player.getLocation(), dropItem);
-    	Messaging.send(player, "You fletch yourself a" + ChatColor.WHITE + " Bow " + ChatColor.GRAY + "by the name " + getBowName(names1[random]) + ChatColor.GRAY + "!");
-    }
-    else if(SkillConfigManager.getUseSetting(hero, skill, "namelist", Integer.valueOf(1), false)==2)
-    {
-        int random = new Random().nextInt(names2.length);
-        im.setDisplayName(getBowName(names2[random]));
-        im.setLore(getBowLore(lores2[random]));
-        dropItem.setItemMeta(im);
-        world.dropItem(player.getLocation(), dropItem);
-        Messaging.send(player, "You fletch yourself a" + ChatColor.WHITE + " Bow " + ChatColor.GRAY + "by the name " + getBowName(names2[random]) + ChatColor.GRAY + "!");
-    }
-    else
-    {
-    	return SkillResult.FAIL;
-    }
-    return SkillResult.NORMAL;
+    int random = new Random().nextInt(names.size());
+   	im.setDisplayName(getBowName(names.get(random)));
+   	im.setLore(getBowLore(lores.get(random)));
+   	dropItem.setItemMeta(im);
+   	world.dropItem(player.getLocation(), dropItem);
+   	Messaging.send(player, "You fletch yourself a" + ChatColor.WHITE + " Bow " + ChatColor.GRAY + "by the name " + getBowName(names.get(random)) + ChatColor.GRAY + "!");
+    
+   	return SkillResult.NORMAL;
   }
 
   public String getDescription(Hero hero)
@@ -134,6 +186,18 @@ public class SkillFletchBow extends ActiveSkill
   public List<String> getBowLore(String lore)
   {
 	  return Arrays.asList("§r§8§o" + lore);
+  }
+  
+  public List<String> getBowLore(List<String> lore)
+  {
+	  List<String> l = new ArrayList<String>();
+	  
+	  for(String s : lore)
+	  {
+		  l.add("§r§8§o" + s);
+	  }
+	  
+	  return l;
   }
   
   public List<String> getBowLore(String lore, String format)
