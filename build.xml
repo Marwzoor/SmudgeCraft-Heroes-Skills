@@ -41,6 +41,8 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTrinityShot/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTaunt/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillVault/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillCounterAttack/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillShield/build.xml" target="makejar" />
 	</target>
 	
 	<target name="zip">
