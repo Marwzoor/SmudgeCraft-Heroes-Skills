@@ -14,6 +14,7 @@ import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.CharacterTemplate;
 import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.effects.common.SlowEffect;
 import com.herocraftonline.heroes.characters.effects.common.StunEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -91,12 +92,23 @@ public class SkillPinDown extends ActiveSkill
 			if(event.getImbueEffect() instanceof PinDownEffect)
 			{
 				PinDownEffect pde = (PinDownEffect) event.getImbueEffect();
-				
-				StunEffect sEffect = new StunEffect(skill, pde.getStunDuration());
-				
-				CharacterTemplate ct = plugin.getCharacterManager().getCharacter(event.getShotEntity());
-				
-				ct.addEffect(sEffect);
+								
+				if(event.getShotEntity() instanceof Player)
+				{
+					Player tplayer = (Player) event.getShotEntity();
+					Hero hero = plugin.getCharacterManager().getHero(tplayer);
+					
+					hero.addEffect(new StunEffect(skill, pde.getStunDuration()));
+				}
+				else
+				{
+					if(pde.getPlayer() != null)
+					{
+					CharacterTemplate ct = plugin.getCharacterManager().getCharacter(event.getShotEntity());
+
+					ct.addEffect(new SlowEffect(skill, pde.getStunDuration(), 2, true, Messaging.getLivingEntityName(event.getShotEntity()) + " has been slowed by " + pde.getPlayer().getDisplayName(), Messaging.getLivingEntityName(event.getShotEntity()) + " is no longer slowed by " + pde.getPlayer().getDisplayName(), plugin.getCharacterManager().getHero(pde.getPlayer())));
+					}
+				}
 				
 				if(pde.getPlayer() !=null)
 				{
