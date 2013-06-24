@@ -66,11 +66,12 @@ public class SkillParry extends PassiveSkill {
 				return;
 			}
 			
-			if (!(event.getEntity() instanceof Hero)) {
+			if (!(event.getEntity() instanceof Player)) {
 				return;
 			}
 			
-			Hero hero = (Hero) event.getEntity();
+			Player player = (Player) event.getEntity();
+			Hero hero = heroes.getCharacterManager().getHero(player);
 			if (!hero.hasEffect("Parry")) {
 				return;
 			}
