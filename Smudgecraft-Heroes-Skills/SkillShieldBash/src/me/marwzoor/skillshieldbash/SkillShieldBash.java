@@ -33,7 +33,7 @@ public class SkillShieldBash extends TargettedSkill
 	public ConfigurationSection getDefaultConfig()
 	{
 		ConfigurationSection node = super.getDefaultConfig();
-		node.set(SkillSetting.MAX_DISTANCE.node(), Integer.valueOf(5));
+		node.set(SkillSetting.MAX_DISTANCE.node(), Integer.valueOf(10));
 		node.set(SkillSetting.DURATION.node(), Integer.valueOf(1000));
 		node.set(SkillSetting.DURATION_INCREASE.node(), Integer.valueOf(10));
 		node.set(SkillSetting.DAMAGE.node(), Integer.valueOf(70));
@@ -55,7 +55,7 @@ public class SkillShieldBash extends TargettedSkill
 
 	public SkillResult use(Hero hero, LivingEntity target, String[] args) 
 	{
-		int maxdistance = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE, 5, false);
+		int maxdistance = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE, Integer.valueOf(10), false);
 		
 		final Player player = hero.getPlayer();
 		
@@ -74,8 +74,8 @@ public class SkillShieldBash extends TargettedSkill
 			return SkillResult.FAIL;
 		}
 		
-		Vector vector = target.getLocation().toVector().subtract(player.getLocation().toVector()).normalize();
-		vector.setY(vector.getY() + 1);
+		Vector vector = target.getLocation().toVector().subtract(player.getLocation().toVector());
+		vector.setY(vector.getY() + 0.5);
 		
 		player.setVelocity(vector);
 		
@@ -91,9 +91,6 @@ public class SkillShieldBash extends TargettedSkill
 			ct.addEffect(new StunEffect(this, stun));
 			addSpellTarget(target, hero);
 			damageEntity(target, player, damage, DamageCause.ENTITY_ATTACK);
-			if (target instanceof Player) {
-				Messaging.send((Player) target, "You have been stunned by " + player.getDisplayName() + " for " + stun + " seconds!");
-			}
 		}
 				
 		return SkillResult.NORMAL;
