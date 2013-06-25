@@ -1,7 +1,6 @@
 package me.marwzoor.skillshieldbash;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -77,13 +76,8 @@ public class SkillShieldBash extends TargettedSkill
 			
 			return SkillResult.FAIL;
 		}
-				
-		Location targetLoc = target.getLocation();
-		Location playerLoc = player.getLocation();
 		
-		double xDir = targetLoc.getX() - playerLoc.getX();
-		double zDir = targetLoc.getZ() - playerLoc.getZ();
-		Vector v = new Vector(xDir/3.0D, 0.5D, zDir / 3.0D);
+		Vector v = target.getLocation().toVector().subtract(player.getLocation().toVector());
 		v = v.multiply(1.6).setY(0.5D);
 		player.setVelocity(v);
 		
