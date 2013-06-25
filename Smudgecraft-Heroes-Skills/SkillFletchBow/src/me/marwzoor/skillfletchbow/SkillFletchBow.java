@@ -49,21 +49,26 @@ public class SkillFletchBow extends ActiveSkill
     node.set(SkillSetting.AMOUNT.node(), Integer.valueOf(1));
     node.set("enchantment", "noenchant");
     node.set("enchantment-level", -1);
-    node.set("namelist", "bows1");
     
 	File file = new File(plugin.getDataFolder() + "/bows.yml");
+	
+	boolean exists = true;
 	
 	if(!file.exists())
 	{
 		try
 		{
 			file.createNewFile();
+			exists = false;
 		}
 		catch(Exception e)
 		{
-
+			exists = false;
 		}
 	}
+	
+	if(!exists)
+	{
 	
 	FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	
@@ -82,6 +87,9 @@ public class SkillFletchBow extends ActiveSkill
 	{
 		
 	}
+    	
+	}
+    
     
     return node;
   }
@@ -173,9 +181,9 @@ public class SkillFletchBow extends ActiveSkill
   public String getBowName(String name)
   {
 	  Random rand = new Random();
-	  String[] cs = new String[]{"§a", "§b", "§c", "§d", "§e"};
+	  String[] cs = new String[]{"ï¿½a", "ï¿½b", "ï¿½c", "ï¿½d", "ï¿½e"};
 	  
-	  return "§r" + cs[rand.nextInt(cs.length)] + name;
+	  return "ï¿½r" + cs[rand.nextInt(cs.length)] + name;
   }
   
   public String getBowName(String name, String format)
@@ -185,7 +193,7 @@ public class SkillFletchBow extends ActiveSkill
   
   public List<String> getBowLore(String lore)
   {
-	  return Arrays.asList("§r§8§o" + lore);
+	  return Arrays.asList("ï¿½rï¿½8ï¿½o" + lore);
   }
   
   public List<String> getBowLore(List<String> lore)
@@ -194,7 +202,7 @@ public class SkillFletchBow extends ActiveSkill
 	  
 	  for(String s : lore)
 	  {
-		  l.add("§r§8§o" + s);
+		  l.add("ï¿½rï¿½8ï¿½o" + s);
 	  }
 	  
 	  return l;
