@@ -1,6 +1,7 @@
 package me.marwzoor.skillshieldbash;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -55,21 +56,7 @@ public class SkillShieldBash extends TargettedSkill
 
 	public SkillResult use(Hero hero, LivingEntity target, String[] args) 
 	{
-		if (hero.getPlayer() == target) {
-			return SkillResult.FAIL;
-		}
-		
-		int maxdistance = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE, Integer.valueOf(8), false);
-		
 		final Player player = hero.getPlayer();
-		
-		if(player.getLocation().distance(target.getLocation()) > maxdistance)
-		{
-			Messaging.send(player, "Target is too far away!");
-			
-			return SkillResult.FAIL;
-		}
-		
 		int shielditem = SkillConfigManager.getUseSetting(hero, this, "shield-item", 36, false);
 		
 		if(player.getItemInHand().getTypeId() != shielditem)
@@ -78,10 +65,27 @@ public class SkillShieldBash extends TargettedSkill
 			return SkillResult.FAIL;
 		}
 		
-		Vector vector = target.getLocation().toVector().subtract(player.getLocation().toVector());
-		vector.multiply(1.6);
+		if (player == target) {
+			return SkillResult.FAIL;
+		}
 		
-		player.setVelocity(vector);
+		int maxdistance = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE, Integer.valueOf(7), false);
+				
+		if(player.getLocation().distance(target.getLocation()) > maxdistance)
+		{
+			Messaging.send(player, "Target is too far away!");
+			
+			return SkillResult.FAIL;
+		}
+				
+		Location targetLoc = target.getLocation();
+		Location playerLoc = player.getLocation();
+		
+		double xDir = targetLoc.getX() - playerLoc.getX();
+		double zDir = targetLoc.getZ() - playerLoc.getZ();
+		Vector v = new Vector(xDir/3.0D, 0.5D, zDir / 3.0D);
+		v = v.multiply(1.6).setY(0.5D);
+		player.setVelocity(v);
 		
 		broadcast(player.getLocation(), player.getDisplayName() + ChatColor.GRAY + " used " + ChatColor.WHITE + "ShieldBash" + ChatColor.GRAY + "!");
 		
