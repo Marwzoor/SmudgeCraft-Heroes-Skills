@@ -33,6 +33,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSharpshooter/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillShield/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillShieldBash/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillShieldStance/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSlash/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSmoke/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSnipe/build.xml" target="makejar" />
