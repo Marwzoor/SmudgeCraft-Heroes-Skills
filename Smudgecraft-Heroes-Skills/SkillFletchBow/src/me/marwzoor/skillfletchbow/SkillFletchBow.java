@@ -28,73 +28,6 @@ import com.herocraftonline.heroes.util.Messaging;
 
 public class SkillFletchBow extends ActiveSkill
 {
-<<<<<<< HEAD
-  public static Heroes plugin;
-  public static SkillFletchBow skill;
-
-  public SkillFletchBow(Heroes instance)
-  {
-    super(plugin, "FletchBow");
-    plugin=instance;
-    skill=this;
-    setDescription("You fletch yourself a bow$enchant");
-    setUsage("/skill fletchbow");
-    setArgumentRange(0, 0);
-    setIdentifiers(new String[] { "skill fletchbow", "skill fbow" });
-    setTypes(new SkillType[] { SkillType.ITEM, SkillType.SUMMON, SkillType.SILENCABLE });
-  }
-
-  public ConfigurationSection getDefaultConfig()
-  {
-    ConfigurationSection node = super.getDefaultConfig();
-    node.set(SkillSetting.AMOUNT.node(), Integer.valueOf(1));
-    node.set("enchantment", "noenchant");
-    node.set("enchantment-level", -1);
-    
-	File file = new File(plugin.getDataFolder() + "/bows.yml");
-	
-	boolean exists = true;
-	
-	if(!file.exists())
-	{
-		try
-		{
-			file.createNewFile();
-			exists = false;
-		}
-		catch(Exception e)
-		{
-			exists = false;
-		}
-	}
-	
-	if(!exists)
-	{
-	
-	FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-	
-	ConfigurationSection section = config.createSection("bows1");
-	
-	section.set("crude-oak-shortbow.name", "Crude Oak Shortbow");
-	List<String> desc = new ArrayList<String>();
-	desc.add("A poorly fletched bow, but by hands eager to use it against enemies.");
-	section.set("crude-oak-shortbow.desc", desc);
-	
-	try
-	{
-		config.save(file);
-	}
-	catch(Exception e)
-	{
-		
-	}
-    	
-	}
-    
-    
-    return node;
-  }
-=======
 	public SkillFletchBow skill;
 	public Heroes plugin;
 	
@@ -138,8 +71,8 @@ public class SkillFletchBow extends ActiveSkill
 	   		return desc;
 	  }
 	  
-	  public SkillResult use(Hero hero, String[] args)
-	  {
+	  	public SkillResult use(Hero hero, String[] args)
+	  	{
 		  File file = new File(plugin.getDataFolder() + "/bows.yml");
 		  
 		  if(!file.exists())
@@ -216,7 +149,6 @@ public class SkillFletchBow extends ActiveSkill
 	  public void createConfig()
 	  {
 		  File file = new File(plugin.getDataFolder() + "/bows.yml");
->>>>>>> Reworked the whole skill to fix the new naming system
 
 			boolean exists = true;
 
@@ -235,65 +167,27 @@ public class SkillFletchBow extends ActiveSkill
 
 			if(!exists)
 			{
+				FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-<<<<<<< HEAD
-  public String getDescription(Hero hero)
-  {
-	  	String desc = getDescription();
-	  	String enchname = SkillConfigManager.getUseSetting(hero, this, "enchantment", "noenchant");
-	  	int enchlevel = SkillConfigManager.getUseSetting(hero, this, "enchantment-level", -1, false);
-	  	if(enchname!="noenchant" && enchlevel!=-1)
-	  	{
-	  		desc = desc.replace("$enchant", " with the " + enchname + " enchant at level " + enchlevel + ".");
-	  	}
-	  	else
-	  	{
-	  		desc = desc.replace("$enchant", ".");
-	  	}
-   		return desc;
-  }
-  
-  public String getBowName(String name)
-  {
-	  Random rand = new Random();
-	  String[] cs = new String[]{"ï¿½a", "ï¿½b", "ï¿½c", "ï¿½d", "ï¿½e"};
-	  
-	  return "ï¿½r" + cs[rand.nextInt(cs.length)] + name;
-  }
-  
-  public String getBowName(String name, String format)
-  {
-	  return format + name;
-  }
-  
-  public List<String> getBowLore(String lore)
-  {
-	  return Arrays.asList("ï¿½rï¿½8ï¿½o" + lore);
-  }
-  
-  public List<String> getBowLore(List<String> lore)
-  {
-	  List<String> l = new ArrayList<String>();
-=======
-			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+			      ConfigurationSection section = config.createSection("bows1");
 
-			ConfigurationSection section = config.createSection("bows1");
-
-			section.set("crude-oak-shortbow.name", "Crude Oak Shortbow");
-			List<String> desc = new ArrayList<String>();
-			desc.add("A poorly fletched bow, but by hands eager to use it against enemies.");
-			section.set("crude-oak-shortbow.desc", desc);
-
-			try
-			{
-				config.save(file);
+			      section.set("crude-oak-shortbow.name", "Crude Oak Shortbow");
+			      List<String> desc = new ArrayList<String>();
+			      desc.add("A poorly fletched bow, but by hands eager to use it against enemies.");
+			      section.set("crude-oak-shortbow.desc", desc);
+			      try
+			      {
+			        config.save(file);
+			      }
+			      catch (Exception e)
+			      {
+			      }
 			}
-			catch(Exception e)
-			{
-
-			}
-		    	
-			}
+	  }
+  
+	  public List<String> getBowLore(String lore)
+	  {
+		  return Arrays.asList("§r§8§o" + lore);
 	  }
 	  
 	  public String getBowName(String name)
@@ -307,24 +201,6 @@ public class SkillFletchBow extends ActiveSkill
 	  public String getBowName(String name, String format)
 	  {
 		  return format + name;
-	  }
->>>>>>> Reworked the whole skill to fix the new naming system
-	  
-	  public List<String> getBowLore(String lore)
-	  {
-<<<<<<< HEAD
-		  l.add("ï¿½rï¿½8ï¿½o" + s);
-	  }
-	  
-	  return l;
-  }
-  
-  public List<String> getBowLore(String lore, String format)
-  {
-	  return Arrays.asList(format + lore);
-  }
-=======
-		  return Arrays.asList("§r§8§o" + lore);
 	  }
 	  
 	  public List<String> getBowLore(List<String> lore)
@@ -343,5 +219,4 @@ public class SkillFletchBow extends ActiveSkill
 	  {
 		  return Arrays.asList(format + lore);
 	  }
->>>>>>> Reworked the whole skill to fix the new naming system
 }
