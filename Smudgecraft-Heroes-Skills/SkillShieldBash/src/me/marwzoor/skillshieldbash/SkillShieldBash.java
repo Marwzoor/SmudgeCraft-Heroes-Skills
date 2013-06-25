@@ -47,7 +47,7 @@ public class SkillShieldBash extends TargettedSkill
 	public String getDescription(Hero hero)
 	{
 		int stun = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(1000), false) 
-				+ SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, Integer.valueOf(10), false) * hero.getSkillLevel(this)); 
+				+ SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, Integer.valueOf(10), false) * hero.getSkillLevel(this)) / 1000; 
 		int damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Integer.valueOf(70), false) 
 				+ SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, Integer.valueOf(1), false) * hero.getSkillLevel(this));
 		return getDescription().replace("$1", stun + "").replace("$2", damage + "");
