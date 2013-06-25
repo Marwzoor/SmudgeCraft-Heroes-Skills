@@ -54,6 +54,11 @@ public class SkillFury extends ActiveSkill
 		return desc;
 	}
 	
+	public static SkillFury getSkillFury()
+	{
+		return skill;
+	}
+	
 	public ConfigurationSection getDefaultConfig()
 	{
 		ConfigurationSection node = super.getDefaultConfig();
