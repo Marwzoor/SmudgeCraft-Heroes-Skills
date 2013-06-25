@@ -27,7 +27,7 @@ public class SkillShieldBash extends TargettedSkill
 		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill shieldbash" });
 		setDescription("Dash forward and bash your opponent with your shield stunning them for $1s and dealing $2 damage. (Need to have a shield equipped)");
-		setTypes(new SkillType[] { SkillType.BUFF });
+		setTypes(new SkillType[] { SkillType.FORCE, SkillType.HARMFUL, SkillType.DAMAGING, SkillType.INTERRUPT, SkillType.MOVEMENT });
 	}
 	
 	public ConfigurationSection getDefaultConfig()
