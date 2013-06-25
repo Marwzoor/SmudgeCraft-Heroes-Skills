@@ -37,14 +37,15 @@ public class SkillShieldStance extends ActiveSkill {
 	
 	public String getDescription(Hero hero) {
 		String desc = super.getDescription();
-		int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(15000), false) / 1000;
+		long duration = (long) ((SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Long.valueOf(15000), false) + SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, Long.valueOf(100), false) * hero.getSkillLevel(this)) / 1000);
 		desc.replace("$1", duration + "");
 		return desc;
 	}
 	
 	public ConfigurationSection getDefaultConfig() {
 		ConfigurationSection node = super.getDefaultConfig();
-		node.set(SkillSetting.DURATION.node(), Integer.valueOf(15000));
+		node.set(SkillSetting.DURATION.node(), Long.valueOf(15000));
+		node.set(SkillSetting.DURATION_INCREASE.node(), Long.valueOf(100));
 		node.set("shield-item", Integer.valueOf(36));
 		node.set(SkillSetting.COOLDOWN.node(), Long.valueOf(30000));
 		return node;
@@ -64,7 +65,7 @@ public class SkillShieldStance extends ActiveSkill {
 			return SkillResult.FAIL;
 		}
 				
-		int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(15000), false);
+		long duration = (long) ((SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Long.valueOf(15000), false) + SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, Long.valueOf(100), false) * hero.getSkillLevel(this)) / 1000);
 		hero.addEffect(new ShieldStanceEffect(this, duration));
 		return SkillResult.NORMAL;
 	}
