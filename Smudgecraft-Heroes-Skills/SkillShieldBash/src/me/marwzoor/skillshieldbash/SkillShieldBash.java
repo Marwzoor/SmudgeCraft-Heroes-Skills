@@ -65,7 +65,7 @@ public class SkillShieldBash extends TargettedSkill
 		}
 		
 		if (player == target) {
-			return SkillResult.FAIL;
+			return SkillResult.INVALID_TARGET;
 		}
 		
 		int maxdistance = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MAX_DISTANCE, Integer.valueOf(7), false);
