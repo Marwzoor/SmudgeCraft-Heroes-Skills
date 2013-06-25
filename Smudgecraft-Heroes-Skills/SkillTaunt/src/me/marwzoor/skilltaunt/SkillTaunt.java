@@ -20,7 +20,7 @@ public class SkillTaunt extends ActiveSkill {
 	
 	public SkillTaunt(Heroes instance) {
 		super(instance, "Taunt");
-		setDescription("You force all nearby enemies to target you.");
+		setDescription("You force all enemies in a %r block radius to target you.");
 		setIdentifiers(new String[] {
 			"skill taunt"
 		});
