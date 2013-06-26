@@ -47,11 +47,12 @@ public class SkillFletchBow extends ActiveSkill
 	  {
 	    ConfigurationSection node = super.getDefaultConfig();
 	    node.set(SkillSetting.AMOUNT.node(), Integer.valueOf(1));
-	    node.set("enchantment", "noenchant");
-	    node.set("enchantment-level", -1);
 	    node.set("namelist", "bows1");
-	    createConfig();
-	    
+	    List<String> enchantments = new ArrayList<String>();
+	    enchantments.add("ARROW_KNOCKBACK 3");
+	    enchantments.add("UNBREAKING 2");
+	    node.set("enchantment", enchantments);
+	    createConfig();    
 	    return node;
 	  }
 	  
@@ -125,20 +126,59 @@ public class SkillFletchBow extends ActiveSkill
 		  }
 		  
 		    int amount = SkillConfigManager.getUseSetting(hero, this, "amount", 1, false);
-			String enchname = SkillConfigManager.getUseSetting(hero, this, "enchantment", "noenchant");
-			int enchlevel = SkillConfigManager.getUseSetting(hero, this, "enchantment-level", -1, false);
+		    List<String> en = new ArrayList<String>();
+		    en.add("ARROW_KNOCKBACK 3");
+		    en.add("UNBREAKING 2");
+		    List<String> enchantments = SkillConfigManager.getUseSetting(hero, skill, "enchantment", en);
+		    double chance = SkillConfigManager.getUseSetting(hero, skill, "enchantment-chance", Double.valueOf(0.5), false);
 		    Player player = hero.getPlayer();
 		    World world = player.getWorld();
 		    ItemStack dropItem = new ItemStack(Material.BOW, amount);
-		    if(enchname!="noenchant" && enchlevel!=-1)
-		    {
-		    Enchantment ench = Enchantment.getByName(enchname);
 		    
-		    	if(ench!=null)
+		    
+		    if(!enchantments.isEmpty())
+		    {
+		    	if(Math.random() <= chance)
 		    	{
-		    		ItemMeta im = dropItem.getItemMeta();
-		    		im.addEnchant(ench, enchlevel, true);
-		    		dropItem.setItemMeta(im);
+		    		int random = new Random().nextInt(enchantments.size());
+		    		String e = enchantments.get(random);
+		    		String[] earray = e.split(" ");
+		    		
+		    		String enchantment = earray[0];
+		    		
+		    		if(earray[0]==null)
+		    			return SkillResult.FAIL;
+		    		
+		    		int enchmaxlevel = 0;
+		    		
+		    		try
+		    		{
+		    			enchmaxlevel = Integer.parseInt(earray[1]);
+		    		}
+		    		catch(Exception exception)
+		    		{
+		    			return SkillResult.FAIL;
+		    		}
+		    		
+		    		Enchantment ench = Enchantment.getByName(enchantment);
+		    
+		    		if(enchmaxlevel>ench.getMaxLevel())
+		    			enchmaxlevel=ench.getMaxLevel();
+		    		
+		    		int enchlevel = new Random().nextInt(enchmaxlevel)+1;
+		    		
+		    		if(enchlevel>ench.getMaxLevel())
+		    			enchlevel=ench.getMaxLevel();
+		    		
+		    		if(enchlevel<ench.getStartLevel())
+		    			enchlevel=ench.getStartLevel();
+		    		
+		    		if(ench!=null)
+		    		{
+		    			ItemMeta im = dropItem.getItemMeta();
+		    			im.addEnchant(ench, enchlevel, true);
+		    			dropItem.setItemMeta(im);
+		    		}
 		    	}
 		    }
 		    ItemMeta im = dropItem.getItemMeta();
