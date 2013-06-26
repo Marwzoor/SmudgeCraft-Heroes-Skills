@@ -94,6 +94,7 @@ public class SkillFletchBow extends ActiveSkill
 		  if(!config.contains(listname))
 		  {
 		  	hero.getPlayer().sendMessage("Config did not contain ConfigurationSection!");
+		  	hero.getPlayer().sendMessage("By the name: " + ChatColor.GRAY + listname + ChatColor.WHITE + "!");
 			return SkillResult.FAIL;
 		  }
 		  
