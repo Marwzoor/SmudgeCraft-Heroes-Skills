@@ -103,6 +103,7 @@ public class SkillFletchBow extends ActiveSkill
 		  
 		  List<String> names = new ArrayList<String>();
 		  List<List<String>> lores = new ArrayList<List<String>>();
+		  List<Double> chances = new ArrayList<Double>();
 		  
 		  for(String key : list.getKeys(true))
 		  {
@@ -118,10 +119,16 @@ public class SkillFletchBow extends ActiveSkill
 					  Messaging.send(hero.getPlayer(), "Error in config at key: " + key + ".desc");
 					  return SkillResult.FAIL;
 				  }
+				  if(!list.contains(key + ".chance"))
+				  {
+					  Messaging.send(hero.getPlayer(), "Error in config at key: " + key + ".chance");
+					  return SkillResult.FAIL;
+				  }
 				  
 				  names.add(list.getString(key + ".name"));
 				  List<String> lore = list.getStringList(key + ".desc");
 				  lores.add(lore);
+				  chances.add(list.getDouble(key + ".chance"));
 			  }
 		  }
 		  
@@ -181,8 +188,24 @@ public class SkillFletchBow extends ActiveSkill
 		    		}
 		    	}
 		    }
-		    ItemMeta im = dropItem.getItemMeta();
 		    
+		    double r = Math.random();
+		    
+		    int i = 0;
+		    
+		    for(double d : chances)
+		    {
+		    	if(r > d)
+		    	{
+		    		chances.remove(i);
+		    		names.remove(i);
+		    		lores.remove(i);
+		    		
+		    	}
+		    	++i;
+		    }
+		    
+		    ItemMeta im = dropItem.getItemMeta();
 		    int random = new Random().nextInt(names.size());
 		    String bowname = getBowName(names.get(random));
 		    List<String> bowlore = getBowLore(lores.get(random));
@@ -225,6 +248,7 @@ public class SkillFletchBow extends ActiveSkill
 			      List<String> desc = new ArrayList<String>();
 			      desc.add("A poorly fletched bow, but by hands eager to use it against enemies.");
 			      section.set("crude-oak-shortbow.desc", desc);
+			      section.set("crude-oak-shortbow.chance", Double.valueOf(1));
 			      try
 			      {
 			        config.save(file);
