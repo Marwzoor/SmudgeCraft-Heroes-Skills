@@ -197,15 +197,15 @@ public class SkillFletchBow extends ActiveSkill
   
 	  public List<String> getBowLore(String lore)
 	  {
-		  return Arrays.asList("ยงrยง8ยงo" + lore);
+		  return Arrays.asList("งrง8งo" + lore);
 	  }
 	  
 	  public String getBowName(String name)
 	  {
 		  Random rand = new Random();
-		  String[] cs = new String[]{"ยงa", "ยงb", "ยงc", "ยงd", "ยงe"};
+		  String[] cs = new String[]{"งa", "งb", "งc", "งd", "งe"};
 
-		  return "ยงr" + cs[rand.nextInt(cs.length)] + name;
+		  return "งr" + cs[rand.nextInt(cs.length)] + name;
 	  }
 	  
 	  public String getBowName(String name, String format)
@@ -219,7 +219,7 @@ public class SkillFletchBow extends ActiveSkill
 
 		  for(String s : lore)
 		  {
-			  l.add("ยงrยง8ยงo" + s);
+			  l.add("งrง8งo" + s);
 		  }
 
 		  return l;
