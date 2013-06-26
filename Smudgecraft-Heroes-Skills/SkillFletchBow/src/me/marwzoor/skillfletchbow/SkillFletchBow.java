@@ -71,22 +71,31 @@ public class SkillFletchBow extends ActiveSkill
 	   		return desc;
 	  }
 	  
-	  	public SkillResult use(Hero hero, String[] args)
-	  	{
+	  public SkillResult use(Hero hero, String[] args)
+	  {
 		  File file = new File(plugin.getDataFolder() + "/bows.yml");
 		  
 		  if(!file.exists())
-			  return SkillResult.FAIL;
+		  {
+		  	hero.getPlayer().sendMessage("Could not find bows.yml!");
+			return SkillResult.FAIL;
+		  }
 		  
 		  FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		  
 		  String listname = SkillConfigManager.getUseSetting(hero, skill, "namelist", "bows1");
 		  
 		  if(config==null)
-			  return SkillResult.FAIL;
+		  {
+		  	hero.getPlayer().sendMessage("Config file is null!");
+		  	return SkillResult.FAIL;
+		  }
 		  
 		  if(!config.contains(listname))
-			  return SkillResult.FAIL;
+		  {
+		  	hero.getPlayer().sendMessage("Config did not contain ConfigurationSection!");
+			return SkillResult.FAIL;
+		  }
 		  
 		  ConfigurationSection list = config.getConfigurationSection(listname);
 		  
@@ -187,15 +196,15 @@ public class SkillFletchBow extends ActiveSkill
   
 	  public List<String> getBowLore(String lore)
 	  {
-		  return Arrays.asList("§r§8§o" + lore);
+		  return Arrays.asList("ï¿½rï¿½8ï¿½o" + lore);
 	  }
 	  
 	  public String getBowName(String name)
 	  {
 		  Random rand = new Random();
-		  String[] cs = new String[]{"§a", "§b", "§c", "§d", "§e"};
+		  String[] cs = new String[]{"ï¿½a", "ï¿½b", "ï¿½c", "ï¿½d", "ï¿½e"};
 
-		  return "§r" + cs[rand.nextInt(cs.length)] + name;
+		  return "ï¿½r" + cs[rand.nextInt(cs.length)] + name;
 	  }
 	  
 	  public String getBowName(String name, String format)
@@ -209,7 +218,7 @@ public class SkillFletchBow extends ActiveSkill
 
 		  for(String s : lore)
 		  {
-			  l.add("§r§8§o" + s);
+			  l.add("ï¿½rï¿½8ï¿½o" + s);
 		  }
 
 		  return l;
