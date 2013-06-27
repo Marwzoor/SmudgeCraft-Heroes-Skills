@@ -3,6 +3,7 @@ package me.marwzoor.skillfletchbow;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -103,7 +104,8 @@ public class SkillFletchBow extends ActiveSkill
 		  
 		  List<String> names = new ArrayList<String>();
 		  List<List<String>> lores = new ArrayList<List<String>>();
-		  List<Double> chances = new ArrayList<Double>();
+		  HashMap<String, List<String>> nametolore = new HashMap<String, List<String>>();
+		  HashMap<String, Double> chances = new HashMap<String, Double>();
 		  
 		  for(String key : list.getKeys(true))
 		  {
@@ -128,14 +130,15 @@ public class SkillFletchBow extends ActiveSkill
 				  names.add(list.getString(key + ".name"));
 				  List<String> lore = list.getStringList(key + ".desc");
 				  lores.add(lore);
-				  chances.add(list.getDouble(key + ".chance"));
+				  chances.put(list.getString(key + ".name"), list.getDouble(key + ".chance"));
+				  nametolore.put(list.getString(key + ".name"), lore);
 			  }
 		  }
 		  
 		    int amount = SkillConfigManager.getUseSetting(hero, this, "amount", 1, false);
 		    List<String> en = new ArrayList<String>();
 		    en.add("ARROW_KNOCKBACK 3");
-		    en.add("UNBREAKING 2");
+		    en.add("DURABILITY 2");
 		    List<String> enchantments = SkillConfigManager.getUseSetting(hero, skill, "enchantment", en);
 		    double chance = SkillConfigManager.getUseSetting(hero, skill, "enchantment-chance", Double.valueOf(0.5), false);
 		    Player player = hero.getPlayer();
@@ -168,7 +171,9 @@ public class SkillFletchBow extends ActiveSkill
 		    		}
 		    		
 		    		Enchantment ench = Enchantment.getByName(enchantment);
-		    
+		    		
+		    		if(ench!=null)
+		    		{
 		    		if(enchmaxlevel>ench.getMaxLevel())
 		    			enchmaxlevel=ench.getMaxLevel();
 		    		
@@ -186,23 +191,28 @@ public class SkillFletchBow extends ActiveSkill
 		    			im.addEnchant(ench, enchlevel, true);
 		    			dropItem.setItemMeta(im);
 		    		}
+		    		}
 		    	}
 		    }
 		    
 		    double r = Math.random();
 		    
-		    int i = 0;
+		    List<String> toremove = new ArrayList<String>();
 		    
-		    for(double d : chances)
+		    for(String s : chances.keySet())
 		    {
+		    	double d = chances.get(s);
 		    	if(r > d)
 		    	{
-		    		chances.remove(i);
-		    		names.remove(i);
-		    		lores.remove(i);
-		    		
+		    		toremove.add(s);
 		    	}
-		    	++i;
+		    }
+		    
+		    for(String s : toremove)
+		    {
+	    		chances.remove(s);
+	    		names.remove(s);
+	    		lores.remove(nametolore.get(s));
 		    }
 		    
 		    ItemMeta im = dropItem.getItemMeta();
