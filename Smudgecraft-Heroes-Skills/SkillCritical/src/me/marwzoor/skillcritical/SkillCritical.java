@@ -82,9 +82,9 @@ public class SkillCritical extends PassiveSkill {
 				
 				double finaldamage = (event.getDamage() * damage);
 				
-				event.setDamage((int) finaldamage);
-				
 				int extradamage = ((int)(finaldamage - event.getDamage()));
+				
+				event.setDamage((int) finaldamage);
 				
 				Messaging.send(hero.getPlayer(), "You performed a" + ChatColor.WHITE + " Critical" + ChatColor.GRAY + " hit dealing " + ChatColor.WHITE + extradamage + ChatColor.GRAY + " extra damage!");
 			}
