@@ -187,10 +187,10 @@ public class SkillFury extends ActiveSkill
 					{
 						Messaging.send(hero.getPlayer(), ChatColor.DARK_RED + "FURY " + createFuryBar(hero.getMana(), hero.getMaxMana()));
 					}
-					if(schedules.containsKey(hero))
+					if(schedules.containsKey(hero.getPlayer()))
 					{
-						Bukkit.getScheduler().cancelTask(schedules.get(hero));
-						schedules.remove(hero);
+						Bukkit.getScheduler().cancelTask(schedules.get(hero.getPlayer()));
+						schedules.remove(hero.getPlayer());
 					}
 				}
 			}
