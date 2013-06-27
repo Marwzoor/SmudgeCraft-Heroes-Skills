@@ -176,14 +176,8 @@ public class SkillFury extends ActiveSkill
 				event.setManaCost(0);
 				if(hero.getMana()<fury)
 				{
-					if(hero.getMana()!=0)
-					{
-						hero.setMana(0);
-						if(!event.getSkill().equals(skill))
-						{
-							Messaging.send(hero.getPlayer(), ChatColor.DARK_RED + "FURY " + createFuryBar(hero.getMana(), hero.getMaxMana()));
-						}
-					}
+					Messaging.send(hero.getPlayer(), ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "Skill" + ChatColor.GRAY + "] Not enough " + ChatColor.DARK_RED + "Fury" + ChatColor.GRAY + "!");
+					event.setCancelled(true);
 				}
 				else
 				{
@@ -194,6 +188,7 @@ public class SkillFury extends ActiveSkill
 					}
 				}
 			}
+			
 		}
 		
 		@EventHandler

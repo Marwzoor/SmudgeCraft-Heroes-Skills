@@ -1,6 +1,7 @@
 package me.marwzoor.skillcritical;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -68,13 +69,17 @@ public class SkillCritical extends PassiveSkill {
 			}
 			
 			double chance = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE, 0.5, false) +
-					(SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE_LEVEL, 0.005, false) * hero.getSkillLevel(skill))) * 100;
+					(SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE_LEVEL, 0.005, false) * hero.getSkillLevel(skill)));
 			if (Math.random() <= chance) {
 				double damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, 20, false) +
 		                (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE_INCREASE, 0.05, false) * hero.getSkillLevel(skill)));
 				event.setDamage((int) (event.getDamage() * damage));
 				
-				Messaging.send(hero.getPlayer(), "You performed a critial hit!");
+				double dmg = event.getDamage()*damage;
+				
+				int extradamage = (int) (dmg - event.getDamage());
+				
+				Messaging.send(hero.getPlayer(), "You performed a" + ChatColor.WHITE + "Critical" + " hit dealing " + ChatColor.WHITE + extradamage + ChatColor.GRAY + " extra damage!");
 			}
 			
 		}
