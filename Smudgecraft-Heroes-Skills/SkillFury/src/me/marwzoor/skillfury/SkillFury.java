@@ -14,6 +14,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
@@ -186,6 +187,11 @@ public class SkillFury extends ActiveSkill
 					{
 						Messaging.send(hero.getPlayer(), ChatColor.DARK_RED + "FURY " + createFuryBar(hero.getMana(), hero.getMaxMana()));
 					}
+					if(schedules.containsKey(hero))
+					{
+						Bukkit.getScheduler().cancelTask(schedules.get(hero));
+						schedules.remove(hero);
+					}
 				}
 			}
 			
@@ -205,7 +211,7 @@ public class SkillFury extends ActiveSkill
 				{
 					final Hero hero = plugin.getCharacterManager().getHero(player);
 					
-					if(hero.hasAccessToSkill(skill))
+					if(hero.hasAccessToSkill(skill) && isWeapon(player.getItemInHand()))
 					{
 						int furygain = SkillConfigManager.getUseSetting(hero, skill, "fury-gain", Integer.valueOf(5), false);
 						
@@ -321,6 +327,24 @@ public class SkillFury extends ActiveSkill
 		else
 		{
 			return 0;
+		}
+	}
+	
+	public boolean isWeapon(ItemStack is)
+	{
+		int itemid = is.getTypeId();
+		
+		switch(itemid)
+		{
+		case 272: return true;
+		case 267: return true;
+		case 276: return true;
+		case 275: return true;
+		case 279: return true;
+		case 283: return true;
+		case 286: return true;
+		case 258: return true;
+		default: return false;
 		}
 	}
 }

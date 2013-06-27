@@ -30,10 +30,16 @@ public class SkillCritical extends PassiveSkill {
 	public String getDescription(Hero hero) {
 		double chance = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.CHANCE, 0.5, false) +
 				(SkillConfigManager.getUseSetting(hero, this, SkillSetting.CHANCE_LEVEL, 0.005, false) * hero.getSkillLevel(this))) * 100;
-		double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, 20, false) +
+		double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, 1.5, false) +
                 (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, 0.05, false) * hero.getSkillLevel(this)));
 		
-		return getDescription().replace("$1", chance + "").replace("$2", damage + "");
+		damage = damage*100;
+		damage = damage-100;
+		
+		int dmg = (int) damage;
+		int c = (int) chance;
+		
+		return getDescription().replace("$1", c + "").replace("$2", dmg + "");
 	}
 	
 	public ConfigurationSection getDefaultConfig() {
@@ -71,13 +77,14 @@ public class SkillCritical extends PassiveSkill {
 			double chance = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE, 0.5, false) +
 					(SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE_LEVEL, 0.005, false) * hero.getSkillLevel(skill)));
 			if (Math.random() <= chance) {
-				double damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, 20, false) +
+				double damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, 1.5, false) +
 		                (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE_INCREASE, 0.05, false) * hero.getSkillLevel(skill)));
-				event.setDamage((int) (event.getDamage() * damage));
 				
-				double dmg = event.getDamage()*damage;
+				double finaldamage = (event.getDamage() * damage);
 				
-				int extradamage = (int) (dmg - event.getDamage());
+				event.setDamage((int) finaldamage);
+				
+				int extradamage = ((int)(finaldamage - event.getDamage()));
 				
 				Messaging.send(hero.getPlayer(), "You performed a" + ChatColor.WHITE + " Critical" + ChatColor.GRAY + " hit dealing " + ChatColor.WHITE + extradamage + ChatColor.GRAY + " extra damage!");
 			}
