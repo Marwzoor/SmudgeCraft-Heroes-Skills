@@ -29,9 +29,11 @@ public class SkillStalemate extends TargettedSkill
 	public SkillStalemate(Heroes instance)
 	{
 		super(instance, "Stalemate");
+		plugin=instance;
+		skill=this;
 		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill stalemate", "skill smate" });
-		setDescription("You cannot damage your target, nor can they damage you for X seconds. (PvP only)");
+		setDescription("You cannot damage your target, nor can they damage you for $1 seconds. (PvP only)");
 		setTypes(new SkillType[] { SkillType.COUNTER, SkillType.SILENCABLE });
 		
 		Bukkit.getPluginManager().registerEvents(new SkillHeroListener(), plugin);
@@ -49,7 +51,18 @@ public class SkillStalemate extends TargettedSkill
 	
 	public String getDescription(Hero hero)
 	{
-		return super.getDescription();
+		if(hero.hasAccessToSkill(skill))
+		{
+			String desc = getDescription();
+			int duration = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, Integer.valueOf(10000), false);
+			duration += SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION_INCREASE, Integer.valueOf(10), false);
+			duration = duration/1000;
+			return desc.replace("$1", duration + "");
+		}
+		else
+		{
+		return getDescription().replace("$1", "X");
+		}
 	}
 	
 	public SkillResult use(Hero hero, LivingEntity target, String[] args)
