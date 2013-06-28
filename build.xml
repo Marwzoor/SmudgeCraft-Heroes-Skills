@@ -41,6 +41,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSnipe/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSprint/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillStab/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillStalemate/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillStormArrow/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTrack/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTrinityShot/build.xml" target="makejar" />
