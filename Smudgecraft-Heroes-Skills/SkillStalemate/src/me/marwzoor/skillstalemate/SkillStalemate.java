@@ -73,7 +73,7 @@ public class SkillStalemate extends TargettedSkill
 		
 		if(target.equals(hero.getPlayer()))
 		{
-			return SkillResult.INVALID_TARGET;
+			return SkillResult.INVALID_TARGET_NO_MSG;
 		}
 		
 		if(!(target instanceof Player))
@@ -130,7 +130,7 @@ public class SkillStalemate extends TargettedSkill
 						
 						if(thero.hasEffect("Stalemate"))
 						{
-							StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
+							StalemateEffect sEffect = (StalemateEffect) thero.getEffect("Stalemate");
 							
 							if(sEffect.getStalemate().equals(player))
 							{
@@ -167,7 +167,7 @@ public class SkillStalemate extends TargettedSkill
 					
 					if(thero.hasEffect("Stalemate"))
 					{
-						StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
+						StalemateEffect sEffect = (StalemateEffect) thero.getEffect("Stalemate");
 						
 						if(sEffect.getStalemate().equals(player))
 						{
