@@ -42,6 +42,8 @@ public class SkillStormArrow extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
+		if(hero.hasAccessToSkill(skill))
+		{
 		String desc = super.getDescription();
 		double duration = SkillConfigManager.getUseSetting(hero, skill, "duration", Integer.valueOf(30000), false);
 		double damage = SkillConfigManager.getUseSetting(hero, skill, "damage", Integer.valueOf(120), false);
@@ -50,6 +52,11 @@ public class SkillStormArrow extends ActiveSkill
 		desc = desc.replace("$1", damage + "");
 		desc = desc.replace("$2", duration + "");
 		return desc;
+		}
+		else
+		{
+			return super.getDescription().replace("$1", "X").replace("$2", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()

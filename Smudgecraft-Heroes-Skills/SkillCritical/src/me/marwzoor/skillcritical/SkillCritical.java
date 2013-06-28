@@ -28,6 +28,8 @@ public class SkillCritical extends PassiveSkill {
 	}
 	
 	public String getDescription(Hero hero) {
+		if(hero.hasAccessToSkill(this))
+		{
 		double chance = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.CHANCE, 0.5, false) +
 				(SkillConfigManager.getUseSetting(hero, this, SkillSetting.CHANCE_LEVEL, 0.005, false) * hero.getSkillLevel(this))) * 100;
 		double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, 1.5, false) +
@@ -40,6 +42,11 @@ public class SkillCritical extends PassiveSkill {
 		int c = (int) chance;
 		
 		return getDescription().replace("$1", c + "").replace("$2", dmg + "");
+		}
+		else
+		{
+			return super.getDescription().replace("$1", "X").replace("$2", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig() {

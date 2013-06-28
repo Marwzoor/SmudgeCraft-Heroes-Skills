@@ -34,7 +34,7 @@ public class SkillStab extends ActiveSkill
 		super(instance, "Stab");
 		plugin=instance;
 		skill=this;
-		setDescription("You stab your opponent in their gut, stunning them for %s seconds, dealing %p% more damage.");
+		setDescription("You stab your opponent in their gut, stunning them for $1 seconds, dealing $2% more damage.");
 		setIdentifiers(new String[] { "skill stab" });
 		setArgumentRange(0, 0);
 		setTypes(new SkillType[] { SkillType.BUFF });
@@ -44,15 +44,22 @@ public class SkillStab extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
+		if(hero.hasAccessToSkill(skill))
+		{
 		String desc = super.getDescription();
 		double stunduration = SkillConfigManager.getUseSetting(hero, skill, "stun-duration", Integer.valueOf(500), false);
 		double percentage = SkillConfigManager.getUseSetting(hero, skill, "percentage", Double.valueOf(1.25), false);
 		stunduration = stunduration/1000;
 		percentage = percentage-1;
 		percentage = percentage*100;
-		desc = desc.replace("%s", stunduration + "");
-		desc = desc.replace("%p", percentage + "");
+		desc = desc.replace("$1", stunduration + "");
+		desc = desc.replace("$2", percentage + "");
 		return desc;
+		}
+		else
+		{
+			return getDescription().replace("$1", "X").replace("$2", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()

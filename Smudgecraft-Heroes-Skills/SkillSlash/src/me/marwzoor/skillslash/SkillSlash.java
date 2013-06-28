@@ -18,6 +18,7 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
 
@@ -31,7 +32,7 @@ public class SkillSlash extends ActiveSkill
 		super(instance, "Slash");
 		plugin=instance;
 		skill=this;
-		setDescription("You slash your opponent, knocking them back and dealing %p% more damage.");
+		setDescription("You slash your opponent, knocking them back and dealing $1% more damage.");
 		setIdentifiers(new String[] { "skill slash" });
 		setArgumentRange(0, 0);
 		setTypes(new SkillType[] { SkillType.BUFF });
@@ -41,25 +42,32 @@ public class SkillSlash extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
+		if(hero.hasAccessToSkill(skill))
+		{
 		String desc = super.getDescription();
 		double percentage = SkillConfigManager.getUseSetting(hero, skill, "percentage", Double.valueOf(1.25), false);
 		percentage = percentage-1;
 		percentage = percentage*100;
-		desc = desc.replace("%p", percentage + "");
+		desc = desc.replace("$1", percentage + "");
 		return desc;
+		}
+		else
+		{
+			return getDescription().replace("$1", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()
 	{
 		ConfigurationSection node = super.getDefaultConfig();
-		node.set("duration", Integer.valueOf(15000));
+		node.set(SkillSetting.DURATION.node(), Integer.valueOf(15000));
 		node.set("percentage", Double.valueOf(1.25));
 		return node;
 	}
 	
 	public SkillResult use(Hero hero, String[] args)
 	{
-		int duration = SkillConfigManager.getUseSetting(hero, skill, "duration", Integer.valueOf(15000), false);
+		int duration = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, Integer.valueOf(15000), false);
 		double percent = SkillConfigManager.getUseSetting(hero, skill, "percentage", Double.valueOf(1.25), false);
 
 		if(hero.hasEffect("Slash"))

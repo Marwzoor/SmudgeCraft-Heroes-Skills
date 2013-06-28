@@ -44,12 +44,19 @@ public class SkillFuriousStrike extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
+		if(hero.hasAccessToSkill(skill))
+		{
 		String desc = super.getDescription();
         double damagedecrease = SkillConfigManager.getUseSetting(hero, skill, "damage-decrease", 0.5, false);
         damagedecrease = damagedecrease*100;
         int dd = (int) damagedecrease;
 		desc = desc.replace("$X", dd + "");
 		return desc;
+		}
+		else
+		{
+			return super.getDescription().replace("$X", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()
@@ -133,11 +140,11 @@ public class SkillFuriousStrike extends ActiveSkill
 						
 						if(le instanceof Player)
 						{
-							skill.broadcast(le.getLocation(), ChatColor.GOLD + ((Player) le).getName() + ChatColor.GRAY + " was struck by " + hero.getPlayer().getDisplayName() + ChatColor.WHITE + " FuriousStrike" + ChatColor.GRAY + "!");
+							skill.broadcast(le.getLocation(), ChatColor.GOLD + ((Player) le).getName() + ChatColor.GRAY + " was struck by " + hero.getPlayer().getDisplayName() + "'s" + ChatColor.WHITE + " FuriousStrike" + ChatColor.GRAY + "!");
 						}
 						else
 						{
-							skill.broadcast(le.getLocation(), ChatColor.GOLD + Messaging.getLivingEntityName(le) + ChatColor.GRAY + " was struck by " + hero.getPlayer().getDisplayName() + ChatColor.WHITE + " FuriousStrike" + ChatColor.GRAY + "!");
+							skill.broadcast(le.getLocation(), ChatColor.GOLD + Messaging.getLivingEntityName(le) + ChatColor.GRAY + " was struck by " + hero.getPlayer().getDisplayName() + "'s" + ChatColor.WHITE + " FuriousStrike" + ChatColor.GRAY + "!");
 						}
 					}
 				}

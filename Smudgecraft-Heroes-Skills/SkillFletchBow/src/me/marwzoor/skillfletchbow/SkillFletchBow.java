@@ -37,7 +37,7 @@ public class SkillFletchBow extends ActiveSkill
 		super(instance, "FletchBow");
 		skill=this;
 		plugin=instance;
-		setDescription("You fletch yourself a bow$enchant");
+		setDescription("You fletch yourself a bow.");
 		setUsage("/skill fletchbow");
 		setArgumentRange(0, 0);
 		setIdentifiers(new String[] { "skill fletchbow", "skill fbow" });
@@ -59,18 +59,7 @@ public class SkillFletchBow extends ActiveSkill
 	  
 	  public String getDescription(Hero hero)
 	  {
-		  	String desc = getDescription();
-		  	String enchname = SkillConfigManager.getUseSetting(hero, this, "enchantment", "noenchant");
-		  	int enchlevel = SkillConfigManager.getUseSetting(hero, this, "enchantment-level", -1, false);
-		  	if(enchname!="noenchant" && enchlevel!=-1)
-		  	{
-		  		desc = desc.replace("$enchant", " with the " + enchname + " enchant at level " + enchlevel + ".");
-		  	}
-		  	else
-		  	{
-		  		desc = desc.replace("$enchant", ".");
-		  	}
-	   		return desc;
+		  	return getDescription();
 	  }
 	  
 	  public SkillResult use(Hero hero, String[] args)

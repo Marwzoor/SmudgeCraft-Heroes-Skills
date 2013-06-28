@@ -48,6 +48,8 @@ public class SkillPoisonDart extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
+		if(hero.hasAccessToSkill(skill))
+		{
 		String desc = super.getDescription();
 		double duration = SkillConfigManager.getUseSetting(hero, skill, "duration", Integer.valueOf(30000), false);
 		double poisonduration = SkillConfigManager.getUseSetting(hero, skill, "poison-duration", Integer.valueOf(6000), false);
@@ -57,6 +59,11 @@ public class SkillPoisonDart extends ActiveSkill
 		desc = desc.replace("$1", poisonduration + "");
 		desc = desc.replace("$2", duration + "");
 		return desc;
+		}
+		else
+		{
+			return getDescription().replace("$1", "X").replace("$2", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()

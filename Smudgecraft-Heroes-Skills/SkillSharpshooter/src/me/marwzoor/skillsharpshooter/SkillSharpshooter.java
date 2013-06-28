@@ -51,9 +51,16 @@ public class SkillSharpshooter extends ActiveSkill
 
   public String getDescription(Hero hero)
   {
-    int percentage = SkillConfigManager.getUseSetting(hero, skill, "percentage", Integer.valueOf(20).intValue(), false);
-    percentage += SkillConfigManager.getUseSetting(hero, skill, "percentage-increase", Integer.valueOf(1).intValue(), false) * hero.getSkillLevel(skill);
-    return super.getDescription().replace("$1", percentage + "");
+	  if(hero.hasAccessToSkill(skill))
+	  {
+		  int percentage = SkillConfigManager.getUseSetting(hero, skill, "percentage", Integer.valueOf(20), false);
+		  percentage += SkillConfigManager.getUseSetting(hero, skill, "percentage-increase", Integer.valueOf(1), false) * hero.getSkillLevel(skill);
+		  return super.getDescription().replace("$1", percentage + "");
+	  }
+	  else
+	  {
+		 return getDescription().replace("$1", "X"); 
+	  }
   }
 
   public SkillResult use(Hero hero, String[] args)

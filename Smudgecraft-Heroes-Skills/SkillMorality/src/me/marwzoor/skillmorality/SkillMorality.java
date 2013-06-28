@@ -18,6 +18,7 @@ import com.herocraftonline.heroes.characters.party.HeroParty;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
 
@@ -31,7 +32,7 @@ public class SkillMorality extends ActiveSkill
 		super(instance, "Morality");
 		plugin=instance;
 		skill=this;
-		setDescription("You stab your opponent in their gut, stunning them for %s seconds, dealing %p% more damage.");
+		setDescription("You boost your party members morale to make them do $1% more damage for $2 seconds.");
 		setIdentifiers(new String[] { "skill morality", "skill morale" });
 		setArgumentRange(0, 0);
 		setTypes(new SkillType[] { SkillType.BUFF });
@@ -41,25 +42,35 @@ public class SkillMorality extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
+		if(hero.hasAccessToSkill(skill))
+		{
 		String desc = super.getDescription();
 		double percentage = SkillConfigManager.getUseSetting(hero, skill, "percentage", Double.valueOf(1.25), false);
 		percentage = percentage-1;
 		percentage = percentage*100;
-		desc = desc.replace("%p", percentage + "");
+		int duration = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, Integer.valueOf(15000), false);
+		duration = duration/1000;
+		desc = desc.replace("$1", percentage + "");
+		desc = desc.replace("$2", duration + "");
 		return desc;
+		}
+		else
+		{
+			return getDescription().replace("$1", "X").replace("$2", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()
 	{
 		ConfigurationSection node = super.getDefaultConfig();
-		node.set("duration", Integer.valueOf(15000));
+		node.set(SkillSetting.DURATION.node(), Integer.valueOf(15000));
 		node.set("percentage", Double.valueOf(1.25));
 		return node;
 	}
 	
 	public SkillResult use(Hero hero, String[] args)
 	{
-		int duration = SkillConfigManager.getUseSetting(hero, skill, "duration", Integer.valueOf(15000), false);
+		int duration = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, Integer.valueOf(15000), false);
 		double percentage = SkillConfigManager.getUseSetting(hero, skill, "percentage", Double.valueOf(1.25), false);
 		
 		MoralityEffect mEffect = new MoralityEffect(skill, duration, percentage);

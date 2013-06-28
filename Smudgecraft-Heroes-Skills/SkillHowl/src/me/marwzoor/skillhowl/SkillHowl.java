@@ -27,7 +27,7 @@ public class SkillHowl extends ActiveSkill
 		super(instance, "Howl");
 		plugin=instance;
 		skill=this;
-		setDescription("Your companion howls, boosting attack damage to %1%");
+		setDescription("Your companion howls, boosting attack damage to $1%");
 		setArgumentRange(0, 0);
 		setIdentifiers(new String[] { "skill howl" });
 		setTypes(new SkillType[] { SkillType.BUFF });
@@ -35,11 +35,18 @@ public class SkillHowl extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
+		if(hero.hasAccessToSkill(skill))
+		{
 		String desc = super.getDescription();
 		double damageperc = SkillConfigManager.getUseSetting(hero, skill, "damage-percent", Double.valueOf(1.25), false);
 		damageperc = SkillConfigManager.getUseSetting(hero, skill, "damage-percent-increase", Double.valueOf(0.01), false) * hero.getSkillLevel(skill);
 		damageperc = damageperc*100;
-		return desc.replace("%1", damageperc + "");
+		return desc.replace("$1", damageperc + "");
+		}
+		else
+		{
+			return getDescription().replace("$1", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()

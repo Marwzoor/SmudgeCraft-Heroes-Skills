@@ -45,10 +45,18 @@ public class SkillArrowRain extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
+		if(hero.hasAccessToSkill(skill))
+		{
 		String desc = super.getDescription();
 		int duration = SkillConfigManager.getUseSetting(hero,  skill, "duration", Integer.valueOf(10000), false);
 		duration += SkillConfigManager.getUseSetting(hero, skill, "duration-increase", Integer.valueOf(10), false) * hero.getSkillLevel(skill);
+		duration = duration/1000;
 		return desc.replace("%1", duration + "");
+		}
+		else
+		{
+		return super.getDescription().replace("%1", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()

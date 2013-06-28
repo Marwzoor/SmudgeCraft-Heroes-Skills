@@ -43,6 +43,8 @@ public class SkillFrostArrow extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
+		if(hero.hasAccessToSkill(skill))
+		{
 		String desc = super.getDescription();
 		double duration = SkillConfigManager.getUseSetting(hero, skill, "duration", Integer.valueOf(30000), false);
 		double stunduration = SkillConfigManager.getUseSetting(hero, skill, "stun-duration", Integer.valueOf(2000), false);
@@ -52,6 +54,11 @@ public class SkillFrostArrow extends ActiveSkill
 		desc = desc.replace("$1", stunduration + "");
 		desc = desc.replace("$2", duration + "");
 		return desc;
+		}
+		else
+		{
+			return super.getDescription().replace("$1", "X").replace("$2", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()

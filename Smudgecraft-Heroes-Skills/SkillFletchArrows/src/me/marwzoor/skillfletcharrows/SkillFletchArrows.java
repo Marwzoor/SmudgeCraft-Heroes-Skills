@@ -50,8 +50,15 @@ public class SkillFletchArrows extends ActiveSkill
 
   public String getDescription(Hero hero)
   {
+	if(hero.hasAccessToSkill(this))
+	{
     int amount = SkillConfigManager.getUseSetting(hero, this, SkillSetting.AMOUNT, 2, false);
     amount += SkillConfigManager.getUseSetting(hero, this, "amount-increase", 1, false) * hero.getSkillLevel(this);
     return getDescription().replace("$1", amount + "");
-  }
+	}
+	else
+	{
+		return getDescription().replace("$1", "X amount of");
+	}
+}
 }

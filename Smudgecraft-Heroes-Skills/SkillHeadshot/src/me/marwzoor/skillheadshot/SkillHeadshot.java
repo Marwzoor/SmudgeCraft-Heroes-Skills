@@ -40,11 +40,18 @@ public class SkillHeadshot extends PassiveSkill
 
   public String getDescription(Hero hero)
   {
+	if(hero.hasAccessToSkill(skill))
+	{
     String desc = super.getDescription();
     int percentage = SkillConfigManager.getUseSetting(hero, skill, "percentage", Integer.valueOf(20).intValue(), false);
     percentage += SkillConfigManager.getUseSetting(hero, skill, "percentage-increase", Integer.valueOf(1).intValue(), false) * hero.getSkillLevel(skill);
     desc = desc.replace("$1", percentage + "");
     return desc;
+	}
+	else
+	{
+		return super.getDescription().replace("$1", "X");
+	}
   }
   public class SkillHeroListener implements Listener {
     public SkillHeroListener() {
