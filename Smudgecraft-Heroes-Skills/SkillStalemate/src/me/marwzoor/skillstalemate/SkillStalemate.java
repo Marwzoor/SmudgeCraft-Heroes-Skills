@@ -100,12 +100,9 @@ public class SkillStalemate extends TargettedSkill
 	
 	public class SkillHeroListener implements Listener
 	{
-		@EventHandler(priority = EventPriority.HIGH)
+		@EventHandler(priority = EventPriority.HIGH, ignoreCancelled=false)
 		public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event)
 		{
-			if(event.isCancelled())
-				return;
-			
 			if(event.getDamager() instanceof Arrow)
 			{
 				if(((Arrow)event.getDamager()).getShooter() instanceof Player)

@@ -200,12 +200,12 @@ public class SkillFury extends ActiveSkill
 		@EventHandler
 		public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event)
 		{
+			if(event.isCancelled())
+				return;
+			
 			if(event.getDamager() instanceof Player)
 			{
 				Player player = (Player) event.getDamager();
-				
-				if(event.isCancelled())
-					return;
 				
 				if(event.getEntity() instanceof Monster || event.getEntity() instanceof Player)
 				{
@@ -272,6 +272,9 @@ public class SkillFury extends ActiveSkill
 			{
 				return;
 			}
+			
+			if(event.isCancelled())
+				return;
 			
 			CharacterTemplate character = event.getDamager();
 			if(character instanceof Hero)
