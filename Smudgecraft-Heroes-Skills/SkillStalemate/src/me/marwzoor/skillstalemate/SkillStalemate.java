@@ -7,11 +7,12 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
-import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.effects.ExpirableEffect;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -92,94 +93,91 @@ public class SkillStalemate extends TargettedSkill
 		
 		hero.addEffect(sEffect);
 		
-		skill.broadcast(tplayer.getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "Skill" + ChatColor.GRAY + "] " + tplayer.getDisplayName() + ChatColor.GRAY + " is now " + hero.getPlayer().getDisplayName() + "'s " + ChatColor.WHITE + "Stalemate" + ChatColor.GRAY + "!");
+		skill.broadcast(tplayer.getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " + tplayer.getDisplayName() + ChatColor.GRAY + " is now " + hero.getPlayer().getDisplayName() + "'s " + ChatColor.WHITE + "Stalemate" + ChatColor.GRAY + "!");
 		
 		return SkillResult.NORMAL;
 	}
 	
 	public class SkillHeroListener implements Listener
 	{
-		@EventHandler
-		public void onWeaponDamageEvent(WeaponDamageEvent event)
+		@EventHandler(priority = EventPriority.HIGH)
+		public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event)
 		{
 			if(event.isCancelled())
 				return;
 			
-			if(event.isProjectile())
+			if(event.getDamager() instanceof Arrow)
 			{
-				if(event.getAttackerEntity() instanceof Arrow)
+				if(((Arrow)event.getDamager()).getShooter() instanceof Player)
 				{
-					Arrow arrow = (Arrow) event.getAttackerEntity();
+					Player player = (Player) ((Arrow)event.getDamager()).getShooter();
 					
-					if(arrow.getShooter() instanceof Player)
+					if(event.getEntity() instanceof Player)
 					{
-						Player player = (Player) arrow.getShooter();
+						Player tplayer = (Player) event.getEntity();
 						
-						if(event.getEntity() instanceof Player)
+						Hero hero = plugin.getCharacterManager().getHero(player);
+						Hero thero = plugin.getCharacterManager().getHero(tplayer);
+						
+						if(hero.hasEffect("Stalemate"))
 						{
-							Player tplayer = (Player) event.getEntity();
+							StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
 							
-							Hero hero = plugin.getCharacterManager().getHero(player);
-							Hero thero = plugin.getCharacterManager().getHero(tplayer);
-							
-							if(hero.hasEffect("Stalemate"))
+							if(sEffect.getStalemate().equals(tplayer))
 							{
-								StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
-								
-								if(sEffect.getStalemate().equals(tplayer))
-								{
-									Messaging.send(player, "You can't attack your stalemate!");
-									event.setCancelled(true);
-								}
+								player.sendMessage(ChatColor.GRAY + "You can't attack your " + ChatColor.WHITE + "Stalemate" + ChatColor.GRAY + "!");
+								event.setCancelled(true);
+								return;
 							}
+						}
+						
+						if(thero.hasEffect("Stalemate"))
+						{
+							StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
 							
-							if(thero.hasEffect("Stalemate"))
+							if(sEffect.getStalemate().equals(player))
 							{
-								StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
-								
-								if(sEffect.getStalemate().equals(player))
-								{
-									Messaging.send(player, "You can't attack your stalemate!");
-									event.setCancelled(true);
-								}
+								player.sendMessage(ChatColor.GRAY + "You can't attack your " + ChatColor.WHITE + "Stalemate" + ChatColor.GRAY + "!");
+								event.setCancelled(true);
+								return;
 							}
 						}
 					}
 				}
 			}
-			else
+			else if(event.getDamager() instanceof Player)
 			{
-				if(!(event.getAttackerEntity() instanceof Player))
-					return;
+				Player player = (Player) event.getDamager();
 				
-				if(!(event.getEntity() instanceof Player))
-					return;
-				
-				Player player = (Player) event.getAttackerEntity();
-				Player tplayer = (Player) event.getEntity();
-				
-				Hero hero = plugin.getCharacterManager().getHero(player);
-				Hero thero = plugin.getCharacterManager().getHero(tplayer);
-				
-				if(hero.hasEffect("Stalemate"))
+				if(event.getEntity() instanceof Player)
 				{
-					StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
+					Player tplayer = (Player) event.getEntity();
 					
-					if(sEffect.getStalemate().equals(tplayer))
+					Hero hero = plugin.getCharacterManager().getHero(player);
+					Hero thero = plugin.getCharacterManager().getHero(tplayer);
+					
+					if(hero.hasEffect("Stalemate"))
 					{
-						Messaging.send(player, "You can't attack your stalemate!");
-						event.setCancelled(true);
+						StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
+						
+						if(sEffect.getStalemate().equals(tplayer))
+						{
+							player.sendMessage(ChatColor.GRAY + "You can't attack your " + ChatColor.WHITE + "Stalemate" + ChatColor.GRAY + "!");
+							event.setCancelled(true);
+							return;
+						}
 					}
-				}
-				
-				if(thero.hasEffect("Stalemate"))
-				{
-					StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
 					
-					if(sEffect.getStalemate().equals(player))
+					if(thero.hasEffect("Stalemate"))
 					{
-						Messaging.send(player, "You can't attack your stalemate!");
-						event.setCancelled(true);
+						StalemateEffect sEffect = (StalemateEffect) hero.getEffect("Stalemate");
+						
+						if(sEffect.getStalemate().equals(player))
+						{
+							player.sendMessage(ChatColor.GRAY + "You can't attack your " + ChatColor.WHITE + "Stalemate" + ChatColor.GRAY + "!");
+							event.setCancelled(true);
+							return;
+						}
 					}
 				}
 			}
@@ -208,7 +206,7 @@ public class SkillStalemate extends TargettedSkill
 		
 		public void removeFromHero(Hero hero)
 		{
-			skill.broadcast(stalemate.getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "Skill" + ChatColor.GRAY + "] " + stalemate.getDisplayName() + ChatColor.GRAY + " is no longer " + hero.getPlayer().getDisplayName() + "'s " + ChatColor.WHITE + "Stalemate" + ChatColor.GRAY + "!");
+			skill.broadcast(stalemate.getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " + stalemate.getDisplayName() + ChatColor.GRAY + " is no longer " + hero.getPlayer().getDisplayName() + "'s " + ChatColor.WHITE + "Stalemate" + ChatColor.GRAY + "!");
 			super.removeFromHero(hero);
 		}
 	}
