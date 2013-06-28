@@ -86,6 +86,7 @@ public class SkillShieldStance extends ActiveSkill {
 			super.applyToHero(hero);
 			Player player = hero.getPlayer();
 			hero.setCooldown("ShieldStance", 0);
+			player.setSneaking(true);
 			broadcast(player.getLocation(), player.getDisplayName() + ChatColor.GRAY + " has entered a " + ChatColor.WHITE + "ShieldStance" + ChatColor.GRAY + ".");
 		}
 		
@@ -93,6 +94,7 @@ public class SkillShieldStance extends ActiveSkill {
 		public void removeFromHero(Hero hero) {
 			super.removeFromHero(hero);
 			Player player = hero.getPlayer();
+			player.setSneaking(false);
 			hero.setCooldown("ShieldStance", (long) SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN, Long.valueOf(30000), false));
 			broadcast(player.getLocation(), player.getDisplayName() + ChatColor.GRAY + " is no longer in a " + ChatColor.WHITE + "ShieldStance" + ChatColor.GRAY + ".");
 		}
