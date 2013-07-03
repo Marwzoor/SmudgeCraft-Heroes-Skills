@@ -39,7 +39,7 @@ public class SkillCamouflage extends PassiveSkill
 		super(instance, "Camouflage");
 		plugin=instance;
 		skill=this;
-		setDescription("When you are sneaking on leaves you blend into the environment, making you invisable");
+		setDescription("When you are sneaking on leaves you blend into the environment, making you invisible. (Passive)");
 		setArgumentRange(0, 0);
 		setIdentifiers(new String[] { "skill arrowrain" });
 		setTypes(new SkillType[] { SkillType.BUFF });

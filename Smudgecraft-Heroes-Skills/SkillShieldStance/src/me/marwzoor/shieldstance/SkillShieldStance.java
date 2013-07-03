@@ -24,7 +24,7 @@ public class SkillShieldStance extends ActiveSkill {
 	
 	public SkillShieldStance(Heroes plugin) {
 		super(plugin, "ShieldStance");
-		setDescription("You block all incoming damage while wielding a sheild, but you are unable to move. Maximum stance duration is $1 seconds.");
+		setDescription("You block all incoming damage while wielding a sheild, but you are unable to move. D: %1s.");
 		setIdentifiers(new String[] {
 			"skill shieldstance"
 		});
@@ -36,10 +36,14 @@ public class SkillShieldStance extends ActiveSkill {
 	}
 	
 	public String getDescription(Hero hero) {
-		String desc = super.getDescription();
-		long duration = (long) ((SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Long.valueOf(15000), false) + SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, Long.valueOf(100), false) * hero.getSkillLevel(this)) / 1000);
-		desc.replace("$1", duration + "");
-		return desc;
+		if(hero.hasAccessToSkill(this)) {
+			String desc = super.getDescription();
+			long duration = (long) ((SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Long.valueOf(15000), false) + SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, Long.valueOf(100), false) * hero.getSkillLevel(this)) / 1000);
+			desc.replace("%1", duration + "");
+			return desc;
+		} else {
+			return super.getDescription().replace("%1", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig() {

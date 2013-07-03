@@ -21,12 +21,12 @@ import com.herocraftonline.heroes.characters.CharacterDamageManager.ProjectileTy
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
+import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 
 public class SkillArrowRain extends ActiveSkill
 {
 	public static Heroes plugin;
-	public static SkillArrowRain skill;
 	
 	public static HashMap<Hero, HashSet<Arrow>> arrows = new HashMap<Hero, HashSet<Arrow>>();
 	
@@ -34,8 +34,7 @@ public class SkillArrowRain extends ActiveSkill
 	{
 		super(instance, "ArrowRain");
 		plugin=instance;
-		skill=this;
-		setDescription("You make arrows rain from the sky at the target location for %1 seconds!");
+		setDescription("You make arrows rain from the sky at the target location! D:%1s CD:%2s M:%3");
 		setArgumentRange(0, 0);
 		setIdentifiers(new String[] { "skill arrowrain" });
 		setTypes(new SkillType[] { SkillType.DAMAGING });
@@ -45,25 +44,24 @@ public class SkillArrowRain extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
-		if(hero.hasAccessToSkill(skill))
-		{
-		String desc = super.getDescription();
-		int duration = SkillConfigManager.getUseSetting(hero,  skill, "duration", Integer.valueOf(10000), false);
-		duration += SkillConfigManager.getUseSetting(hero, skill, "duration-increase", Integer.valueOf(10), false) * hero.getSkillLevel(skill);
-		duration = duration/1000;
-		return desc.replace("%1", duration + "");
-		}
-		else
-		{
-		return super.getDescription().replace("%1", "X");
+		if(hero.hasAccessToSkill(this)) {
+			String desc = super.getDescription();
+			int duration = (SkillConfigManager.getUseSetting(hero,  this, SkillSetting.DURATION, Integer.valueOf(10000), false) + SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, Integer.valueOf(10), false) * hero.getSkillLevel(this)) / 1000;
+			int cooldown = SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, Integer.valueOf(0), false) / 1000;
+			int mana = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA, Integer.valueOf(0), false);
+			return desc.replace("%1", duration + "").replace("%2", cooldown + "").replace("%3", mana + "");
+		} else {
+			return super.getDescription().replace("%1", "X").replace("%2", "X").replace("%3", "X");
 		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()
 	{
 		ConfigurationSection node = super.getDefaultConfig();
-		node.set("duration", Integer.valueOf(10000));
-		node.set("duration-increase", Integer.valueOf(10));
+		node.set(SkillSetting.DURATION.node(), Integer.valueOf(10000));
+		node.set(SkillSetting.DURATION_INCREASE.node(), Integer.valueOf(10));
+		node.set(SkillSetting.COOLDOWN.node(), Integer.valueOf(0));
+		node.set(SkillSetting.MANA.node(), Integer.valueOf(0));
 		return node;
 	}
 	
@@ -71,8 +69,8 @@ public class SkillArrowRain extends ActiveSkill
 	{
 		Player player = hero.getPlayer();
 		
-		int duration = SkillConfigManager.getUseSetting(hero, skill, "duration", Integer.valueOf(10000), false);
-		duration += SkillConfigManager.getUseSetting(hero, skill, "duration-increase", Integer.valueOf(10), false) * hero.getSkillLevel(skill);
+		int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(10000), false);
+		duration += SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, Integer.valueOf(10), false) * hero.getSkillLevel(this);
 		
 		duration = duration/1000;
 		duration = duration*20;
@@ -126,7 +124,7 @@ public class SkillArrowRain extends ActiveSkill
 			public void run()
 			{
 				Bukkit.getScheduler().cancelTask(id);
-				skill.broadcast(her.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " +  her.getPlayer().getDisplayName() + ChatColor.GRAY + " is no longer calling down arrows from the sky!");		
+				broadcast(her.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " +  her.getPlayer().getDisplayName() + ChatColor.GRAY + " is no longer calling down arrows from the sky!");		
 			}
 		}, duration);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
@@ -136,7 +134,7 @@ public class SkillArrowRain extends ActiveSkill
 				arrows.remove(her);
 			}
 		}, duration+(20L*5));
-		skill.broadcast(player.getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " +  player.getDisplayName() + ChatColor.GRAY + " used " + ChatColor.WHITE + "ArrowRain" + ChatColor.GRAY + "!");		
+		broadcast(player.getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " +  player.getDisplayName() + ChatColor.GRAY + " used " + ChatColor.WHITE + "ArrowRain" + ChatColor.GRAY + "!");		
 		return SkillResult.NORMAL;
 	}
 	
