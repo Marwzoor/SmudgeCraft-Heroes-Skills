@@ -40,7 +40,7 @@ public class SkillCleave extends ActiveSkill {
 	public SkillCleave(Heroes plugin) {
 		super(plugin, "Cleave");
 		this.plugin = plugin;
-		setDescription("Attack up to %1 enemies in front of you. R:%2 DMG:%3 D:%4");
+		setDescription("Attack up to %1 enemies in front of you. R:%2 DMG:%3 D:%4 CD:%5 M:%6");
 		setArgumentRange(0, 0);
 		setIdentifiers(new String[] { "skill cleave" });
 		setTypes(new SkillType[] { SkillType.DAMAGING, SkillType.PHYSICAL });
@@ -51,10 +51,12 @@ public class SkillCleave extends ActiveSkill {
 	public ConfigurationSection getDefaultConfig() {
 		ConfigurationSection node = super.getDefaultConfig();
 		node.set("maxtargets", Integer.valueOf(3));
-		node.set(SkillSetting.DURATION.node(), Integer.valueOf(5000));
+		node.set(SkillSetting.RADIUS.node(), Integer.valueOf(5));
 		node.set(SkillSetting.DAMAGE.node(), Integer.valueOf(3));
 		node.set(SkillSetting.DAMAGE_INCREASE.node(), Double.valueOf(0.5));
-		node.set(SkillSetting.RADIUS.node(), Integer.valueOf(5));
+		node.set(SkillSetting.DURATION.node(), Integer.valueOf(5000));
+		node.set(SkillSetting.COOLDOWN.node(), Integer.valueOf(0));
+		node.set(SkillSetting.MANA.node(), Integer.valueOf(0));
 		return node;
 	}
 
@@ -65,7 +67,9 @@ public class SkillCleave extends ActiveSkill {
 			int radius = SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS.node(), Integer.valueOf(5), false);
 			double damage = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Integer.valueOf(3), false) + SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, Double.valueOf(0.5), false) * hero.getSkillLevel(this);
 			int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(5000), false) / 1000;
-			return desc.replace("%1", targets + "").replace("%2", radius + "").replace("%3", damage + "").replace("%4", duration + "");
+			int cooldown = SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, Integer.valueOf(0), false);
+			int mana = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA, Integer.valueOf(0), false);
+			return desc.replace("%1", targets + "").replace("%2", radius + "").replace("%3", damage + "").replace("%4", duration + "").replace("%5", cooldown + "").replace("%6", mana + "");
 		} else {
 			return desc.replace("%1", "X").replace("%2", "X").replace("%3", "X").replace("%4", "X");
 		}
