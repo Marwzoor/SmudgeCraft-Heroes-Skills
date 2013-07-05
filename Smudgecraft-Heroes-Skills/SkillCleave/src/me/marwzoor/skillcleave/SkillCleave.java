@@ -52,7 +52,7 @@ public class SkillCleave extends ActiveSkill {
 		ConfigurationSection node = super.getDefaultConfig();
 		node.set("maxtargets", Integer.valueOf(3));
 		node.set(SkillSetting.RADIUS.node(), Integer.valueOf(5));
-		node.set(SkillSetting.DAMAGE.node(), Integer.valueOf(3));
+		node.set(SkillSetting.DAMAGE.node(), Double.valueOf(3));
 		node.set(SkillSetting.DAMAGE_INCREASE.node(), Double.valueOf(0.5));
 		node.set(SkillSetting.DURATION.node(), Integer.valueOf(5000));
 		node.set(SkillSetting.COOLDOWN.node(), Integer.valueOf(0));
@@ -65,7 +65,7 @@ public class SkillCleave extends ActiveSkill {
 		if(hero.hasAccessToSkill(this)) {
 			int targets = SkillConfigManager.getUseSetting(hero, this, "maxtargets", Integer.valueOf(3), false);
 			int radius = SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS.node(), Integer.valueOf(5), false);
-			double damage = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Integer.valueOf(3), false) + SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, Double.valueOf(0.5), false) * hero.getSkillLevel(this);
+			double damage = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Double.valueOf(3), false) + SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, Double.valueOf(0.5), false) * hero.getSkillLevel(this);
 			int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(5000), false) / 1000;
 			int cooldown = SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, Integer.valueOf(0), false);
 			int mana = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA, Integer.valueOf(0), false);

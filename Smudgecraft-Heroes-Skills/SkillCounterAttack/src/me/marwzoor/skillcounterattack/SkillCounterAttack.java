@@ -5,69 +5,55 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 
-public class SkillCounterAttack extends ActiveSkill
-{
+public class SkillCounterAttack extends ActiveSkill {
 	protected List<Player> unPlayers = new ArrayList<Player>();
 	
-	public SkillCounterAttack(Heroes plugin)
-	{
+	public SkillCounterAttack(Heroes plugin) {
 		super(plugin,"CounterAttack");
-		setDescription("Makes You Invisible To All Mobs");
-		setArgumentRange(0,0);
+		setDescription("Block an incoming hit and counter it with a blow dealing. DMG:%1 CD:%2 M:%3");
 		setTypes(new SkillType[]{SkillType.BUFF});
 		setIdentifiers(new String[]{"skill counterattack"});		
-		Bukkit.getServer().getPluginManager().registerEvents(new SkillHeroListener(this), plugin);
+		Bukkit.getServer().getPluginManager().registerEvents(new SkillHeroListener(this, plugin), plugin);
 	}
 	
-	@Override
-	public String getDescription(Hero hero)
-	{
-		String description = getDescription();
-		int cooldown = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, 0, false) - SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN_REDUCE, 0, false) * hero.getSkillLevel(this)) / 1000;
-
-		 if(cooldown > 0)
-	            description = (new StringBuilder()).append(description).append(" CD:").append(cooldown).append("s").toString();
-	        int mana = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA, 10, false) - SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA_REDUCE, 0, false) * hero.getSkillLevel(this);
-	        if(mana > 0)
-	            description = (new StringBuilder()).append(description).append(" M:").append(mana).toString();
-	        int healthCost = SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH_COST, 0, false) - SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH_COST_REDUCE, mana, true) * hero.getSkillLevel(this);
-	        if(healthCost > 0)
-	            description = (new StringBuilder()).append(description).append(" HP:").append(healthCost).toString();
-	        int staminaCost = SkillConfigManager.getUseSetting(hero, this, SkillSetting.STAMINA, 0, false) - SkillConfigManager.getUseSetting(hero, this, SkillSetting.STAMINA_REDUCE, 0, false) * hero.getSkillLevel(this);
-	        if(staminaCost > 0)
-	            description = (new StringBuilder()).append(description).append(" FP:").append(staminaCost).toString();
-	        int delay = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DELAY.node(), 0, false) / 1000;
-	        if(delay > 0)
-	            description = (new StringBuilder()).append(description).append(" W:").append(delay).append("s").toString();
-	        int exp = SkillConfigManager.getUseSetting(hero, this, SkillSetting.EXP.node(), 0, false);
-	        if(exp > 0)
-	            description = (new StringBuilder()).append(description).append(" XP:").append(exp).toString();
-
-		return description;
-	}
-	
-	public ConfigurationSection getDefaultConfig()
-	{
+	public ConfigurationSection getDefaultConfig() {
 		ConfigurationSection node = super.getDefaultConfig();
-		node.set(SkillSetting.DAMAGE.node(),Double.valueOf(100.0D));
-		node.set(SkillSetting.DAMAGE_INCREASE.node(),Double.valueOf(1.0D));
+		node.set(SkillSetting.DAMAGE.node(),Double.valueOf(100.0));
+		node.set(SkillSetting.DAMAGE_INCREASE.node(),Double.valueOf(1.0));
+		node.set(SkillSetting.COOLDOWN.node(), Integer.valueOf(0));
+		node.set(SkillSetting.MANA.node(), Integer.valueOf(0));
         return node;
-
 	}
 	
 	@Override
-	public SkillResult use(Hero hero,String[] args)
-	{
+	public String getDescription(Hero hero) {
+		String description = super.getDescription();
+		if (hero.hasAccessToSkill(this)) {
+			double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Double.valueOf(100), false) + (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, Double.valueOf(1), false) * hero.getSkillLevel(this)));
+			int cooldown = SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, Integer.valueOf(0), false) / 1000;
+	        int mana = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA, Integer.valueOf(0), false);
+	        return description.replace("%1", damage + "").replace("%2", cooldown + "").replace("%3", mana + "");
+		} else {
+			return description.replace("%1", "X").replace("%2", "X").replace("%3", "X");
+		}
+	}
+	
+	@Override
+	public SkillResult use(Hero hero,String[] args) {
 		Player player = hero.getPlayer();
 		if(unPlayers.contains(player))
 		{
@@ -75,5 +61,36 @@ public class SkillCounterAttack extends ActiveSkill
 		}
 		unPlayers.add(player);
 		return SkillResult.NORMAL;
+	}
+	
+	public List<Player> getUnPlayers() {
+		return unPlayers;
+	}
+	
+	public class SkillHeroListener implements Listener {
+		private SkillCounterAttack skill;
+		private Heroes heroes;
+
+	    public SkillHeroListener(SkillCounterAttack skill, Heroes heroes) {
+	        this.skill = skill;
+	        this.heroes = heroes;
+	    }
+	    
+	    @EventHandler
+	    public void onWeaponDamageEvent(WeaponDamageEvent event) {
+	    	if(event.isCancelled()) {
+	    		return;
+	    	}
+	    	if(!(event.getEntity() instanceof Player)) {
+	    		return;
+	    	}
+	    	Player player = (Player)event.getEntity();
+	    	if(!skill.getUnPlayers().contains(player)) {
+	    		return;
+	    	}
+	    	event.setCancelled(true);
+	    	skill.damageEntity((LivingEntity)event.getAttackerEntity(), player, (int)SkillConfigManager.getUseSetting(heroes.getCharacterManager().getHero(player), skill, SkillSetting.DAMAGE, Double.valueOf(100.0), false));
+	    	skill.getUnPlayers().remove(player);
+	    }
 	}
 }

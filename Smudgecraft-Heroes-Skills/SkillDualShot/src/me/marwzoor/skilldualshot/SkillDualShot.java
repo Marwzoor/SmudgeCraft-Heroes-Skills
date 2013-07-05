@@ -25,16 +25,13 @@ import com.herocraftonline.heroes.util.Messaging;
 public class SkillDualShot extends ActiveSkill
 {
 	public static Heroes plugin;
-	public static SkillDualShot skill;
 	
 	public SkillDualShot(Heroes instance)
 	{
 		super(instance, "DualShot");
 		plugin=instance;
-		skill=this;
-		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill dualshot" });
-		setDescription("You fire two arrows instead of one next shot.");
+		setDescription("You fire two arrows instead of one next shot. D:%1s");
 		setTypes(new SkillType[] { SkillType.BUFF });
 		Bukkit.getPluginManager().registerEvents(new SkillHeroListener(), plugin);
 	}
@@ -50,19 +47,25 @@ public class SkillDualShot extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
-		return super.getDescription();
+		if (hero.hasAccessToSkill(this)) {
+			String desc = super.getDescription();
+			int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(30000), false) / 1000;
+			return desc.replace("%1", duration + "");
+		} else {
+			return super.getDescription().replace("%1", "X");
+		}
 	}
 	
 	public SkillResult use(Hero hero, String[] args)
 	{
-		int duration = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, Integer.valueOf(30000), false);
+		int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(30000), false);
 		
 		if(hero.hasEffect("DualShot"))
 		{
 			hero.removeEffect(hero.getEffect("DualShot"));
 		}
 		
-		DualShotEffect dsEffect = new DualShotEffect(skill, duration, hero.getPlayer());
+		DualShotEffect dsEffect = new DualShotEffect(this, duration, hero.getPlayer());
 		
 		hero.addEffect(dsEffect);
 		
