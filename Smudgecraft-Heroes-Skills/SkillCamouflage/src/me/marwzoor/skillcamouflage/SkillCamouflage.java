@@ -38,7 +38,6 @@ public class SkillCamouflage extends PassiveSkill
 		plugin=instance;
 		skill=this;
 		setDescription("When you are sneaking on leaves you blend into the environment, making you invisible. (Passive)");
-		setArgumentRange(0, 0);
 		setTypes(new SkillType[] { SkillType.BUFF });
 		
 		Bukkit.getPluginManager().registerEvents(new SkillHeroListener(), plugin);
