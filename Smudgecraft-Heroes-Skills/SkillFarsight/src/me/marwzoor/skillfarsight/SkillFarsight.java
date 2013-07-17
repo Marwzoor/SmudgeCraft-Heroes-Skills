@@ -23,7 +23,6 @@ import com.herocraftonline.heroes.util.Messaging;
 public class SkillFarsight extends ActiveSkill
 {
 	public static Heroes plugin;
-	public static SkillFarsight skill;
 	public static HashMap<Hero, Integer> schedules = new HashMap<Hero, Integer>();
 	public static HashMap<Hero, Float> walkspeed = new HashMap<Hero, Float>(); 
 	
@@ -31,10 +30,9 @@ public class SkillFarsight extends ActiveSkill
 	{
 		super(instance, "Farsight");
 		plugin=instance;
-		skill=this;
 		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill farsight" });
-		setDescription("You focus your sight to see farther.");
+		setDescription("You focus your sight to see farther. D:%1s");
 		setTypes(new SkillType[] { SkillType.BUFF });
 		Bukkit.getPluginManager().registerEvents(new SkillHeroListener(), plugin);
 	}
@@ -48,7 +46,14 @@ public class SkillFarsight extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
-		return super.getDescription();
+		if (hero.hasAccessToSkill(this)) {
+			String desc = super.getDescription();
+			int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(15000), false);
+			desc.replace("%1", duration + "");
+			return desc;
+		} else {
+			return super.getDescription().replace("%1", "X");
+		}
 	}
 	
 	public SkillResult use(Hero hero, String[] args)
@@ -73,7 +78,7 @@ public class SkillFarsight extends ActiveSkill
 		}
 		else
 		{
-			long duration = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, 15000, false);
+			long duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, 15000, false);
 			duration = duration/1000;
 			duration = duration*20;
 			final float wspeed = player.getWalkSpeed();

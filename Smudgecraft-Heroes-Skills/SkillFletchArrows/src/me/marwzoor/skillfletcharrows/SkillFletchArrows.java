@@ -21,7 +21,7 @@ public class SkillFletchArrows extends ActiveSkill
   public SkillFletchArrows(Heroes plugin)
   {
     super(plugin, "FletchArrows");
-    setDescription("You fletch $1 arrows.");
+    setDescription("You fletch %1 arrows. M:%2 CD:%3");
     setUsage("/skill fletcharrow");
     setArgumentRange(0, 0);
     setIdentifiers(new String[] { "skill fletcharrows", "skill farrows" });
@@ -54,11 +54,13 @@ public class SkillFletchArrows extends ActiveSkill
 	{
     int amount = SkillConfigManager.getUseSetting(hero, this, SkillSetting.AMOUNT, 2, false);
     amount += SkillConfigManager.getUseSetting(hero, this, "amount-increase", 1, false) * hero.getSkillLevel(this);
-    return getDescription().replace("$1", amount + "");
+    int mana = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA, 0, false);
+    int cd = SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, 0, false);
+    return getDescription().replace("%1", amount + "").replace("%2", mana + "").replace("%3", cd + "");
 	}
 	else
 	{
-		return getDescription().replace("$1", "X amount of");
+		return getDescription().replace("%1", "X");
 	}
-}
+  }
 }

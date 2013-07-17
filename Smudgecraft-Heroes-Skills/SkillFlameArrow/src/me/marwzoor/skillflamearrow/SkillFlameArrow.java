@@ -30,33 +30,33 @@ import com.herocraftonline.heroes.util.Messaging;
 public class SkillFlameArrow extends ActiveSkill
 {
 	public static Heroes plugin;
-	public static SkillFlameArrow skill;
 	
 	public SkillFlameArrow(Heroes instance)
 	{
 		super(instance, "FlameArrow");
 		plugin=instance;
-		skill=this;
-		setDescription("The next arrow you fire sets your opponent on fire for $1 seconds. You have $2 seconds to fire your arrow.");
+		setDescription("The next arrow you fire sets your opponent on fire for %1 seconds. You have %2 seconds to fire your arrow. M:%3 CD:%4");
 		setUsage("/skill flamearrow");
 		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill flamearrow" });
 		setTypes(new SkillType[] { SkillType.BUFF, SkillType.MOVEMENT});
 		
-		Bukkit.getPluginManager().registerEvents(new SkillHeroListener(), plugin);
+		Bukkit.getPluginManager().registerEvents(new SkillHeroListener(this), plugin);
 	}
 	
 	public String getDescription(Hero hero)
 	{
-		String desc = super.getDescription();
-		double duration = SkillConfigManager.getUseSetting(hero, skill, "duration", Integer.valueOf(30000), false);
-		double fireduration = SkillConfigManager.getUseSetting(hero, skill, "fire-duration", Integer.valueOf(6000), false);
-		fireduration += SkillConfigManager.getUseSetting(hero, skill, "fire-duration-increase", Integer.valueOf(10), false) * hero.getSkillLevel(skill);
-		fireduration = fireduration/1000;
-		duration = duration/1000;
-		desc = desc.replace("$1", fireduration + "");
-		desc = desc.replace("$2", duration + "");
-		return desc;
+		if (hero.hasAccessToSkill(this)) {
+			String desc = super.getDescription();
+			double duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(30000), false);
+			double fireduration = SkillConfigManager.getUseSetting(hero, this, "fire-duration", Integer.valueOf(6000), false);
+			int mana = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA, Integer.valueOf(0), false);
+			int cd = SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, Integer.valueOf(0), false);
+			desc.replace("%1", fireduration + "").replace("%2", duration + "").replace("%3", mana + "").replace("%4", cd + "");
+			return desc;
+		} else {
+			return super.getDescription().replace("%1", "X").replace("%2", "X").replace("%3", "X").replace("%4", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultConfig()
@@ -72,29 +72,35 @@ public class SkillFlameArrow extends ActiveSkill
 	
 	public SkillResult use(Hero hero, String[] args)
 	{
-		int duration = SkillConfigManager.getUseSetting(hero, skill, "duration", Integer.valueOf(30000), false);
-		int flameduration = SkillConfigManager.getUseSetting(hero, skill, "fire-duration", Integer.valueOf(6000), false);
-		flameduration += SkillConfigManager.getUseSetting(hero, skill, "fire-duration-increase", Integer.valueOf(10), false) * hero.getSkillLevel(skill);
+		int duration = SkillConfigManager.getUseSetting(hero, this, "duration", Integer.valueOf(30000), false);
+		int flameduration = SkillConfigManager.getUseSetting(hero, this, "fire-duration", Integer.valueOf(6000), false);
+		flameduration += SkillConfigManager.getUseSetting(hero, this, "fire-duration-increase", Integer.valueOf(10), false) * hero.getSkillLevel(this);
 		
-		int firedamage = SkillConfigManager.getUseSetting(hero, skill, "fire-damage", Integer.valueOf(20), false);
-		firedamage += SkillConfigManager.getUseSetting(hero, skill, "fire-damage-increase", Integer.valueOf(1), false) * hero.getSkillLevel(skill);
+		int firedamage = SkillConfigManager.getUseSetting(hero, this, "fire-damage", Integer.valueOf(20), false);
+		firedamage += SkillConfigManager.getUseSetting(hero, this, "fire-damage-increase", Integer.valueOf(1), false) * hero.getSkillLevel(this);
 		
 		if(hero.hasEffect("FlameArrow"))
 		{
 			hero.removeEffect(hero.getEffect("FlameArrow"));
 		}
 		
-		FlameArrowEffect fEffect = new FlameArrowEffect(skill, duration, hero.getPlayer(), flameduration, firedamage);
+		FlameArrowEffect fEffect = new FlameArrowEffect(this, duration, hero.getPlayer(), flameduration, firedamage);
 		
 		hero.addEffect(fEffect);
 		
-		Messaging.send(hero.getPlayer(), "You used " + ChatColor.WHITE + "FlameArrow" + ChatColor.GRAY + "! Your next arrow will set fire to your opponent!", new Object());
+		Messaging.send(hero.getPlayer(), "You used " + ChatColor.WHITE + "FlameArrow" + ChatColor.GRAY + "! Your next arrow will set fire to your opponent!");
 		
 		return SkillResult.NORMAL;
 	}
 	
 	public class SkillHeroListener implements Listener
 	{
+		private SkillFlameArrow skill;
+		
+		public SkillHeroListener(SkillFlameArrow skill) {
+			this.skill = skill;
+		}
+		
 		@EventHandler
 		public void onEntityShot(ImbueArrowHitEvent event)
 		{

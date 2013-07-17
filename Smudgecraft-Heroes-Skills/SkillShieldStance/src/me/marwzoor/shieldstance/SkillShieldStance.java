@@ -24,7 +24,7 @@ public class SkillShieldStance extends ActiveSkill {
 	
 	public SkillShieldStance(Heroes plugin) {
 		super(plugin, "ShieldStance");
-		setDescription("You block all incoming damage while wielding a sheild, but you are unable to move. D: %1s.");
+		setDescription("You block all incoming damage while wielding a sheild, but you are unable to move. D:%1s.");
 		setIdentifiers(new String[] {
 			"skill shieldstance"
 		});
