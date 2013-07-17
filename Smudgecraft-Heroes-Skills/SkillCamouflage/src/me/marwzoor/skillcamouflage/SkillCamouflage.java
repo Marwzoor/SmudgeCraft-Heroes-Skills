@@ -32,16 +32,12 @@ public class SkillCamouflage extends PassiveSkill
 	public static SkillCamouflage skill;
 	public static List<Player> sneaking = new ArrayList<Player>();
 	
-	public static HashMap<Hero, HashSet<Arrow>> arrows = new HashMap<Hero, HashSet<Arrow>>();
-	
 	public SkillCamouflage(Heroes instance)
 	{
 		super(instance, "Camouflage");
 		plugin=instance;
 		skill=this;
 		setDescription("When you are sneaking on leaves you blend into the environment, making you invisible. (Passive)");
-		setArgumentRange(0, 0);
-		setIdentifiers(new String[] { "skill arrowrain" });
 		setTypes(new SkillType[] { SkillType.BUFF });
 		
 		Bukkit.getPluginManager().registerEvents(new SkillHeroListener(), plugin);
