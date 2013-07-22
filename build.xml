@@ -27,8 +27,10 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFuriousStrike/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFury/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillHeadshot/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillHealingWord/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillLickWounds/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillMorality/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillPainfulFlask/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillParry/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillPinDown/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRapidFire/build.xml" target="makejar" />
