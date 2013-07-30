@@ -77,7 +77,7 @@ public class SkillCritical extends PassiveSkill {
 			}
 			
 			Hero hero = (Hero) event.getDamager();
-			if (!hero.hasEffect("Critical")) {
+			if (!hero.hasAccessToSkill(skill)) {
 				return;
 			}
 			
