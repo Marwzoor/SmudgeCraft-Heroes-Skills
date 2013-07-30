@@ -60,6 +60,12 @@ public class SkillRageRoar extends ActiveSkill
 	
 	public SkillResult use(final Hero hero, String[] args)
 	{
+		if(!hero.isInCombat())
+		{
+			Messaging.send(hero.getPlayer(), "You have to be in combat to use this skill!");
+			return SkillResult.FAIL;
+		}
+		
 		int fury = (int) (SkillConfigManager.getUseSetting(hero, this, "fury", 45, false) +
 				(SkillConfigManager.getUseSetting(hero, this, "fury-increase", 0.25, false) * hero.getSkillLevel(this)));
 		double critical = (SkillConfigManager.getUseSetting(hero, this, "critical", 0.1, false) +

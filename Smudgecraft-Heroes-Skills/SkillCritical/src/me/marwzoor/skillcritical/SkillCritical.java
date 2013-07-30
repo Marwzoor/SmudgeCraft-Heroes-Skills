@@ -84,9 +84,11 @@ public class SkillCritical extends PassiveSkill {
 			double chance = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE, 0.5, false) +
 					(SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE_LEVEL, 0.005, false) * hero.getSkillLevel(skill)));
 			if(hero.getPlayer().hasMetadata("CriticalChance")) {
+				if(hero.getPlayer().getMetadata("CriticalChance").get(0)!=null) {
 				chance += hero.getPlayer().getMetadata("CriticalChance").get(0).asDouble();
+				}
 			}
-			
+						
 			if (Math.random() <= chance) {
 				double damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, 1.5, false) +
 		                (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE_INCREASE, 0.05, false) * hero.getSkillLevel(skill)));

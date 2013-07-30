@@ -59,6 +59,7 @@
 		<zip destfile="${project-name}.zip" basedir="${folder-to-zip}"/>
 		<delete dir="Skills"/>
 		<delete file="libs/Companions.jar"/>
+		<delete file="libs/SkillFury.jar"/>
 	</target>
 
 </project>
