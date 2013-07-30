@@ -12,6 +12,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/Companions/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillAdrenaline/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillArrowRain/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillAxeThrow/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCamouflage/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCleave/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCompanion/build.xml" target="makejar" />
