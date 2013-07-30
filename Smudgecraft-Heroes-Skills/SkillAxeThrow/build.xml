@@ -17,7 +17,7 @@
 	
 	<target name="compile">
 		<javac srcdir="Smudgecraft-Heroes-Skills/SkillAxeThrow" destdir="bin" classpathref="classpath" includeantruntime="false"/>
-		<copy file="Smudgecraft-Heroes-Skills/SkillAxeThrowsrc/skill.info" tofile="bin/skill.info"/>
+		<copy file="Smudgecraft-Heroes-Skills/SkillAxeThrow/src/skill.info" tofile="bin/skill.info"/>
 	</target>
 	
 	<target name="compress">
