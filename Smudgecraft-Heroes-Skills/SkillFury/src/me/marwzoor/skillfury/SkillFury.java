@@ -77,6 +77,22 @@ public class SkillFury extends ActiveSkill
 		return SkillResult.NORMAL;
 	}
 	
+	public static void fullFury(final Hero hero)
+	{
+		Messaging.send(hero.getPlayer(), ChatColor.RED + "Your " + ChatColor.DARK_RED + "FURY " + ChatColor.RED + "is now full!");
+		int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
+		{
+			public void run()
+			{
+				if(hero!=null)
+				{
+				hero.getPlayer().getWorld().playEffect(hero.getPlayer().getLocation(), Effect.MOBSPAWNER_FLAMES, 4);
+				}
+			}
+		}, 20L, 20L);
+		schedules.put(hero.getPlayer(), id);
+	}
+	
 	public class SkillHeroListener implements Listener
 	{
 		@EventHandler
@@ -169,6 +185,9 @@ public class SkillFury extends ActiveSkill
 		@EventHandler(ignoreCancelled=true)
 		public void onSkillUseEvent(SkillUseEvent event)
 		{
+			if(event.isCancelled())
+				return;
+			
 			Hero hero = event.getHero();
 			
 			if(hero.hasAccessToSkill(skill))
@@ -224,36 +243,14 @@ public class SkillFury extends ActiveSkill
 							{
 								hero.setMana(maxfury);
 								Messaging.send(hero.getPlayer(), ChatColor.DARK_RED + "FURY " + createFuryBar(hero.getMana(), hero.getMaxMana()));
-								Messaging.send(hero.getPlayer(), ChatColor.RED + "Your " + ChatColor.DARK_RED + "FURY " + ChatColor.RED + "is now full!");
-								int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
-								{
-									public void run()
-									{
-										if(hero!=null)
-										{
-										hero.getPlayer().getWorld().playEffect(hero.getPlayer().getLocation(), Effect.MOBSPAWNER_FLAMES, 4);
-										}
-									}
-								}, 20L, 20L);
-								schedules.put(hero.getPlayer(), id);
+								fullFury(hero);
 							}
 						}
 						else if(fury+furygain==maxfury)
 						{
 							hero.setMana(maxfury);
 							Messaging.send(hero.getPlayer(), ChatColor.DARK_RED + "FURY " + createFuryBar(hero.getMana(), hero.getMaxMana()));
-							Messaging.send(hero.getPlayer(), ChatColor.RED + "Your " + ChatColor.DARK_RED + "FURY " + ChatColor.RED + "is now full!");
-							int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
-							{
-								public void run()
-								{
-									if(hero!=null)
-									{
-									hero.getPlayer().getWorld().playEffect(hero.getPlayer().getLocation(), Effect.MOBSPAWNER_FLAMES, 4);
-									}
-								}
-							}, 20L, 20L);
-							schedules.put(hero.getPlayer(), id);
+							fullFury(hero);
 						}
 						else
 						{
