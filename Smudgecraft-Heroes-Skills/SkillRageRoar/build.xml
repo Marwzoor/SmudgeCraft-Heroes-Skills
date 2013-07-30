@@ -22,7 +22,7 @@
 	
 	<target name="compress">
 		<jar jarfile="Skills/SkillRageRoar.jar" includes="**/*, skill.info" basedir="bin"/>
-		<copy file="Skills/SkillFury.jar" tofile="libs/Companions.jar"/>
+		<copy file="Skills/SkillFury.jar" tofile="libs/SkillFury.jar"/>
 		<delete dir="bin"/>
 	</target>
 	
