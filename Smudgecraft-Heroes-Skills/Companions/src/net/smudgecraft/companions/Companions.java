@@ -80,36 +80,6 @@ public class Companions extends JavaPlugin
 		killWolves(WolfType.TAMEDWOLF);
 	}
 	
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
-	{
-		if(sender instanceof Player)
-		{
-			Player player = (Player) sender;
-			
-			if(commandLabel.equalsIgnoreCase("wjump"))
-			{
-				if(cwolves.hasWolf(player))
-				{
-					ComWolf cwolf = cwolves.getComWolf(player);
-					
-					cwolf.jump();
-				}
-			}
-			else if(commandLabel.equalsIgnoreCase("wcreate"))
-			{
-				if(cwolves.hasWolf(player))
-				{
-					ComWolf cwolf = cwolves.getComWolf(player);
-					cwolf.kill();
-					cwolves.removeComWolf(cwolf);
-				}
-				
-				spawnNewComWolf(player.getLocation(), player.getName(), 240, 40, 240, "§e§lAslan", DyeColor.MAGENTA);
-			}
-		}
-		return true;
-	}
-	
 	public static void loadWolves()
 	{
 		int number=0;
