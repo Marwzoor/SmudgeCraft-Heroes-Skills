@@ -42,9 +42,12 @@ public class SkillAdrenaline extends PassiveSkill
 			{
 				Hero hero = plugin.getCharacterManager().getHero((Player) event.getEntity());
 				
-				if(!hero.hasAccessToSkill(skill))
+				if(hero.isInCombat())
 				{
-					event.setCancelled(true);
+					if(!hero.hasAccessToSkill(skill))
+					{
+						event.setCancelled(true);
+					}
 				}
 			}
 		}
