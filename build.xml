@@ -40,6 +40,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRageRoar/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRapidFire/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillReincarnation/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillRuthless/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSharpshooter/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillShield/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillShieldBash/build.xml" target="makejar" />
