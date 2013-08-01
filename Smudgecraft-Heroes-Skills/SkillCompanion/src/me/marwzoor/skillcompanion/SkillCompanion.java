@@ -70,7 +70,7 @@ public class SkillCompanion extends ActiveSkill
 	
 	public SkillResult use(Hero hero, String[] args)
 	{
-		String[] names = new String[]{ "§4Aslan", "§4Raiku", "§bTyrion", "§bMerez", "§2Mundu", "§2Roof", "§eDanion", "§eHowleth", "§0Syric", "§0Mandrew", "§5Undion", "§5Quaz", "§4Wereth", "§4Fury", "§bAxlith", "§bOrion" };
+		String[] names = new String[]{ "Â§4Aslan", "Â§4Raiku", "Â§bTyrion", "Â§bMerez", "Â§2Mundu", "Â§2Roof", "Â§eDanion", "Â§eHowleth", "Â§0Syric", "Â§0Mandrew", "Â§5Undion", "Â§5Quaz", "Â§4Wereth", "Â§4Fury", "Â§bAxlith", "Â§bOrion" };
 		
 		Random rand = new Random();
 		
