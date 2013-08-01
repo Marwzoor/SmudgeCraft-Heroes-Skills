@@ -102,7 +102,7 @@ public class SkillRapidFire extends ActiveSkill
 	      this.shootingPlayers.remove(hero);
 	      long cooldown = SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, 1000, false);
 	      hero.setCooldown("Arrowstorm", System.currentTimeMillis() + cooldown);
-	      Messaging.send(hero.getPlayer(), "§7[§2Skill§7] $1 stopped shooting arrows prematurely.", new Object[] { hero.getPlayer().getDisplayName() });
+	      Messaging.send(hero.getPlayer(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] $1 stopped shooting arrows prematurely.", new Object[] { hero.getPlayer().getDisplayName() });
 	      return SkillResult.INVALID_TARGET_NO_MSG;
 	    }
 	    Player player = hero.getPlayer();
