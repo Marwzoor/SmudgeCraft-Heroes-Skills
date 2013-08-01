@@ -1,13 +1,3 @@
 name: Companions
 main: net.smudgecraft.companions.Companions
 version: 1.2
-commands:
-    wcreate:
-        usage: /wcreate
-        description: create
-    wjump:
-        usage: /wjump
-        description: jump
-    spawncwolf:
-        usage: /spawncwolf
-        description: cwolf
