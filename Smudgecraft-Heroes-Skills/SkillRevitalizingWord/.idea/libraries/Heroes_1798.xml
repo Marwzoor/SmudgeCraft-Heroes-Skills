@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Heroes 1798">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../minecraft/plugins/Heroes 1798.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
