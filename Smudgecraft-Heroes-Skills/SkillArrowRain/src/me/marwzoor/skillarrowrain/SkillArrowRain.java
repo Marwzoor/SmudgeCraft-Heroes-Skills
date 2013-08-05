@@ -85,7 +85,7 @@ public class SkillArrowRain extends ActiveSkill
 		final Hero her = hero;
 		
 		HashSet<Arrow> ars = new HashSet<Arrow>();
-		arrows.put(hero, ars);P
+		arrows.put(hero, ars);
 		
 		final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
 		{
