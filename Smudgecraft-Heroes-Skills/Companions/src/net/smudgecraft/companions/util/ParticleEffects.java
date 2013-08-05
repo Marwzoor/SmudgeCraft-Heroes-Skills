@@ -1,9 +1,9 @@
 package net.smudgecraft.companions.util;
 
-import net.minecraft.server.Packet63WorldParticles;
+import net.minecraft.server.v1_6_R2.Packet63WorldParticles;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_6_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
  
 public enum ParticleEffects {
