@@ -85,7 +85,7 @@ public class SkillArrowRain extends ActiveSkill
 		final Hero her = hero;
 		
 		HashSet<Arrow> ars = new HashSet<Arrow>();
-		arrows.put(hero, ars);
+		arrows.put(hero, ars);P
 		
 		final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
 		{
@@ -96,7 +96,7 @@ public class SkillArrowRain extends ActiveSkill
 				arrow.setShooter(her.getPlayer());
 				arrow.setVelocity(new Vector(0,-2,0));
 				arrow.setBounce(false);
-				arrow.setDamage(her.getHeroClass().getProjectileDamage(ProjectileType.ARROW));
+				arrow.setDamage((double) her.getHeroClass().getProjectileDamage(ProjectileType.ARROW));
 				final Arrow ar = arrow;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
