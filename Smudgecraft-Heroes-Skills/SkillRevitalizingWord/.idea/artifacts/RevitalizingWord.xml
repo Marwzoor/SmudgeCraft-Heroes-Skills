@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="RevitalizingWord">
-    <output-path>$PROJECT_DIR$/../minecraft/plugins/Heroes/skills</output-path>
-    <root id="archive" name="RevitalizingWord.jar">
-      <element id="module-output" name="RevitalizingWord" />
-    </root>
-  </artifact>
-</component>
