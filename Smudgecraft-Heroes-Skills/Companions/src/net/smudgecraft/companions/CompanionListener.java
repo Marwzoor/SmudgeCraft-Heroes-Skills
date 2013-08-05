@@ -100,17 +100,17 @@ public class CompanionListener implements Listener
 					{
 						Player player = cwolf.getWolfOwner();
 						
-						Skill.damageEntity((LivingEntity) event.getEntity(), player, cwolf.getDamage(), DamageCause.MAGIC);
+						Skill.damageEntity((LivingEntity) event.getEntity(), player, (double) cwolf.getDamage(), DamageCause.MAGIC);
 						event.setCancelled(true);
 					}
 					else if(event.getEntity() instanceof LivingEntity)
 					{
-						Skill.damageEntity((LivingEntity) event.getEntity(), cwolf.getWolf(), cwolf.getDamage(), DamageCause.MAGIC);
+						Skill.damageEntity((LivingEntity) event.getEntity(), cwolf.getWolf(), (double) cwolf.getDamage(), DamageCause.MAGIC);
 						event.setCancelled(true);
 					}
 					else
 					{
-						event.setDamage(cwolf.getDamage());
+						event.setDamage((double) cwolf.getDamage());
 					}
 				}
 			}

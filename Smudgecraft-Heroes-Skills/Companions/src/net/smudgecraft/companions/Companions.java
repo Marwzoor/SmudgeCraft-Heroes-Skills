@@ -9,13 +9,11 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -135,7 +133,7 @@ public class Companions extends JavaPlugin
 		}
 	}
 	
-	public static ComWolf spawnNewComWolf(Location loc, String owner, int maxHealth, int damage, int health, String name, DyeColor dc)
+	public static ComWolf spawnNewComWolf(Location loc, String owner, double maxHealth, int damage, double health, String name, DyeColor dc)
 	{
 		Wolf wolf = loc.getWorld().spawn(loc, Wolf.class);
 		
@@ -155,7 +153,7 @@ public class Companions extends JavaPlugin
 		return cwolf;
 	}
 	
-	public static ComWolf spawnNewComWolf(Location loc, String owner, int maxHealth, int damage, int health, String name)
+	public static ComWolf spawnNewComWolf(Location loc, String owner, double maxHealth, int damage, double health, String name)
 	{
 		Wolf wolf = loc.getWorld().spawn(loc, Wolf.class);
 		
@@ -174,7 +172,7 @@ public class Companions extends JavaPlugin
 		return cwolf;
 	}
 	
-	public static ComWolf spawnNewComWolf(Location loc, String owner, int maxHealth, int damage, int health)
+	public static ComWolf spawnNewComWolf(Location loc, String owner, double maxHealth, int damage, double health)
 	{
 		Wolf wolf = loc.getWorld().spawn(loc, Wolf.class);
 		
@@ -191,7 +189,7 @@ public class Companions extends JavaPlugin
 		return cwolf;
 	}
 	
-	public static ComWolf spawnNewComWolf(Location loc, String owner, int maxHealth, int health)
+	public static ComWolf spawnNewComWolf(Location loc, String owner, double maxHealth, double health)
 	{
 		Wolf wolf = loc.getWorld().spawn(loc, Wolf.class);
 		
@@ -207,7 +205,7 @@ public class Companions extends JavaPlugin
 		return cwolf;
 	}
 	
-	public static ComWolf spawnNewComWolf(Location loc, String owner, int maxHealth)
+	public static ComWolf spawnNewComWolf(Location loc, String owner, double maxHealth)
 	{
 		Wolf wolf = loc.getWorld().spawn(loc, Wolf.class);
 		
@@ -285,8 +283,8 @@ public class Companions extends JavaPlugin
 		players.set(cwolf.getWolfOwnerName() + ".wolf.location.x", cwolf.getWolf().getLocation().getX());
 		players.set(cwolf.getWolfOwnerName() + ".wolf.location.y", cwolf.getWolf().getLocation().getY());
 		players.set(cwolf.getWolfOwnerName() + ".wolf.location.z", cwolf.getWolf().getLocation().getZ());
-		players.set(cwolf.getWolfOwnerName() + ".wolf.maxhealth", cwolf.getWolf().getMaxHealth());
-		players.set(cwolf.getWolfOwnerName() + ".wolf.health", cwolf.getWolf().getHealth());
+		players.set(cwolf.getWolfOwnerName() + ".wolf.maxhealth", ((Damageable) cwolf.getWolf()).getMaxHealth());
+		players.set(cwolf.getWolfOwnerName() + ".wolf.health", ((Damageable) cwolf.getWolf()).getHealth());
 		players.set(cwolf.getWolfOwnerName() + ".wolf.damage", cwolf.getDamage());
 		players.set(cwolf.getWolfOwnerName() + ".wolf.name", cwolf.getName());
 		
@@ -352,8 +350,8 @@ public class Companions extends JavaPlugin
 			players.set(cwolf.getWolfOwnerName() + ".wolf.location.x", cwolf.getWolf().getLocation().getX());
 			players.set(cwolf.getWolfOwnerName() + ".wolf.location.y", cwolf.getWolf().getLocation().getY());
 			players.set(cwolf.getWolfOwnerName() + ".wolf.location.z", cwolf.getWolf().getLocation().getZ());
-			players.set(cwolf.getWolfOwnerName() + ".wolf.maxhealth", cwolf.getWolf().getMaxHealth());
-			players.set(cwolf.getWolfOwnerName() + ".wolf.health", cwolf.getWolf().getHealth());
+			players.set(cwolf.getWolfOwnerName() + ".wolf.maxhealth", ((Damageable) cwolf.getWolf()).getMaxHealth());
+			players.set(cwolf.getWolfOwnerName() + ".wolf.health", ((Damageable) cwolf.getWolf()).getHealth());
 			players.set(cwolf.getWolfOwnerName() + ".wolf.damage", cwolf.getDamage());
 			players.set(cwolf.getWolfOwnerName() + ".wolf.name", cwolf.getName());
 		}

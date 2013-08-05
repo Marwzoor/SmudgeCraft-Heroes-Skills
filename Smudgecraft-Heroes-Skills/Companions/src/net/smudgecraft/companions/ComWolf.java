@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftWolf;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
@@ -164,11 +165,11 @@ public class ComWolf
 		ew.getControllerJump().a();
 	}
 	
-	public void heal(int heal)
+	public void heal(double heal)
 	{
-		if(this.wolf.getHealth()+heal>=this.wolf.getMaxHealth())
+		if(((Damageable) this.wolf).getHealth()+heal>=((Damageable) this.wolf).getMaxHealth())
 		{
-			this.wolf.setHealth(this.wolf.getMaxHealth());
+			this.wolf.setHealth(((Damageable) this.wolf).getMaxHealth());
 			
 			EntityRegainHealthEvent event = new EntityRegainHealthEvent(wolf, heal, RegainReason.MAGIC_REGEN);
 			
@@ -176,7 +177,7 @@ public class ComWolf
 		}
 		else
 		{
-			this.wolf.setHealth(this.wolf.getHealth()+heal);
+			this.wolf.setHealth(((Damageable) this.wolf).getHealth()+heal);
 			
 			EntityRegainHealthEvent event = new EntityRegainHealthEvent(wolf, heal, RegainReason.MAGIC_REGEN);
 			
@@ -184,11 +185,11 @@ public class ComWolf
 		}
 	}
 	
-	public void setHealth(int health)
+	public void setHealth(double health)
 	{
-		if(health>=this.wolf.getMaxHealth())
+		if(health>=((Damageable) this.wolf).getMaxHealth())
 		{
-			this.wolf.setHealth(this.wolf.getMaxHealth());
+			this.wolf.setHealth(((Damageable) this.wolf).getMaxHealth());
 		}
 		else
 		{
@@ -196,7 +197,7 @@ public class ComWolf
 		}
 	}
 	
-	public void setMaxHealth(int maxhealth)
+	public void setMaxHealth(double maxhealth)
 	{
 		this.wolf.setMaxHealth(maxhealth);
 	}
