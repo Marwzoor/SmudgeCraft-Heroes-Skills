@@ -158,7 +158,7 @@ public class SkillFlameArrow extends ActiveSkill
 	
 	public class FireDamageTickEffect extends PeriodicDamageEffect
 	{
-		public FireDamageTickEffect(Skill skill, int period, int duration, int tickDamage, Player applier) 
+		public FireDamageTickEffect(Skill skill, int period, int duration, double tickDamage, Player applier) 
 		{
 			super(skill, "FireDamageTick", period, duration, tickDamage, applier);
 		}

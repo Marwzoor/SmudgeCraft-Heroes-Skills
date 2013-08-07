@@ -85,7 +85,7 @@ public class SkillShieldBash extends TargettedSkill
 		
 		int stun = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(1000), false) 
 				+ SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, Integer.valueOf(10), false) * hero.getSkillLevel(this)); 
-		int damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Integer.valueOf(70), false) 
+		double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Integer.valueOf(70), false) 
 				+ SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, Integer.valueOf(1), false) * hero.getSkillLevel(this));
 				
 		CharacterTemplate ct = plugin.getCharacterManager().getCharacter(target);

@@ -108,10 +108,9 @@ public class SkillDualShot extends ActiveSkill
 				{
 					public void run()
 					{
-						Arrow ar = dEffect.getPlayer().launchProjectile(Arrow.class);
-						ar.setCritical(arrow.isCritical());
+						final Arrow ar = dEffect.getPlayer().launchProjectile(Arrow.class);
 						ar.setVelocity(vec);
-						ar.setDamage(arrow.getDamage());
+						ar.setShooter(dEffect.getPlayer());
 					}
 				}, 10L);
 			}

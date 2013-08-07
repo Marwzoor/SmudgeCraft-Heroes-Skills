@@ -54,7 +54,7 @@ public class SkillRevitalizingWord extends ActiveSkill{
             if(hero.getPlayer().getLocation().distance(iHero.getPlayer().getLocation()) > SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS, 10, false)){
                 continue;
             }
-            int heal = (int) (SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH, Integer.valueOf(50), false) +
+            double heal = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH, Integer.valueOf(50), false) +
                     (SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH_INCREASE, Double.valueOf(0.5), false) * hero.getSkillLevel(this)));            // I was unsure about "HEALTH_INCREASE" - currently this increases healing by one every level, meaning a level 50 would heal for 100hp.
             iHero.heal(heal);
             iHero.getPlayer().getWorld().playEffect(iHero.getPlayer().getLocation(), org.bukkit.Effect.HEART, 2000);

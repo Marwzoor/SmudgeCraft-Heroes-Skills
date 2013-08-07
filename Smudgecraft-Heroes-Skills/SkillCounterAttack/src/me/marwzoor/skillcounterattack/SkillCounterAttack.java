@@ -89,7 +89,7 @@ public class SkillCounterAttack extends ActiveSkill {
 	    		return;
 	    	}
 	    	event.setCancelled(true);
-	    	skill.damageEntity((LivingEntity)event.getAttackerEntity(), player, (int)SkillConfigManager.getUseSetting(heroes.getCharacterManager().getHero(player), skill, SkillSetting.DAMAGE, Double.valueOf(100.0), false));
+	    	skill.damageEntity((LivingEntity)event.getAttackerEntity(), player, SkillConfigManager.getUseSetting(heroes.getCharacterManager().getHero(player), skill, SkillSetting.DAMAGE, Double.valueOf(100.0), false));
 	    	skill.getUnPlayers().remove(player);
 	    }
 	}

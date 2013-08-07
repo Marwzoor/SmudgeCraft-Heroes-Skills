@@ -289,7 +289,7 @@ public class SkillFury extends ActiveSkill
 					double damage = event.getDamage();
 					damage = damage*percentage;
 					
-					event.setDamage((int) damage);
+					event.setDamage(damage);
 				}
 			}
 		}

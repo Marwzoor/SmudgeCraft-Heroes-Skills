@@ -67,7 +67,7 @@ public class SkillPulverize extends ActiveSkill
 	{
 		int radius = SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS, 5, false);
 		
-		int damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, 100, false) +
+		double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, 100, false) +
 				(SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, 1, false) * hero.getSkillLevel(this)));
 		
 		int duration = (SkillConfigManager.getUseSetting(hero, this, "slow-duration", 3000, false) +

@@ -179,13 +179,11 @@ public class SkillRapidFire extends ActiveSkill
 	    final Hero h = hero;
 	    final Player p = player;
 	    final Skill s = skill;
-	    final int damage = SkillConfigManager.getUseSetting(hero, s, "damage", 30, false);
 	    Messaging.send(player, "Casting $1 at a rate of $2 per second", new Object[] { Integer.valueOf(preTotalArrows), Float.valueOf(rate) });
 	    this.shootingPlayers.put(hero, Integer.valueOf(this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.plugin, new Runnable()
 	    {
 	      public void run() {
-	        Arrow ar = p.launchProjectile(Arrow.class);
-	        ar.setDamage(damage);
+	        p.launchProjectile(Arrow.class);
 	      }
 	    }
 	    , 0L, sleepTime)));

@@ -1,14 +1,14 @@
 package me.marwzoor.skillpoisondart;
 
-import net.minecraft.server.DataWatcher;
-import net.minecraft.server.EntityLiving;
+import net.minecraft.server.v1_6_R2.DataWatcher;
+import net.minecraft.server.v1_6_R2.EntityLiving;
 import net.smudgecraft.companions.events.ImbueArrowHitEvent;
 import net.smudgecraft.companions.imbuearrows.ImbueEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_6_R2.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -109,7 +109,7 @@ public class SkillPoisonDart extends ActiveSkill
             public void run() {
                 int c = 0;
                 if (!el.effects.isEmpty()) {
-                    c = net.minecraft.server.PotionBrewer.a(el.effects.values());
+                    c = net.minecraft.server.v1_6_R2.PotionBrewer.a(el.effects.values());
                 }
                 dw.watch(8, Integer.valueOf(c));
             }
@@ -183,7 +183,7 @@ public class SkillPoisonDart extends ActiveSkill
 	
 	public class PoisonEffect extends PeriodicDamageEffect
 	{
-		public PoisonEffect(Skill skill, long period, long duration, int damage, Player applier) 
+		public PoisonEffect(Skill skill, long period, long duration, double damage, Player applier) 
 		{
 			super(skill, "Poison", period, duration, damage, applier);
 		}

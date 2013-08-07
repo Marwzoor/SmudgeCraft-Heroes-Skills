@@ -83,7 +83,7 @@ public class SkillCleave extends ActiveSkill {
 		return SkillResult.NORMAL;
 	}
 
-	public int damageAround(Player player, Entity exception, Skill skill, int newDmg) {
+	public int damageAround(Player player, Entity exception, Skill skill, double newDmg) {
 		Hero hero = plugin.getCharacterManager().getHero(player);
 		int MaxTargets = SkillConfigManager.getUseSetting(hero, this, "maxtargets", Integer.valueOf(3), false) - 1;
 		int radius = SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS, Integer.valueOf(5), false);

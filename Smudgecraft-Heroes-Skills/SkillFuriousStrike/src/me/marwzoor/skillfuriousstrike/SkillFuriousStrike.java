@@ -121,7 +121,7 @@ public class SkillFuriousStrike extends ActiveSkill
 						
 						double damage = event.getDamage()*fse.getDamageDecrease();
 						
-						event.setDamage((int) damage);
+						event.setDamage(damage);
 						
 						int manareg = fse.getManaRegain();
 						

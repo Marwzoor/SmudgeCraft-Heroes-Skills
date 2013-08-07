@@ -121,7 +121,7 @@ public class SkillPainfulFlask extends ActiveSkill
 						if(hero==null)
 							return;
 												
-						int damage = (int) (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, Integer.valueOf(70), false) +
+						double damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, Integer.valueOf(70), false) +
 								(SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE_INCREASE, Double.valueOf(0.5), false) * hero.getSkillLevel(skill)));
 						
 						event.getPotion().removeMetadata("PainfulFlask", plugin);

@@ -17,6 +17,7 @@ import org.bukkit.util.Vector;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.CharacterDamageManager.ProjectileType;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
@@ -96,7 +97,6 @@ public class SkillArrowRain extends ActiveSkill
 				arrow.setShooter(her.getPlayer());
 				arrow.setVelocity(new Vector(0,-2,0));
 				arrow.setBounce(false);
-				arrow.setDamage((double) her.getHeroClass().getProjectileDamage(ProjectileType.ARROW));
 				final Arrow ar = arrow;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
@@ -152,6 +152,23 @@ public class SkillArrowRain extends ActiveSkill
 					if(event.getEntity().equals(player))
 					{
 						event.setCancelled(true);
+					}
+				}
+			}
+		}
+		
+		@EventHandler
+		public void onWeaponDamageEvent(WeaponDamageEvent event)
+		{
+			if(event.getAttackerEntity() instanceof Arrow)
+			{
+				Arrow arrow = (Arrow) event.getAttackerEntity();
+				
+				for(Hero hero : arrows.keySet())
+				{
+					if(arrows.get(hero).contains(arrow))
+					{
+						event.setDamage(hero.getHeroClass().getProjectileDamage(ProjectileType.ARROW));
 					}
 				}
 			}

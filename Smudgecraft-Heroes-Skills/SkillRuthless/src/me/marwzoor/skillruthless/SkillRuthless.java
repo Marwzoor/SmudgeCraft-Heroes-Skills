@@ -90,12 +90,12 @@ public class SkillRuthless extends ActiveSkill
 	
 	public class BleedEffect extends PeriodicDamageEffect
 	{		
-		public BleedEffect(Skill skill, int period, int duration, int tickdamage, Player applier, boolean bool)
+		public BleedEffect(Skill skill, int period, int duration, double tickdamage, Player applier, boolean bool)
 		{
 			super(skill, "BleedRuthless", period, duration, tickdamage, applier, bool);
 		}
 		
-		public BleedEffect(Skill skill, int period, int duration, int tickdamage, Player applier)
+		public BleedEffect(Skill skill, int period, int duration, double tickdamage, Player applier)
 		{
 			super(skill, "BleedRuthless", period, duration, tickdamage, applier);
 		}

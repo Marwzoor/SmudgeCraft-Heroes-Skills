@@ -101,7 +101,7 @@ public class SkillAxeThrow extends ActiveSkill
 						{
 							LivingEntity le = (LivingEntity) en;
 							
-							int damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, 1, false) +
+							double damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, 1, false) +
 									(SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE_INCREASE, 0, false) * hero.getSkillLevel(skill)));
 							Skill.damageEntity(le, hero.getEntity(), damage, DamageCause.MAGIC);
 							skill.addSpellTarget(le, hero);

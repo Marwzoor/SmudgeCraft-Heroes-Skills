@@ -106,9 +106,7 @@ public class SkillTrinityShot extends ActiveSkill
 					public void run()
 					{
 						Arrow ar = dEffect.getPlayer().launchProjectile(Arrow.class);
-						ar.setCritical(arrow.isCritical());
 						ar.setVelocity(vec);
-						ar.setDamage(arrow.getDamage());
 					}
 				}, 10L);
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
@@ -116,9 +114,7 @@ public class SkillTrinityShot extends ActiveSkill
 					public void run()
 					{
 						Arrow ar = dEffect.getPlayer().launchProjectile(Arrow.class);
-						ar.setCritical(arrow.isCritical());
 						ar.setVelocity(vec);
-						ar.setDamage(arrow.getDamage());
 					}
 				}, 20L);
 			}

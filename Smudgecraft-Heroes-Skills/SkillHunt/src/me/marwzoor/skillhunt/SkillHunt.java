@@ -8,9 +8,8 @@ import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.Rel;
+import com.massivecraft.factions.entity.UPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,9 +115,9 @@ public class SkillHunt extends ActiveSkill
     {
     	if(player.getLocation().distance(p.getLocation())<=35)
     	{
-    		FPlayer fplayer = FPlayers.i.get(player);
-    		FPlayer tfplayer = FPlayers.i.get(p);
-    		if(fplayer.getFaction().getRelationTo(tfplayer.getFaction()).equals(Relation.ENEMY))
+    		UPlayer fplayer = UPlayer.get(player);
+    		UPlayer tfplayer = UPlayer.get(p);
+    		if(fplayer.getFaction().getRelationTo(tfplayer.getFaction()).equals(Rel.ENEMY))
     		{
     		player.sendMessage(ChatColor.RED + "You can't hunt while there are enemies nearby you.");
     		return SkillResult.CANCELLED;

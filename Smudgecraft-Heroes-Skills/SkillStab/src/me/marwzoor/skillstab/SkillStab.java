@@ -161,7 +161,7 @@ public class SkillStab extends ActiveSkill
 						
 						double damage = event.getDamage()*sEffect.getPercent();
 						
-						event.setDamage((int) damage);
+						event.setDamage(damage);
 						
 						hero.removeEffect(sEffect);
 					}

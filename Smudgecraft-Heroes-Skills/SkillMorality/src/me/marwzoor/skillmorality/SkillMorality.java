@@ -192,7 +192,7 @@ public class SkillMorality extends ActiveSkill
 					
 					double damage = event.getDamage()*me.getPercentage();
 					
-					event.setDamage((int) damage);
+					event.setDamage(damage);
 				}
 			}
 		}

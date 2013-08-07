@@ -32,7 +32,7 @@ public class SkillHeroListener implements Listener
     		return;
     	if(hero.getPlayer().getItemInHand().getTypeId() != 347)
     		return;
-    	event.setDamage((int)(event.getDamage()*SkillConfigManager.getUseSetting(hero, skill, "percent", 0.5D, false)));
+    	event.setDamage((event.getDamage()*SkillConfigManager.getUseSetting(hero, skill, "percent", 0.5D, false)));
     	return;
     }
     
