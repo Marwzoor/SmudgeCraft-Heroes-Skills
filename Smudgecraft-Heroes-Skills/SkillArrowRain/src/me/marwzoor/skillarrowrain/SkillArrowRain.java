@@ -1,8 +1,5 @@
 package me.marwzoor.skillarrowrain;
 
-import java.util.HashMap;
-import java.util.HashSet;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.herocraftonline.heroes.Heroes;
@@ -28,9 +26,7 @@ import com.herocraftonline.heroes.characters.skill.SkillType;
 public class SkillArrowRain extends ActiveSkill
 {
 	public static Heroes plugin;
-	
-	public static HashMap<Hero, HashSet<Arrow>> arrows = new HashMap<Hero, HashSet<Arrow>>();
-	
+		
 	public SkillArrowRain(Heroes instance)
 	{
 		super(instance, "ArrowRain");
@@ -85,9 +81,6 @@ public class SkillArrowRain extends ActiveSkill
 		final CuboidArea ca = new CuboidArea(loc1, loc2);
 		final Hero her = hero;
 		
-		HashSet<Arrow> ars = new HashSet<Arrow>();
-		arrows.put(hero, ars);
-		
 		final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
 		{
 			public void run()
@@ -98,6 +91,7 @@ public class SkillArrowRain extends ActiveSkill
 				arrow.setVelocity(new Vector(0,-2,0));
 				arrow.setBounce(false);
 				final Arrow ar = arrow;
+				final double damage = her.getHeroClass().getProjectileDamage(ProjectileType.ARROW);
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
 					public void run()
@@ -106,17 +100,7 @@ public class SkillArrowRain extends ActiveSkill
 					}
 				}, 20L*6);
 				
-				
-				if(arrows.containsKey(her))
-				{
-				arrows.get(her).add(arrow);
-				}
-				else
-				{
-					HashSet<Arrow> ars = new HashSet<Arrow>();
-					ars.add(arrow);
-					arrows.put(her, ars);
-				}
+				arrow.setMetadata("ArrowRainDamage", new FixedMetadataValue(plugin, damage));
 			}
 		}, 0L, 2L);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
@@ -127,13 +111,6 @@ public class SkillArrowRain extends ActiveSkill
 				broadcast(her.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " +  her.getPlayer().getDisplayName() + ChatColor.GRAY + " is no longer calling down arrows from the sky!");		
 			}
 		}, duration);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-		{
-			public void run()
-			{
-				arrows.remove(her);
-			}
-		}, duration+(20L*5));
 		broadcast(player.getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " +  player.getDisplayName() + ChatColor.GRAY + " used " + ChatColor.WHITE + "ArrowRain" + ChatColor.GRAY + "!");		
 		return SkillResult.NORMAL;
 	}
@@ -164,12 +141,11 @@ public class SkillArrowRain extends ActiveSkill
 			{
 				Arrow arrow = (Arrow) event.getAttackerEntity();
 				
-				for(Hero hero : arrows.keySet())
+				if(arrow.hasMetadata("ArrowRainDamage"))
 				{
-					if(arrows.get(hero).contains(arrow))
-					{
-						event.setDamage(hero.getHeroClass().getProjectileDamage(ProjectileType.ARROW));
-					}
+					double damage = arrow.getMetadata("ArrowRainDamage").get(0).asDouble();
+					
+					event.setDamage(damage);
 				}
 			}
 		}

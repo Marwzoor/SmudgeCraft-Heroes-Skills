@@ -8,11 +8,15 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -183,7 +187,9 @@ public class SkillRapidFire extends ActiveSkill
 	    this.shootingPlayers.put(hero, Integer.valueOf(this.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(this.plugin, new Runnable()
 	    {
 	      public void run() {
-	        p.launchProjectile(Arrow.class);
+	        Arrow arrow = p.launchProjectile(Arrow.class);
+	        double damage = SkillConfigManager.getUseSetting(h, s, "damage", 30D, false);
+	        arrow.setMetadata("RapidFireDamage", new FixedMetadataValue(plugin, damage));
 	      }
 	    }
 	    , 0L, sleepTime)));
@@ -212,5 +218,24 @@ public class SkillRapidFire extends ActiveSkill
 	    , 1L);
 
 	    return SkillResult.NORMAL;
+	  }
+	  
+	  public class SkillHeroListener implements Listener
+	  {
+		  @EventHandler
+		  public void onWeaponDamageEvent(WeaponDamageEvent event)
+		  {
+			  if(event.getAttackerEntity() instanceof Arrow)
+			  {
+				  Arrow arrow = (Arrow) event.getAttackerEntity();
+				  
+				  if(arrow.hasMetadata("RapidFireDamage"))
+				  {
+					  double damage = arrow.getMetadata("RapidFireDamage").get(0).asDouble();
+					  
+					  event.setDamage(damage);
+				  }
+			  }
+		  }
 	  }
 }

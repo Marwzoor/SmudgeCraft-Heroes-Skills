@@ -10,10 +10,13 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
+import com.herocraftonline.heroes.characters.CharacterDamageManager.ProjectileType;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -25,11 +28,13 @@ import com.herocraftonline.heroes.util.Messaging;
 public class SkillDualShot extends ActiveSkill
 {
 	public static Heroes plugin;
+	public static SkillDualShot skill;
 	
 	public SkillDualShot(Heroes instance)
 	{
 		super(instance, "DualShot");
 		plugin=instance;
+		skill=this;
 		setIdentifiers(new String[] { "skill dualshot" });
 		setDescription("You fire two arrows instead of one next shot. D:%1s");
 		setTypes(new SkillType[] { SkillType.BUFF });
@@ -103,6 +108,9 @@ public class SkillDualShot extends ActiveSkill
 				final DualShotEffect dEffect = (DualShotEffect) event.getImbueEffect();
 				final Arrow arrow = event.getArrow();
 				final Vector vec = arrow.getVelocity();
+				Hero hero = plugin.getCharacterManager().getHero(dEffect.getPlayer());
+				final double damage = hero.getHeroClass().getProjectileDamage(ProjectileType.ARROW);
+				arrow.setMetadata("DualShotDamage", new FixedMetadataValue(plugin, damage));
 				plugin.getCharacterManager().getHero(dEffect.getPlayer()).removeEffect(dEffect);
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
@@ -111,8 +119,25 @@ public class SkillDualShot extends ActiveSkill
 						final Arrow ar = dEffect.getPlayer().launchProjectile(Arrow.class);
 						ar.setVelocity(vec);
 						ar.setShooter(dEffect.getPlayer());
+						arrow.setMetadata("DualShotDamage", new FixedMetadataValue(plugin, damage));
 					}
 				}, 10L);
+			}
+		}
+		
+		@EventHandler
+		public void onWeaponDamageEvent(WeaponDamageEvent event)
+		{
+			if(event.getAttackerEntity() instanceof Arrow)
+			{
+				Arrow arrow = (Arrow) event.getAttackerEntity();
+				
+				if(arrow.hasMetadata("DualShotDamage"))
+				{
+					double damage = arrow.getMetadata("DualShotDamage").get(0).asDouble();
+					
+					event.setDamage(damage);
+				}
 			}
 		}
 	}

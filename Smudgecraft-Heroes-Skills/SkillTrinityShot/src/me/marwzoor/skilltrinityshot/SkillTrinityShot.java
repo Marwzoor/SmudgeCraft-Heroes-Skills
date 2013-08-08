@@ -10,10 +10,13 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
+import com.herocraftonline.heroes.characters.CharacterDamageManager.ProjectileType;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -100,6 +103,8 @@ public class SkillTrinityShot extends ActiveSkill
 				final TrinityShotEffect dEffect = (TrinityShotEffect) event.getImbueEffect();
 				final Arrow arrow = event.getArrow();
 				final Vector vec = arrow.getVelocity();
+				final double damage = plugin.getCharacterManager().getHero(dEffect.getPlayer()).getHeroClass().getProjectileDamage(ProjectileType.ARROW);
+				arrow.setMetadata("TrinityShotDamage", new FixedMetadataValue(plugin, damage));
 				plugin.getCharacterManager().getHero(dEffect.getPlayer()).removeEffect(dEffect);
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
@@ -107,6 +112,8 @@ public class SkillTrinityShot extends ActiveSkill
 					{
 						Arrow ar = dEffect.getPlayer().launchProjectile(Arrow.class);
 						ar.setVelocity(vec);
+						ar.setShooter(dEffect.getPlayer());
+						ar.setMetadata("TrinityShotDamage", new FixedMetadataValue(plugin, damage));
 					}
 				}, 10L);
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
@@ -115,8 +122,26 @@ public class SkillTrinityShot extends ActiveSkill
 					{
 						Arrow ar = dEffect.getPlayer().launchProjectile(Arrow.class);
 						ar.setVelocity(vec);
+						ar.setShooter(dEffect.getPlayer());
+						ar.setMetadata("TrinityShotDamage", new FixedMetadataValue(plugin, damage));
 					}
 				}, 20L);
+			}
+		}
+		
+		@EventHandler
+		public void onWeaponDamageEvent(WeaponDamageEvent event)
+		{
+			if(event.getAttackerEntity() instanceof Arrow)
+			{
+				Arrow arrow = (Arrow) event.getAttackerEntity();
+				
+				if(arrow.hasMetadata("TrinityShotDamage"))
+				{
+					double damage = arrow.getMetadata("TrinityShotDamage").get(0).asDouble();
+					
+					event.setDamage(damage);
+				}
 			}
 		}
 	}
