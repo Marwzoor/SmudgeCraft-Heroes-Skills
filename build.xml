@@ -25,6 +25,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFletchArrows/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFletchBow/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFocus/build.xml" target="makejar" />
+    <ant antfile="Smudgecraft-Heroes-Skills/SkillFrenzy/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFrostArrow/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFuriousStrike/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFury/build.xml" target="makejar" />
