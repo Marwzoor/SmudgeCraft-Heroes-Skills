@@ -45,13 +45,17 @@ public class SkillRecklessSlam extends TargettedSkill {
 	}
 
 	public String getDescription(Hero hero) {
-		double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Double.valueOf(70), false) 
-				+ SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, Double.valueOf(1), false) * hero.getSkillLevel(this));
-		double aoe = (SkillConfigManager.getUseSetting(hero, this, "aoe", Double.valueOf(50), false) 
-				+ SkillConfigManager.getUseSetting(hero, this, "aoe-increase", Double.valueOf(1), false) * hero.getSkillLevel(this));
-		double aoeDmg = (SkillConfigManager.getUseSetting(hero, this, "aoe-damage", Double.valueOf(50), false) 
-				+ SkillConfigManager.getUseSetting(hero, this, "aoe-damage-increase", Double.valueOf(1), false) * hero.getSkillLevel(this));
-		return getDescription().replace("$1", damage + "").replace("$2", aoeDmg + "").replace("$3", aoe + "");
+		if (hero.hasAccessToSkill(this)) {
+			double damage = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Double.valueOf(70), false) 
+					+ SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE_INCREASE, Double.valueOf(1), false) * hero.getSkillLevel(this));
+			double aoe = (SkillConfigManager.getUseSetting(hero, this, "aoe", Double.valueOf(50), false) 
+					+ SkillConfigManager.getUseSetting(hero, this, "aoe-increase", Double.valueOf(1), false) * hero.getSkillLevel(this));
+			double aoeDmg = (SkillConfigManager.getUseSetting(hero, this, "aoe-damage", Double.valueOf(50), false) 
+					+ SkillConfigManager.getUseSetting(hero, this, "aoe-damage-increase", Double.valueOf(1), false) * hero.getSkillLevel(this));
+			return super.getDescription().replace("$1", damage + "").replace("$2", aoeDmg + "").replace("$3", aoe + "");
+		} else {
+			return super.getDescription().replace("$1", "X").replace("$2", "X").replace("$3", "X");
+		}
 	}
 
 	public SkillResult use(Hero hero, LivingEntity target, String[] args) {
