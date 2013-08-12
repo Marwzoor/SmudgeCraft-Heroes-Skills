@@ -25,8 +25,11 @@ public class SkillAggressiveCombos extends PassiveSkill {
 	public HashMap<Player, Boolean> comboing = new HashMap<Player, Boolean>();
 	
 	public SkillAggressiveCombos(Heroes plugin) {
-		super(plugin, "Aggressive Combos");
+		super(plugin, "AggressiveCombos");
 		setDescription("You have $1% chance to begin a combo, dealing $2% more damage per hit, but the chance to break the combo is $3% each hit.");
+		setIdentifiers(new String[] {
+				"skill aggressivecombos"
+		});
 		setEffectTypes(new EffectType[] {
 				EffectType.BENEFICIAL
 		});
@@ -77,8 +80,7 @@ public class SkillAggressiveCombos extends PassiveSkill {
 		public void onPlayerJoin(PlayerJoinEvent event) {
 			Player player = event.getPlayer();
 			Hero hero = heroes.getCharacterManager().getHero(player);
-			if (hero.hasEffect("Aggressive Combos")) {
-				Bukkit.getLogger().info("Got here.");
+			if (hero.hasEffect("AggressiveCombos")) {
 				skill.getIsComboing().put(player, false);
 				skill.getBreakChance().put(player, 0.0D);
 			}
@@ -96,7 +98,7 @@ public class SkillAggressiveCombos extends PassiveSkill {
 						
 			Player damager = (Player) event.getDamager().getEntity();
 			Hero hero = heroes.getCharacterManager().getHero(damager);
-			if (!hero.hasEffect("Aggressive Combos")) {
+			if (!hero.hasEffect("AggressiveCombos")) {
 				return;
 			}
 						
