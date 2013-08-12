@@ -24,6 +24,9 @@ public class SkillParry extends PassiveSkill {
 	public SkillParry(Heroes plugin) {
 		super(plugin, "Parry");
 		setDescription("You have a $1% passive chance to parry melee attacks.");
+		setIdentifiers(new String[] {
+			"skill parry"
+		});
 		setEffectTypes(new EffectType[] {
 			EffectType.BENEFICIAL
 		});
