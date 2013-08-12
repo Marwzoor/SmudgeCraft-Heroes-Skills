@@ -7,9 +7,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.effects.EffectType;
 import com.herocraftonline.heroes.characters.skill.PassiveSkill;
@@ -20,8 +21,8 @@ import com.herocraftonline.heroes.util.Messaging;
 import com.herocraftonline.heroes.util.Util;
 
 public class SkillAggressiveCombos extends PassiveSkill {
-	public static HashMap<Player, Double> breakChance = new HashMap<Player, Double>();
-	public static HashMap<Player, Boolean> comboing = new HashMap<Player, Boolean>();
+	public HashMap<Player, Double> breakChance = new HashMap<Player, Double>();
+	public HashMap<Player, Boolean> comboing = new HashMap<Player, Boolean>();
 	
 	public SkillAggressiveCombos(Heroes plugin) {
 		super(plugin, "Aggressive Combos");
@@ -64,51 +65,57 @@ public class SkillAggressiveCombos extends PassiveSkill {
 	}
 	
 	public class SkillAggressiveCombosListener implements Listener {
-		private final SkillAggressiveCombos skill;
-		private final Heroes heroes;
+		private SkillAggressiveCombos skill;
+		private Heroes heroes;
 		
-		SkillAggressiveCombosListener(SkillAggressiveCombos skill, Heroes heroes) {
+		public SkillAggressiveCombosListener(SkillAggressiveCombos skill, Heroes heroes) {
 			this.skill = skill;
 			this.heroes = heroes;
 		}
 		
 		@EventHandler
-		public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+		public void onPlayerJoin(PlayerJoinEvent event) {
+			Player player = event.getPlayer();
+			Hero hero = heroes.getCharacterManager().getHero(player);
+			if (hero.hasEffect("Aggressive Combos")) {
+				Bukkit.getLogger().info("Got here.");
+				skill.getIsComboing().put(player, false);
+				skill.getBreakChance().put(player, 0.0D);
+			}
+		}
+		
+		@EventHandler
+		public void onWeaponDamage(WeaponDamageEvent event) {			
 			if (event.isCancelled()) {
 				return;
 			}
-			
-			if (!(event.getDamager() instanceof Player)) {
+						
+			if (!(event.getDamager().getEntity() instanceof Player)) {
 				return;
 			}
-			
-			Player damager = (Player) event.getDamager();
+						
+			Player damager = (Player) event.getDamager().getEntity();
 			Hero hero = heroes.getCharacterManager().getHero(damager);
 			if (!hero.hasEffect("Aggressive Combos")) {
 				return;
 			}
-			
-			if (!skill.getIsComboing().containsKey(damager)) {
-				skill.getIsComboing().put(damager, false);
-				skill.getBreakChance().put(damager, 0.0D);
-			}
-			
-			double chance = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE, Double.valueOf(50), false);
+						
+			double chance = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE, Double.valueOf(50), false) * 0.01;
 			double damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, Double.valueOf(50), false) + (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE_INCREASE, Double.valueOf(1), false) * hero.getSkillLevel(skill))) * 0.01;
-			double chanceBrk = SkillConfigManager.getUseSetting(hero, skill, "chance-break", Double.valueOf(20), false);
+			double chanceBrk = SkillConfigManager.getUseSetting(hero, skill, "chance-break", Double.valueOf(20), false) * 0.01;
 			
 			if (!skill.getIsComboing().get(damager)) {
-				if (Util.nextRand() <= chance) {
+				double rand = Util.nextRand();
+				if (rand <= chance) {
 					Messaging.send(damager, "You have started a combo!");
 					skill.getIsComboing().put(damager, true);
 					skill.getBreakChance().put(damager, chanceBrk);
 					event.setDamage(event.getDamage() + event.getDamage() * damage);
-				} else {
-					return;
 				}
 			} else {
 				event.setDamage(event.getDamage() + event.getDamage() * damage);
-				if (Util.nextRand() <= skill.getBreakChance().get(damager)) {
+				double rand = Util.nextRand();
+				if (rand <= skill.getBreakChance().get(damager)) {
 					Messaging.send(damager, "You have ended a combo!");
 					skill.getIsComboing().put(damager, false);
 					skill.getBreakChance().put(damager, 0.0D);
