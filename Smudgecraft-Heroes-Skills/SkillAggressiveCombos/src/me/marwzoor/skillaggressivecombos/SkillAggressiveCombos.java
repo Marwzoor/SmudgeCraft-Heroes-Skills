@@ -103,13 +103,6 @@ public class SkillAggressiveCombos extends PassiveSkill {
 					skill.getIsComboing().put(damager, true);
 					skill.getBreakChance().put(damager, chanceBrk);
 					event.setDamage(event.getDamage() + event.getDamage() * damage);
-					if (Util.nextRand() <= skill.getBreakChance().get(damager)) {
-						Messaging.send(damager, "You have ended a combo!");
-						skill.getIsComboing().put(damager, false);
-						skill.getBreakChance().put(damager, 0.0D);
-					} else {
-						skill.getBreakChance().put(damager, skill.getBreakChance().get(damager) + chance);
-					}
 				} else {
 					return;
 				}
@@ -119,7 +112,7 @@ public class SkillAggressiveCombos extends PassiveSkill {
 					skill.getIsComboing().put(damager, false);
 					skill.getBreakChance().put(damager, 0.0D);
 				} else {
-					skill.getBreakChance().put(damager, skill.getBreakChance().get(damager) + chance);
+					skill.getBreakChance().put(damager, skill.getBreakChance().get(damager) + chanceBrk);
 				}
 			}
 		}
