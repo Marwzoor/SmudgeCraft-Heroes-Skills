@@ -97,7 +97,7 @@ public class SkillAggressiveCombos extends PassiveSkill {
 			double damage = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, Double.valueOf(50), false) + (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE_INCREASE, Double.valueOf(1), false) * hero.getSkillLevel(skill))) * 0.01;
 			double chanceBrk = SkillConfigManager.getUseSetting(hero, skill, "chance-break", Double.valueOf(20), false);
 			
-			if (skill.getIsComboing().get(damager) == false) {
+			if (!skill.getIsComboing().get(damager)) {
 				if (Util.nextRand() <= chance) {
 					Messaging.send(damager, "You have started a combo!");
 					skill.getIsComboing().put(damager, true);
