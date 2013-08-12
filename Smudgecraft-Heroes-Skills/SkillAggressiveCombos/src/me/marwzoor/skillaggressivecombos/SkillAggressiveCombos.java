@@ -33,7 +33,7 @@ public class SkillAggressiveCombos extends PassiveSkill {
 		setTypes(new SkillType[] {
 				SkillType.BUFF
 		});
-		Bukkit.getServer().getPluginManager().registerEvents(new SkillAggressiveCombosListener(this, plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new SkillAggressiveCombosListener(this, plugin), plugin);
 	}
 	
 	public ConfigurationSection getDefaultConfig() {
