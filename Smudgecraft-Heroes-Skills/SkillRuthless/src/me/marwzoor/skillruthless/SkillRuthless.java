@@ -25,6 +25,7 @@ import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
+import com.herocraftonline.heroes.util.Messaging;
 
 public class SkillRuthless extends ActiveSkill
 {
@@ -33,7 +34,7 @@ public class SkillRuthless extends ActiveSkill
 	{
 		super(instance, "Ruthless");
 		skill=this;
-		setDescription("Allies under the effect of Morality gains a passive %1 chance to stun their opponent using melee. C: %1 M: %2 CD: %3 D: %4");
+		setDescription("You become invulnerable for %1 seconds and apply bleed for %2 seconds on all your enemies. D: %3 M: %4 CD: %5 BD: %6");
 		setUsage("/skill ruthless");
 		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill ruthless" });
@@ -45,17 +46,16 @@ public class SkillRuthless extends ActiveSkill
 	{
 		if(hero.hasAccessToSkill(this))
 		{
-			int chance = (int) ((SkillConfigManager.getUseSetting(hero, this, SkillSetting.CHANCE, 0.1D, false) +
-					(SkillConfigManager.getUseSetting(hero, this, SkillSetting.CHANCE_LEVEL, 0.005D, false) * hero.getSkillLevel(this)))*100);
+			int duration = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, 10000, false)/1000;
 			int mana = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA, 0, false);
 			int cooldown = SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, 0, false)/1000;
-			int stunduration = SkillConfigManager.getUseSetting(hero, this, "stun-duration", 1000, false)/1000;
+			int bleedduration = SkillConfigManager.getUseSetting(hero, this, "bleed-duration", 1000, false)/1000;
 			
-			return super.getDescription().replace("%1", chance + "%").replace("%2", mana + "").replace("%3", cooldown + "s").replace("%4", stunduration + "s");
+			return super.getDescription().replace("%1", duration + "").replace("%2", bleedduration + "").replace("%3", duration + "s").replace("%4", mana + "").replace("%5", cooldown + "").replace("%6", bleedduration + "s");
 		}
 		else
 		{
-			return super.getDescription().replace("%1", "X%").replace("%2", "X").replace("%3", "Xs").replace("%4", "Xs");
+			return super.getDescription().replace("%1", "X").replace("%2", "X").replace("%3", "Xs").replace("%4", "X").replace("%5", "Xs").replace("%6", "Xs");
 		}
 	}
 	
@@ -107,6 +107,7 @@ public class SkillRuthless extends ActiveSkill
 
 		public void removeFromHero(Hero hero)
 		{
+			Messaging.send(hero.getPlayer(), "You are no longer " + ChatColor.WHITE + "Bleeding" + ChatColor.GRAY + "!");
 			super.removeFromHero(hero);
 		}
 
@@ -118,6 +119,18 @@ public class SkillRuthless extends ActiveSkill
 		public void removeFromMonster(Monster monster)
 		{
 			super.removeFromMonster(monster);
+		}
+		
+		public void tickMonster(Monster monster)
+		{
+			super.tickMonster(monster);
+			monster.getEntity().getWorld().playEffect(monster.getEntity().getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+		}
+		
+		public void tickHero(Hero hero)
+		{
+			super.tickHero(hero);
+			hero.getEntity().getWorld().playEffect(hero.getEntity().getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
 		}
 	}
 	
