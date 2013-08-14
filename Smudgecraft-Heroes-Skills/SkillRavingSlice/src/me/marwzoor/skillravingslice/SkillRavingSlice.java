@@ -38,7 +38,7 @@ public class SkillRavingSlice extends PassiveSkill
 	{
 		if(hero.hasAccessToSkill(this))
 		{
-			double warmup = (SkillConfigManager.getUseSetting(hero, this, "warmup", 1500, false)/1000);
+			double warmup = (((double)SkillConfigManager.getUseSetting(hero, this, "warmup", 1500, false))/1000);
 			int damageperc = (int) ((SkillConfigManager.getUseSetting(hero, this, "damage-percent", 0.5D, false) +
 					(SkillConfigManager.getUseSetting(hero, this, "damage-percent-increase", 0.005D, false)* hero.getSkillLevel(this)))*100);
 			int duration = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, 1000, false)/1000);
@@ -63,8 +63,8 @@ public class SkillRavingSlice extends PassiveSkill
 	public class SkillHeroListener implements Listener
 	{
 		public final HashMap<Player, Integer> sneakingplayers = new HashMap<Player, Integer>();
-		SkillRavingSlice skill;
-		Heroes plugin;
+		public SkillRavingSlice skill;
+		public Heroes plugin;
 		
 		public SkillHeroListener(SkillRavingSlice skill, Heroes plugin)
 		{
@@ -103,7 +103,7 @@ public class SkillRavingSlice extends PassiveSkill
 			
 			if(hero.hasEffect("RavingSliceEffect")==false)
 			{
-				double warmup = (SkillConfigManager.getUseSetting(hero, skill, "warmup", 1500, false)/1000);
+				double warmup = (((double) SkillConfigManager.getUseSetting(hero, skill, "warmup", 1500, false))/1000);
 				long warm = (long) (20 * warmup);
 				int id = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
