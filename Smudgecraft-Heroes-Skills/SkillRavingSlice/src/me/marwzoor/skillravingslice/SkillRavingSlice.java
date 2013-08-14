@@ -26,7 +26,7 @@ public class SkillRavingSlice extends PassiveSkill
 	public SkillRavingSlice(Heroes instance)
 	{
 		super(instance, "RavingSlice");
-		setDescription("If you sneak for more than %1 seconds your next blade attack will deal %2 more damage, the effect will wear off after %3 seconds. (Passive) D: %4 W: %5 DMG: %6");
+		setDescription("If you sneak for more than %1 seconds your next melee attack will deal %2 more damage, the effect will wear off after %3 seconds. (Passive) D: %4 W: %5 DMG: %6");
 		setIdentifiers(new String[] { "skill ravingslice" });
 		setEffectTypes(new EffectType[] { EffectType.BENEFICIAL } );
 		setTypes(new SkillType[] { SkillType.BUFF });
@@ -134,7 +134,6 @@ public class SkillRavingSlice extends PassiveSkill
 					
 				if(hero.hasAccessToSkill(skill) && hero.hasEffect("RavingSliceEffect"))
 				{
-					//Reminder - Maybe do a check if the hero is wielding a blade?
 					RavingSliceEffect rEffect = (RavingSliceEffect) hero.getEffect("RavingSliceEffect");
 					
 					double damageperc = rEffect.getDamagePercent() + 1;
