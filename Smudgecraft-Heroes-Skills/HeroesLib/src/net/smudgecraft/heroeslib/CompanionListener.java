@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
+import net.smudgecraft.heroeslib.companions.ComWolf;
 import net.smudgecraft.heroeslib.events.CompanionDeathEvent;
 
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -34,9 +35,9 @@ public class CompanionListener implements Listener
 			{
 				Player player = (Player) arrow.getShooter();
 				
-				if(Companions.cwolves.hasWolf(player))
+				if(HeroesLib.cwolves.hasWolf(player))
 				{
-					ComWolf cwolf = Companions.cwolves.getComWolf(player);
+					ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
 						
 					if(event.getEntity() instanceof LivingEntity)
 					{
@@ -66,9 +67,9 @@ public class CompanionListener implements Listener
 	{
 		Player player = event.getPlayer();
 		
-		if(Companions.cwolves.hasWolf(player))
+		if(HeroesLib.cwolves.hasWolf(player))
 		{
-			ComWolf cwolf = Companions.cwolves.getComWolf(player);
+			ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
 			
 			if(player.getWorld()!=cwolf.getWolf().getWorld())
 			{
@@ -92,9 +93,9 @@ public class CompanionListener implements Listener
 		if(event.getDamager() instanceof Wolf)
 		{
 			Wolf wolf = (Wolf) event.getDamager();
-			if(Companions.cwolves.contains(wolf))
+			if(HeroesLib.cwolves.contains(wolf))
 			{
-				ComWolf cwolf = Companions.cwolves.getComWolf(wolf);
+				ComWolf cwolf = HeroesLib.cwolves.getComWolf(wolf);
 				if(cwolf.hasCustomDamage())
 				{
 					if(cwolf.hasOnlineOwner() && event.getEntity() instanceof LivingEntity)
@@ -125,13 +126,13 @@ public class CompanionListener implements Listener
 		{
 			Wolf wolf = (Wolf) event.getEntity();
 			
-			if(Companions.cwolves.contains(wolf))
+			if(HeroesLib.cwolves.contains(wolf))
 			{
-				ComWolf cwolf = Companions.cwolves.getComWolf(wolf);
+				ComWolf cwolf = HeroesLib.cwolves.getComWolf(wolf);
 				
-				Companions.saveWolf(cwolf);
+				HeroesLib.saveWolf(cwolf);
 				
-				Companions.cwolves.removeComWolf(cwolf);
+				HeroesLib.cwolves.removeComWolf(cwolf);
 				
 				CompanionDeathEvent cde = new CompanionDeathEvent(cwolf);
 				
