@@ -10,7 +10,7 @@ import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import com.herocraftonline.heroes.characters.skill.SkillType;
 import com.herocraftonline.heroes.util.Messaging;
 
-import net.smudgecraft.companions.imbuearrows.ImbueEffect;
+import net.smudgecraft.heroeslib.commoneffects.ImbueEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -1,7 +1,7 @@
 package me.marwzoor.skillpindown;
 
-import net.smudgecraft.companions.events.ImbueArrowHitEvent;
-import net.smudgecraft.companions.imbuearrows.ImbueEffect;
+import net.smudgecraft.heroeslib.events.ImbueArrowHitEvent;
+import net.smudgecraft.heroeslib.commoneffects.ImbueEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

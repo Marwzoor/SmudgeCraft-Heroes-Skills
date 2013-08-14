@@ -1,8 +1,8 @@
 package me.marwzoor.skillflamearrow;
 
-import net.smudgecraft.companions.events.ImbueArrowHitEvent;
-import net.smudgecraft.companions.events.ImbueArrowLaunchEvent;
-import net.smudgecraft.companions.imbuearrows.ImbueEffect;
+import net.smudgecraft.heroeslib.events.ImbueArrowHitEvent;
+import net.smudgecraft.heroeslib.events.ImbueArrowLaunchEvent;
+import net.smudgecraft.heroeslib.commoneffects.ImbueEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

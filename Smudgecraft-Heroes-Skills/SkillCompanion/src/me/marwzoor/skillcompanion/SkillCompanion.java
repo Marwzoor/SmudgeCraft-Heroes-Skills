@@ -2,8 +2,8 @@ package me.marwzoor.skillcompanion;
 
 import java.util.Random;
 
-import net.smudgecraft.companions.ComWolf;
-import net.smudgecraft.companions.Companions;
+import net.smudgecraft.heroeslib.companions.ComWolf;
+import net.smudgecraft.heroeslib.HeroesLib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -78,14 +78,14 @@ public class SkillCompanion extends ActiveSkill
 		
 		Player player = hero.getPlayer();
 		
-		if(Companions.cwolves.hasWolf(player))
+		if(HeroesLib.cwolves.hasWolf(player))
 		{
 			Messaging.send(player, ChatColor.RED + "You already have your companion spawned!");
 			
 			return SkillResult.CANCELLED;
 		}
 		
-		FileConfiguration config = Companions.getFileConfig();
+		FileConfiguration config = HeroesLib.getFileConfig();
 		
 		if(!config.contains("players"))
 		{
@@ -105,9 +105,9 @@ public class SkillCompanion extends ActiveSkill
 		double damage = SkillConfigManager.getUseSetting(hero, skill, "wolfdamage", Double.valueOf(40), false);
 		damage += SkillConfigManager.getUseSetting(hero, skill, "wolfdamage-increase", Double.valueOf(0.2), false) * hero.getSkillLevel(skill);
 		
-		ComWolf cwolf = Companions.spawnNewComWolf(loc, player.getName(), maxhealth, (int) damage, maxhealth, name, DyeColor.BLUE);
+		ComWolf cwolf = HeroesLib.spawnNewComWolf(loc, player.getName(), maxhealth, (int) damage, maxhealth, name, DyeColor.BLUE);
 		
-		Companions.saveWolf(cwolf);
+		HeroesLib.saveWolf(cwolf);
 		
 		Messaging.send(hero.getPlayer(), "You have summoned your" + ChatColor.WHITE + " Companion " + ChatColor.GRAY + "to aid you in battle!", new Object());
 		
@@ -123,9 +123,9 @@ public class SkillCompanion extends ActiveSkill
 			{
 				Hero hero = event.getHero();
 				Player player = hero.getPlayer();
-				if(Companions.cwolves.hasWolf(player))
+				if(HeroesLib.cwolves.hasWolf(player))
 				{
-					ComWolf cwolf = Companions.cwolves.getComWolf(player);
+					ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
 					
 					int maxhealth = SkillConfigManager.getUseSetting(hero, skill, "wolfhealth", Integer.valueOf(300), false);
 					maxhealth += SkillConfigManager.getUseSetting(hero, skill, "wolfhealth-increase", Integer.valueOf(5), false) * hero.getSkillLevel(skill);
@@ -138,7 +138,7 @@ public class SkillCompanion extends ActiveSkill
 					
 					cwolf.setDamage((int) damage);
 					
-					Companions.saveWolf(cwolf);
+					HeroesLib.saveWolf(cwolf);
 				}
 			}
 		}
@@ -151,15 +151,15 @@ public class SkillCompanion extends ActiveSkill
 			{
 				if(event.getTo().isPrimary())
 				{
-					if(Companions.cwolves.hasWolf(hero.getPlayer()))
+					if(HeroesLib.cwolves.hasWolf(hero.getPlayer()))
 					{
 						if(!event.getTo().getSkillNames().contains("companion"))
 						{
-							ComWolf cwolf = Companions.cwolves.getComWolf(hero.getPlayer());
+							ComWolf cwolf = HeroesLib.cwolves.getComWolf(hero.getPlayer());
 							cwolf.kill();
 							cwolf.getLocation().getWorld().playSound(cwolf.getLocation(), Sound.WOLF_WHINE, 10, 1);
 							hero.getPlayer().sendMessage(ChatColor.GRAY + "Your " + ChatColor.WHITE + "Companion" + ChatColor.GRAY + " is very sad because it has to leave you now...");
-							Companions.cwolves.removeComWolf(cwolf);
+							HeroesLib.cwolves.removeComWolf(cwolf);
 						}
 					}
 				}
@@ -174,7 +174,7 @@ public class SkillCompanion extends ActiveSkill
 			
 			if(hero.hasAccessToSkill("Companion"))
 			{		
-				FileConfiguration config = Companions.getFileConfig();
+				FileConfiguration config = HeroesLib.getFileConfig();
 				
 				ConfigurationSection players = config.getConfigurationSection("players");
 				
@@ -190,9 +190,9 @@ public class SkillCompanion extends ActiveSkill
 				
 				if(health!=0)
 				{
-				ComWolf cwolf = Companions.spawnNewComWolf(player.getLocation(), owner, maxhealth, (int) damage, health, name, DyeColor.BLUE);
+				ComWolf cwolf = HeroesLib.spawnNewComWolf(player.getLocation(), owner, maxhealth, (int) damage, health, name, DyeColor.BLUE);
 				
-				Companions.saveWolf(cwolf);
+				HeroesLib.saveWolf(cwolf);
 				}
 				}
 			}
@@ -206,15 +206,15 @@ public class SkillCompanion extends ActiveSkill
 			
 			if(hero.hasAccessToSkill("Companion"))
 			{
-				if(Companions.cwolves.hasWolf(player))
+				if(HeroesLib.cwolves.hasWolf(player))
 				{
-					ComWolf cwolf = Companions.cwolves.getComWolf(player);
+					ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
 					
-					Companions.saveWolf(cwolf);
+					HeroesLib.saveWolf(cwolf);
 					
 					cwolf.kill();
 					
-					Companions.cwolves.removeComWolf(cwolf);
+					HeroesLib.cwolves.removeComWolf(cwolf);
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 package net.smudgecraft.heroeslib.events;
 
-import net.smudgecraft.heroeslib.ComWolf;
+import net.smudgecraft.heroeslib.companions.ComWolf;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

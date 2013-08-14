@@ -2,8 +2,8 @@ package me.marwzoor.skillpoisondart;
 
 import net.minecraft.server.v1_6_R2.DataWatcher;
 import net.minecraft.server.v1_6_R2.EntityLiving;
-import net.smudgecraft.companions.events.ImbueArrowHitEvent;
-import net.smudgecraft.companions.imbuearrows.ImbueEffect;
+import net.smudgecraft.heroeslib.events.ImbueArrowHitEvent;
+import net.smudgecraft.heroeslib.commoneffects.ImbueEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

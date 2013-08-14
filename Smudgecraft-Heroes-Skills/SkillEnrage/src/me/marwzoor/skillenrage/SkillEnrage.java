@@ -1,7 +1,7 @@
 package me.marwzoor.skillenrage;
 
-import net.smudgecraft.companions.ComWolf;
-import net.smudgecraft.companions.Companions;
+import net.smudgecraft.heroeslib.companions.ComWolf;
+import net.smudgecraft.heroeslib.HeroesLib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -55,9 +55,9 @@ public class SkillEnrage extends ActiveSkill
 	{
 		final Player player = hero.getPlayer();
 		
-		if(Companions.cwolves.hasWolf(player))
+		if(HeroesLib.cwolves.hasWolf(player))
 		{
-			final ComWolf cwolf = Companions.cwolves.getComWolf(player);
+			final ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
 			
 			int radius = SkillConfigManager.getUseSetting(hero, this, "radius", 30, false);
 			

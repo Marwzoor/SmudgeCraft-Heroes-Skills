@@ -1,7 +1,7 @@
 package me.marwzoor.skilllickwounds;
 
-import net.smudgecraft.companions.ComWolf;
-import net.smudgecraft.companions.Companions;
+import net.smudgecraft.heroeslib.companions.ComWolf;
+import net.smudgecraft.heroeslib.HeroesLib;
 
 import org.bukkit.EntityEffect;
 import org.bukkit.configuration.ConfigurationSection;
@@ -52,9 +52,9 @@ public class SkillLickWounds extends ActiveSkill
 	{
 		Player player = hero.getPlayer();
 		
-		if(Companions.cwolves.hasWolf(player))
+		if(HeroesLib.cwolves.hasWolf(player))
 		{
-			ComWolf cwolf = Companions.cwolves.getComWolf(player);
+			ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
 			
 			if(cwolf.getWolf().getLocation().distance(player.getLocation())<25)
 			{

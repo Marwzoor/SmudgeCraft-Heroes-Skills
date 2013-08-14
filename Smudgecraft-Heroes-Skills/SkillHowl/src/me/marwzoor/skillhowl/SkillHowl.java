@@ -1,8 +1,8 @@
 package me.marwzoor.skillhowl;
 
-import net.smudgecraft.companions.ComWolf;
-import net.smudgecraft.companions.Companions;
-import net.smudgecraft.companions.util.ParticleEffects;
+import net.smudgecraft.heroeslib.companions.ComWolf;
+import net.smudgecraft.heroeslib.HeroesLib;
+import net.smudgecraft.heroeslib.util.ParticleEffects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -63,9 +63,9 @@ public class SkillHowl extends ActiveSkill
 	{
 		final Player player = hero.getPlayer();
 		
-		if(Companions.cwolves.hasWolf(player))
+		if(HeroesLib.cwolves.hasWolf(player))
 		{
-			final ComWolf cwolf = Companions.cwolves.getComWolf(player);
+			final ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
 			
 			int radius = SkillConfigManager.getUseSetting(hero, skill, "radius", Integer.valueOf(30), false);
 			

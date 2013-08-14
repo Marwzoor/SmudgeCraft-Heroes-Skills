@@ -1,6 +1,6 @@
 package net.smudgecraft.heroeslib.listeners;
 
-import net.smudgecraft.heroeslib.Companions;
+import net.smudgecraft.heroeslib.HeroesLib;
 import net.smudgecraft.heroeslib.commoneffects.ImbueEffect;
 import net.smudgecraft.heroeslib.events.ImbueArrowHitEvent;
 import net.smudgecraft.heroeslib.events.ImbueArrowLaunchEvent;
@@ -29,7 +29,7 @@ public class ArrowListener implements Listener
 			if(arrow.getShooter() instanceof Player)
 			{
 				Player player = (Player) arrow.getShooter();
-				Hero hero = Companions.heroes.getCharacterManager().getHero(player);
+				Hero hero = HeroesLib.heroes.getCharacterManager().getHero(player);
 				if(hasImbueEffect(hero) && event.getEntity() != player)
 				{
 					ImbueEffect ie = getImbueEffect(hero);
@@ -53,7 +53,7 @@ public class ArrowListener implements Listener
 			if(arrow.getShooter() instanceof Player)
 			{
 				Player player = (Player) arrow.getShooter();
-				Hero hero = Companions.heroes.getCharacterManager().getHero(player);
+				Hero hero = HeroesLib.heroes.getCharacterManager().getHero(player);
 				
 				if(hasImbueEffect(hero))
 				{
