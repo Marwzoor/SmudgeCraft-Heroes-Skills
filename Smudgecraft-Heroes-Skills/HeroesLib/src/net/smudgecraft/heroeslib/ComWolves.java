@@ -1,9 +1,9 @@
-package net.smudgecraft.companions;
+package net.smudgecraft.heroeslib;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.smudgecraft.companions.Companions.WolfType;
+import net.smudgecraft.heroeslib.Companions.WolfType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

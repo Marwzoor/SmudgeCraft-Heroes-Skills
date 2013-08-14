@@ -1,6 +1,6 @@
-package net.smudgecraft.companions.events;
+package net.smudgecraft.heroeslib.events;
 
-import net.smudgecraft.companions.imbuearrows.ImbueEffect;
+import net.smudgecraft.heroeslib.commoneffects.ImbueEffect;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;

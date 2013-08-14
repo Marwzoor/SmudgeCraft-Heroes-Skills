@@ -1,4 +1,4 @@
-package net.smudgecraft.companions.util;
+package net.smudgecraft.heroeslib.util;
 
 import net.minecraft.server.v1_6_R2.Packet63WorldParticles;
 

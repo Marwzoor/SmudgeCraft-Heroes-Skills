@@ -1,4 +1,4 @@
-package net.smudgecraft.companions.imbuearrows;
+package net.smudgecraft.heroeslib.commoneffects;
 
 import org.bukkit.entity.Player;
 
@@ -11,10 +11,10 @@ public class ImbueEffect extends ExpirableEffect
 {
 	Player player;
 	
-	public ImbueEffect(Skill skill, String name, int duration, Player shooter)
+	public ImbueEffect(Skill skill, String name, int duration, Player player)
 	{
 		super(skill, name, duration);
-		this.player=shooter;
+		this.player=player;
 	}
 	
 	public ImbueEffect(Skill skill, String name, int duration)

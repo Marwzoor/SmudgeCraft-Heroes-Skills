@@ -1,8 +1,8 @@
-package net.smudgecraft.companions;
+package net.smudgecraft.heroeslib;
 
 import java.io.File;
 
-import net.smudgecraft.companions.imbuearrows.ArrowListener;
+import net.smudgecraft.heroeslib.listeners.ArrowListener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;

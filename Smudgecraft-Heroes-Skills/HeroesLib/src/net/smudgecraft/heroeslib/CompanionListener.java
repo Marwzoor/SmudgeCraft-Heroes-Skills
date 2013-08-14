@@ -1,4 +1,4 @@
-package net.smudgecraft.companions;
+package net.smudgecraft.heroeslib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,7 +16,8 @@ import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import net.smudgecraft.companions.events.CompanionDeathEvent;
+
+import net.smudgecraft.heroeslib.events.CompanionDeathEvent;
 
 import com.herocraftonline.heroes.characters.skill.Skill;
 

@@ -1,4 +1,4 @@
-package net.smudgecraft.companions.util;
+package net.smudgecraft.heroeslib.util;
 
 import java.lang.reflect.Field;
 

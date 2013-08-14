@@ -1,4 +1,4 @@
-package net.smudgecraft.companions;
+package net.smudgecraft.heroeslib;
 
 
 import net.minecraft.server.v1_6_R2.EntityWolf;

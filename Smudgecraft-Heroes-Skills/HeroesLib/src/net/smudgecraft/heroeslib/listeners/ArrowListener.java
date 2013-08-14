@@ -1,8 +1,9 @@
-package net.smudgecraft.companions.imbuearrows;
+package net.smudgecraft.heroeslib.listeners;
 
-import net.smudgecraft.companions.Companions;
-import net.smudgecraft.companions.events.ImbueArrowHitEvent;
-import net.smudgecraft.companions.events.ImbueArrowLaunchEvent;
+import net.smudgecraft.heroeslib.Companions;
+import net.smudgecraft.heroeslib.commoneffects.ImbueEffect;
+import net.smudgecraft.heroeslib.events.ImbueArrowHitEvent;
+import net.smudgecraft.heroeslib.events.ImbueArrowLaunchEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
