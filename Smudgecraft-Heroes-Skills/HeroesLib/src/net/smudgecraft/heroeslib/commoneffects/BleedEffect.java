@@ -1,6 +1,5 @@
 package net.smudgecraft.heroeslib.commoneffects;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,7 +8,6 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.Monster;
 import com.herocraftonline.heroes.characters.effects.PeriodicDamageEffect;
 import com.herocraftonline.heroes.characters.skill.Skill;
-import com.herocraftonline.heroes.util.Messaging;
 
 public class BleedEffect extends PeriodicDamageEffect
 {
@@ -21,19 +19,25 @@ public class BleedEffect extends PeriodicDamageEffect
 		this.particleeffects=particleeffects;
 	}
 	
-	public BleedEffect(Skill skill, int period, int duration, double tickdamage, Player applier)
+	public BleedEffect(Skill skill, int period, int duration, double tickdamage, Player applier, boolean knockback)
 	{
-		super(skill, "BleedRuthless", period, duration, tickdamage, applier);
+		super(skill, "Bleed", period, duration, tickdamage, applier, knockback);
+		this.particleeffects=false;
 	}
 	
-	public void applyToHero(final Hero hero)
+	public BleedEffect(Skill skill, int period, int duration, double tickdamage, Player applier)
+	{
+		super(skill, "Bleed", period, duration, tickdamage, applier);
+		this.particleeffects=false;
+	}
+	
+	public void applyToHero(Hero hero)
 	{
 		super.applyToHero(hero);
 	}
 
 	public void removeFromHero(Hero hero)
 	{
-		Messaging.send(hero.getPlayer(), "You are no longer " + ChatColor.WHITE + "Bleeding" + ChatColor.GRAY + "!");
 		super.removeFromHero(hero);
 	}
 

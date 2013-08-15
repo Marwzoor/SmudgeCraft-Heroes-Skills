@@ -1,5 +1,7 @@
 package me.marwzoor.skillruthless;
 
+import net.smudgecraft.heroeslib.commoneffects.BleedEffect;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -17,9 +19,7 @@ import com.herocraftonline.heroes.api.events.CharacterDamageEvent;
 import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.CharacterTemplate;
 import com.herocraftonline.heroes.characters.Hero;
-import com.herocraftonline.heroes.characters.Monster;
 import com.herocraftonline.heroes.characters.effects.ExpirableEffect;
-import com.herocraftonline.heroes.characters.effects.PeriodicDamageEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
@@ -88,49 +88,27 @@ public class SkillRuthless extends ActiveSkill
 		return SkillResult.NORMAL;
 	}
 	
-	public class BleedEffect extends PeriodicDamageEffect
+	public class RuthlessBleedEffect extends BleedEffect
 	{		
-		public BleedEffect(Skill skill, int period, int duration, double tickdamage, Player applier, boolean bool)
+		public RuthlessBleedEffect(Skill skill, int period, int duration, double tickdamage, Player applier, boolean knockback, boolean particleeffects)
 		{
-			super(skill, "BleedRuthless", period, duration, tickdamage, applier, bool);
+			super(skill, period, duration, tickdamage, applier, knockback, particleeffects);
 		}
 		
-		public BleedEffect(Skill skill, int period, int duration, double tickdamage, Player applier)
+		public RuthlessBleedEffect(Skill skill, int period, int duration, double tickdamage, Player applier)
 		{
-			super(skill, "BleedRuthless", period, duration, tickdamage, applier);
+			super(skill, period, duration, tickdamage, applier);
 		}
 		
-		public void applyToHero(final Hero hero)
+		public void applyToHero(Hero hero)
 		{
 			super.applyToHero(hero);
 		}
 
 		public void removeFromHero(Hero hero)
 		{
-			Messaging.send(hero.getPlayer(), "You are no longer " + ChatColor.WHITE + "Bleeding" + ChatColor.GRAY + "!");
 			super.removeFromHero(hero);
-		}
-
-		public void applyToMonster(Monster monster)
-		{
-			super.applyToMonster(monster);
-		}
-
-		public void removeFromMonster(Monster monster)
-		{
-			super.removeFromMonster(monster);
-		}
-		
-		public void tickMonster(Monster monster)
-		{
-			super.tickMonster(monster);
-			monster.getEntity().getWorld().playEffect(monster.getEntity().getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
-		}
-		
-		public void tickHero(Hero hero)
-		{
-			super.tickHero(hero);
-			hero.getEntity().getWorld().playEffect(hero.getEntity().getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+			Messaging.send(hero.getPlayer(), "You are no longer " + ChatColor.WHITE + "Bleeding" + ChatColor.GRAY + "!");
 		}
 	}
 	
@@ -226,13 +204,13 @@ public class SkillRuthless extends ActiveSkill
 				{
 					RuthlessEffect rEffect = (RuthlessEffect) hero.getEffect("Ruthless");
 					
-					BleedEffect pEffect = new BleedEffect(skill, rEffect.getBleedPeriod(), rEffect.getBleedDuration(), rEffect.getBleedDamage(), hero.getPlayer(), true);
+					RuthlessBleedEffect pEffect = new RuthlessBleedEffect(skill, rEffect.getBleedPeriod(), rEffect.getBleedDuration(), rEffect.getBleedDamage(), hero.getPlayer(), true, true);
 
 					CharacterTemplate ct = plugin.getCharacterManager().getCharacter((LivingEntity) event.getEntity());
 					
-					if(ct.hasEffect("BleedRuthless"))
+					if(ct.hasEffect("Bleed"))
 					{
-						ct.removeEffect(ct.getEffect("BleedRuthless"));
+						ct.removeEffect(ct.getEffect("Bleed"));
 					}
 					
 					ct.addEffect(pEffect);

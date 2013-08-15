@@ -1,5 +1,7 @@
 package me.marwzoor.skillsever;
 
+import net.smudgecraft.heroeslib.commoneffects.BleedEffect;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -17,7 +19,6 @@ import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.CharacterTemplate;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.Monster;
-import com.herocraftonline.heroes.characters.effects.PeriodicDamageEffect;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
@@ -93,7 +94,7 @@ public class SkillSever extends TargettedSkill
 		int period = SkillConfigManager.getUseSetting(hero, this, "period", 1000, false);
 		int duration = SkillConfigManager.getUseSetting(hero, this, "bleed-duration", 7000, false);
 		
-		SeverEffect sEffect = new SeverEffect(this, period, duration, tickdamage, hero.getPlayer());
+		SeverEffect sEffect = new SeverEffect(this, period, duration, tickdamage, hero.getPlayer(), true, true);
 		
 		CharacterTemplate ctarget = plugin.getCharacterManager().getCharacter(target);
 		
@@ -137,11 +138,11 @@ public class SkillSever extends TargettedSkill
 		}
 	}
 	
-	public class SeverEffect extends PeriodicDamageEffect
+	public class SeverEffect extends BleedEffect
 	{
-		public SeverEffect(SkillSever skill, int period, int duration, double tickDamage, Player applier)
+		public SeverEffect(SkillSever skill, int period, int duration, double tickDamage, Player applier, boolean knockback, boolean particleeffects)
 		{
-			super(skill, "SeverEffect", period, duration, tickDamage, applier);
+			super(skill, period, duration, tickDamage, applier, knockback, particleeffects);
 		}
 		
 		public void applyToHero(Hero hero)
@@ -158,24 +159,6 @@ public class SkillSever extends TargettedSkill
 		{
 			super.removeFromHero(hero);
 			Messaging.send(hero.getPlayer(), "You are no longer " + ChatColor.WHITE + "Severed" + ChatColor.GRAY + "!");
-		}
-		
-		public void tickMonster(Monster monster)
-		{
-			super.tickMonster(monster);
-			if(!monster.getEntity().isDead() && monster.hasEffect("SeverEffect"))
-			{
-				monster.getEntity().getWorld().playEffect(monster.getEntity().getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
-			}
-		}
-		
-		public void tickHero(Hero hero)
-		{
-			super.tickHero(hero);
-			if(!hero.getPlayer().isDead() && hero.hasEffect("SeverEffect"))
-			{
-				hero.getEntity().getWorld().playEffect(hero.getEntity().getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
-			}
 		}
 	}
 }
