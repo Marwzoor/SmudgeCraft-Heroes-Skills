@@ -1,6 +1,6 @@
 package me.marwzoor.skillmorality;
 
-import net.smudgecraft.companions.util.ParticleEffects;
+import net.smudgecraft.heroeslib.util.ParticleEffects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
