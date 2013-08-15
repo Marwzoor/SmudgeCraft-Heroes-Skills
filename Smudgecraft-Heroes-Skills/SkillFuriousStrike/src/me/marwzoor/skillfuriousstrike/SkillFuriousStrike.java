@@ -1,6 +1,6 @@
 package me.marwzoor.skillfuriousstrike;
 
-import net.smudgecraft.companions.imbuearrows.ImbueEffect;
+import net.smudgecraft.heroeslib.commoneffects.ImbueEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
