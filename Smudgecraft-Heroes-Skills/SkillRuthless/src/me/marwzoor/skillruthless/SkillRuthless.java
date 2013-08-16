@@ -99,12 +99,8 @@ public class SkillRuthless extends ActiveSkill
 		{
 			super(skill, period, duration, tickdamage, applier);
 		}
-		
-		public void applyToHero(Hero hero)
-		{
-			super.applyToHero(hero);
-		}
 
+		@Override
 		public void removeFromHero(Hero hero)
 		{
 			super.removeFromHero(hero);
