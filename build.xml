@@ -41,6 +41,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillLickWounds/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillMorality/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillMoribund/build.xml" target="makejar" />
+    <ant antfile="Smudgecraft-Heroes-Skills/SkillMotivatingWound/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillPainfulFlask/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillParry/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillPinDown/build.xml" target="makejar" />
