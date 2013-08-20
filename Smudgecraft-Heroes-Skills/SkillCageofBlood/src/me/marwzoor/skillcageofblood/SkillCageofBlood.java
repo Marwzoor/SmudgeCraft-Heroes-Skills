@@ -52,8 +52,7 @@ public class SkillCageofBlood extends ActiveSkill {
 		CageofBloodEffect cobEffect = new CageofBloodEffect(this, plugin, duration);
 		
 		if (hero.hasEffect("CageofBlood")) {
-			Messaging.send(hero.getPlayer(), "You cannot use that right now.");
-			return SkillResult.INVALID_TARGET_NO_MSG;
+			return SkillResult.FAIL;
 		}
 		
 		hero.addEffect(cobEffect);
