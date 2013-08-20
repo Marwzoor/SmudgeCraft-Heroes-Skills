@@ -15,10 +15,10 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillAgility/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillArrowRain/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillAxeThrow/build.xml" target="makejar" />
-    <ant antfile="Smudgecraft-Heroes-Skills/SkillBloodBath/build.xml" target="makejar" />
-    <ant antfile="Smudgecraft-Heroes-Skills/SkillBloodPact/build.xml" target="makejar" />
-    <ant antfile="Smudgecraft-Heroes-Skills/SkillBloodstorm/build.xml" target="makejar" />
-    <ant antfile="Smudgecraft-Heroes-Skills/SkillCageofBlood/build.xml" target="makejar" />
+    		<ant antfile="Smudgecraft-Heroes-Skills/SkillBloodBath/build.xml" target="makejar" />
+    		<ant antfile="Smudgecraft-Heroes-Skills/SkillBloodPact/build.xml" target="makejar" />
+    		<ant antfile="Smudgecraft-Heroes-Skills/SkillBloodstorm/build.xml" target="makejar" />
+    		<ant antfile="Smudgecraft-Heroes-Skills/SkillCageofBlood/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCamouflage/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCleave/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCoagulation/build.xml" target="makejar" />
@@ -53,7 +53,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillReincarnation/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRevitalizingWord/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRollout/build.xml" target="makejar" />
-    <ant antfile="Smudgecraft-Heroes-Skills/SkillRushingBlood/build.xml" target="makejar" />
+    		<ant antfile="Smudgecraft-Heroes-Skills/SkillRushingBlood/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRuthless/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSever/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSharpshooter/build.xml" target="makejar" />
