@@ -47,7 +47,7 @@ public class SkillMotivatingWound extends ActiveSkill {
 		if (hero.hasAccessToSkill(this)) {
 			int healthCost = SkillConfigManager.getUseSetting(hero, this, SkillSetting.HEALTH_COST, Integer.valueOf(20), false);
 			int damage = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Integer.valueOf(20), false);
-			int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(20000), false);
+			int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(20000), false) / 1000;
 			return super.getDescription().replace("$1", healthCost + "").replace("$2", damage + "").replace("$3", duration + "");
 		} else {
 			return super.getDescription().replace("$1", "X").replace("$2", "X").replace("$3", "X");
