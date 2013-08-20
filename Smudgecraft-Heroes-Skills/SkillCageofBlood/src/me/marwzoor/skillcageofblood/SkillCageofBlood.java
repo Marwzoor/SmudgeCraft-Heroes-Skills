@@ -22,7 +22,7 @@ public class SkillCageofBlood extends ActiveSkill {
 	public SkillCageofBlood(Heroes instance) {
 		super(instance, "CageofBlood");
 		this.plugin = instance;
-		setDescription("You seal yourself in a cage of blood, setting your health to 1, making you invulnerable and stunning yourself for $1 seconds. When you leave the cage you have full health.");
+		setDescription("You seal yourself in a cage of blood, setting your health to 1, making you invulnerable but preventing you from moving or casting spells for $1 seconds. When you leave the cage you have full health.");
 		setIdentifiers(new String[] {
 				"skill cageofblood"
 		});
