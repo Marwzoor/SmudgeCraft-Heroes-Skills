@@ -39,7 +39,7 @@ public class SkillBloodPact extends ActiveSkill {
 				SkillType.BUFF,
 				SkillType.DEBUFF
 		});
-		Bukkit.getPluginManager().registerEvents(new SkillBloodPactListener(plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new SkillBloodPactListener(this, plugin), plugin);
 	}
 	
 	public ConfigurationSection getDefaultConfig() {
@@ -78,7 +78,6 @@ public class SkillBloodPact extends ActiveSkill {
 		int radius = SkillConfigManager.getUseSetting(hero, this, SkillSetting.RADIUS, Integer.valueOf(10), false);
 		int max = SkillConfigManager.getUseSetting(hero, this, "max-health-gain", Integer.valueOf(20), false);
 		int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(20000), false);
-		int damage = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DAMAGE, Integer.valueOf(15), false);
 		for (Entity e : hero.getPlayer().getNearbyEntities(radius, radius, radius)) {
 			if (e instanceof Player) {
 				Player p = (Player) e;
@@ -106,7 +105,7 @@ public class SkillBloodPact extends ActiveSkill {
 			return SkillResult.NORMAL;
 		}
 		
-		BloodPactEffect bpEffect = new BloodPactEffect(this, plugin, max, duration, damage, participating);
+		BloodPactEffect bpEffect = new BloodPactEffect(this, plugin, max, duration, participating);
 		for (Player p : participating) {
 			Messaging.send(p, "You have entered a blood pact!");
 			Hero h = plugin.getCharacterManager().getHero(p);
@@ -118,18 +117,12 @@ public class SkillBloodPact extends ActiveSkill {
 	
 	public class BloodPactEffect extends ExpirableEffect {
 		private int maxHealthPercIncrease;
-		private int damagePerc;
 		private ArrayList<Player> participating;
 		
-		public BloodPactEffect(SkillBloodPact skill, Heroes plugin, int max, int duration, int damage, ArrayList<Player> participating) {
+		public BloodPactEffect(SkillBloodPact skill, Heroes plugin, int max, int duration, ArrayList<Player> participating) {
 			super(skill, plugin, "BloodPact", duration);
 			this.maxHealthPercIncrease = max;
-			this.damagePerc = damage;
 			this.participating = participating;
-		}
-		
-		public int getDamagePerc() {
-			return damagePerc;
 		}
 		
 		public ArrayList<Player> getParticipating() {
@@ -152,9 +145,11 @@ public class SkillBloodPact extends ActiveSkill {
 	}
 	
 	public class SkillBloodPactListener implements Listener {
+		private SkillBloodPact skill;
 		private Heroes plugin;
 		
-		public SkillBloodPactListener(Heroes plugin) {
+		public SkillBloodPactListener(SkillBloodPact skill, Heroes plugin) {
+			this.skill = skill;
 			this.plugin = plugin;
 		}
 		
@@ -179,8 +174,8 @@ public class SkillBloodPact extends ActiveSkill {
 						continue;
 					}
 					
-					int damagePerc = bpEffect.getDamagePerc();
-					p.setHealth(((Damageable) p).getHealth() - ((Damageable) p).getMaxHealth() * (damagePerc * 0.01));
+					double damagePerc = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DAMAGE, Integer.valueOf(15), false) * 0.01;
+					p.setHealth(((Damageable) p).getHealth() - ((Damageable) p).getMaxHealth() * damagePerc);
 					Messaging.send(player, "A blood pact member has died!");
 				}
 			}
