@@ -65,7 +65,8 @@ public class SkillBloodPact extends ActiveSkill {
 	
 	public SkillResult use(Hero hero, String[] args) {
 		if (hero.hasEffect("BloodPact")) {
-			return SkillResult.FAIL;
+			Messaging.send(hero.getPlayer(), "You are already in a blood pact!");
+			return SkillResult.NORMAL;
 		}
 		Player player = hero.getPlayer();
 		UPlayer uPlayer = UPlayer.get(player);
@@ -98,6 +99,11 @@ public class SkillBloodPact extends ActiveSkill {
 					participating.add(p);
 				}
 			}
+		}
+		
+		if (participating.size() == 1) {
+			Messaging.send(player, "There are no nearby allies to start a blood pact with!");
+			return SkillResult.NORMAL;
 		}
 		
 		BloodPactEffect bpEffect = new BloodPactEffect(this, plugin, max, duration, damage, participating);
