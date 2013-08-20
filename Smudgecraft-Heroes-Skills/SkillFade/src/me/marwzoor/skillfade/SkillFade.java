@@ -2,9 +2,11 @@ package me.marwzoor.skillfade;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
@@ -138,6 +140,25 @@ public class SkillFade extends PassiveSkill {
 			if (event.getTo().getBlock().getLightLevel() > 4) {
 				hero.removeEffect(hero.getEffect("Fade"));
 			}
+		}
+		
+		@EventHandler
+		public void onEntityTarget(EntityTargetEvent event) {
+			if (!(event.getTarget() instanceof Player)) {
+				return;
+			}
+			
+			Player player = (Player) event.getTarget();
+			Hero hero = plugin.getCharacterManager().getHero(player);
+			if (!hero.hasEffect("Fade")) {
+				return;
+			}
+			
+			if (!(event.getEntity() instanceof Monster)) {
+				return;
+			}
+			
+			event.setCancelled(true);
 		}
 	}
 
