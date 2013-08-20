@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SkillRushingBlood" default="makejar" basedir=".">
+
+	<path id="classpath">
+		<fileset dir="libs" includes="**/*.jar"/>
+	</path>
+
+	<target name="makejar" depends="clean, compile, compress"/>
+
+	<target name="clean">
+		<delete failonerror="false">
+			<fileset dir="bin" includes="**/*"/>
+		</delete>
+		<delete file="Skills/SkillRushingBlood.jar"/>
+		<mkdir dir="bin"/>
+	</target>
+
+	<target name="compile">
+		<javac srcdir="Smudgecraft-Heroes-Skills/SkillRushingBlood" destdir="bin" classpathref="classpath" includeantruntime="false"/>
+		<copy file="Smudgecraft-Heroes-Skills/SkillRushingBlood/src/skill.info" tofile="bin/skill.info"/>
+	</target>
+
+	<target name="compress">
+		<jar jarfile="Skills/SkillRushingBlood.jar" includes="**/*, skill.info" basedir="bin"/>
+		<delete dir="bin"/>
+	</target>
+
+</project>
