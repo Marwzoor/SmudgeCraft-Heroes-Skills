@@ -1,7 +1,6 @@
 package me.marwzoor.skillbloodpact;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -26,10 +25,8 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UPlayer;
 
-// TODO: Don't store the health. Calculate it from heroes classes.
 public class SkillBloodPact extends ActiveSkill {
 	public Heroes plugin;
-	public HashMap<Player, Double> maxHealth = new HashMap<Player, Double>();
 	
 	public SkillBloodPact(Heroes plugin) {
 		super(plugin, "BloodPact");
@@ -105,7 +102,6 @@ public class SkillBloodPact extends ActiveSkill {
 		
 		BloodPactEffect bpEffect = new BloodPactEffect(this, plugin, max, duration, damage, participating);
 		for (Player p : participating) {
-			getMaxHealths().put(p, ((Damageable) p).getMaxHealth());
 			Messaging.send(p, "You have entered a blood pact!");
 			Hero h = plugin.getCharacterManager().getHero(p);
 			h.addEffect(bpEffect);
@@ -114,19 +110,13 @@ public class SkillBloodPact extends ActiveSkill {
 		return SkillResult.NORMAL;
 	}
 	
-	public HashMap<Player, Double> getMaxHealths() {
-		return maxHealth;
-	}
-	
 	public class BloodPactEffect extends ExpirableEffect {
-		private SkillBloodPact skill;
 		private int maxHealthPercIncrease;
 		private int damagePerc;
 		private ArrayList<Player> participating;
 		
 		public BloodPactEffect(SkillBloodPact skill, Heroes plugin, int max, int duration, int damage, ArrayList<Player> participating) {
 			super(skill, plugin, "BloodPact", duration);
-			this.skill = skill;
 			this.maxHealthPercIncrease = max;
 			this.damagePerc = damage;
 			this.participating = participating;
@@ -151,8 +141,7 @@ public class SkillBloodPact extends ActiveSkill {
 		@Override
 		public void removeFromHero(Hero hero) {
 			super.removeFromHero(hero);
-			hero.getPlayer().setMaxHealth(skill.getMaxHealths().get(hero.getPlayer()));
-			skill.getMaxHealths().remove(hero.getPlayer());
+			hero.getPlayer().setMaxHealth(hero.getHeroClass().getBaseMaxHealth() + (hero.getHeroClass().getMaxHealthPerLevel() * hero.getLevel(hero.getHeroClass())));
 		}
 	}
 	
