@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.herocraftonline.heroes.Heroes;
@@ -322,6 +323,97 @@ public class SkillSacrifice extends TargettedSkill
 					{
 						Bukkit.getScheduler().cancelTask(schedules.get(player));
 						schedules.remove(player);
+					}
+				}
+			}
+		}
+		
+		@EventHandler
+		public void onPlayerMoveEvent(PlayerMoveEvent event)
+		{
+			Player player = event.getPlayer();
+			
+			if(players.containsKey(player))
+			{
+				Player tplayer = Bukkit.getPlayer(players.get(player));
+				
+				if(tplayer!=null)
+				{
+					if(tplayer.getWorld().equals(player.getWorld()))
+					{
+						if(player.getLocation().distance(tplayer.getLocation())>=70)
+						{
+							Messaging.send(tplayer, ChatColor.DARK_RED + player.getName() + ChatColor.GRAY + "Moved out of range! They are no longer recieving your damage taken!");
+							Messaging.send(player, "You moved out of range of range! You are no longer recieving the damage " + ChatColor.DARK_RED + tplayer.getName() + ChatColor.GRAY + " is taking!");
+							
+							players.remove(player);
+							
+							if(schedules.containsKey(player))
+							{
+								Bukkit.getScheduler().cancelTask(schedules.get(player));
+								schedules.remove(player);
+							}
+						}
+					}
+					else
+					{
+						if(player.getLocation().distance(tplayer.getLocation())>=70)
+						{
+							Messaging.send(tplayer, ChatColor.DARK_RED + player.getName() + ChatColor.GRAY + "Moved out of range! They are no longer recieving your damage taken!");
+							Messaging.send(player, "You moved out of range of range! You are no longer recieving the damage " + ChatColor.DARK_RED + tplayer.getName() + ChatColor.GRAY + " is taking!");
+							
+							players.remove(player);
+							
+							if(schedules.containsKey(player))
+							{
+								Bukkit.getScheduler().cancelTask(schedules.get(player));
+								schedules.remove(player);
+							}
+						}
+					}
+				}
+				
+			}
+			else if(players.containsValue(player))
+			{
+				for(Player p : players.keySet())
+				{
+					if(players.get(p).equals(player.getName()))
+					{	
+						if(p.getWorld().equals(player.getWorld()))
+						{
+							if(player.getLocation().distance(p.getLocation())>=70)
+							{
+								Messaging.send(p, ChatColor.DARK_RED + player.getName() + ChatColor.GRAY + "Moved out of range! You are no longer recieving the damage they are taking!");
+								Messaging.send(player, "You moved out of range of range! " + ChatColor.DARK_RED + p.getName() + ChatColor.GRAY + " is no longer recieving the damage you are taking!");
+								
+								players.remove(p);
+								
+								if(schedules.containsKey(p))
+								{
+									Bukkit.getScheduler().cancelTask(schedules.get(p));
+									schedules.remove(p);
+								}
+							}
+						}
+						else
+						{
+							if(player.getLocation().distance(p.getLocation())>=70)
+							{
+								Messaging.send(p, ChatColor.DARK_RED + player.getName() + ChatColor.GRAY + "Moved out of range! You are no longer recieving the damage they are taking!");
+								Messaging.send(player, "You moved out of range of range! " + ChatColor.DARK_RED + p.getName() + ChatColor.GRAY + " is no longer recieving the damage you are taking!");
+								
+								players.remove(p);
+								
+								if(schedules.containsKey(p))
+								{
+									Bukkit.getScheduler().cancelTask(schedules.get(p));
+									schedules.remove(p);
+								}
+							}
+						}
+						
+						return;
 					}
 				}
 			}
