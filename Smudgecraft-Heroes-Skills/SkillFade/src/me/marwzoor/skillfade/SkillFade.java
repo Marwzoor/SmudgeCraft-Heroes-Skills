@@ -23,7 +23,7 @@ public class SkillFade extends PassiveSkill {
 	
 	public SkillFade(Heroes plugin) {
 		super(plugin, "Fade");
-		setDescription("You become invisible for $1 seconds when hiding in a light level below $2");
+		setDescription("You become invisible for $1 seconds when sneaking in a light level below $2");
 		setIdentifiers(new String[] {
 				"skill fade"
 		});
