@@ -24,13 +24,18 @@ public class PoisonEffect extends PeriodicDamageEffect
 		this.particleEffects=particleEffects;
 	}
 	
+	public PoisonEffect(Skill skill, long period, long duration, double damage, Player applier) 
+	{
+		super(skill, "Poison", period, duration, damage, applier);
+		this.particleEffects=true;
+	}
+	
 	public void applyToHero(Hero hero)
 	{
 		skill.broadcast(hero.getPlayer().getLocation(), hero.getPlayer().getDisplayName() + ChatColor.GRAY + " is poisoned!");
 		if(particleEffects)
 			addPotionGraphicalEffect(hero.getEntity(), 0x02A000, this.getDuration());
 		super.applyToHero(hero);
-		this.particleEffects=true;
 	}
 	
 	public void removeFromHero(Hero hero)

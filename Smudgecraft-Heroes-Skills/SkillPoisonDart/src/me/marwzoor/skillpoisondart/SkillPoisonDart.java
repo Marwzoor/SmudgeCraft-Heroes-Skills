@@ -1,15 +1,12 @@
 package me.marwzoor.skillpoisondart;
 
-import net.minecraft.server.v1_6_R2.DataWatcher;
-import net.minecraft.server.v1_6_R2.EntityLiving;
 import net.smudgecraft.heroeslib.events.ImbueArrowHitEvent;
 import net.smudgecraft.heroeslib.commoneffects.ImbueEffect;
+import net.smudgecraft.heroeslib.commoneffects.PoisonEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_6_R2.entity.CraftLivingEntity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,8 +15,6 @@ import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.CharacterTemplate;
 import com.herocraftonline.heroes.characters.Hero;
-import com.herocraftonline.heroes.characters.Monster;
-import com.herocraftonline.heroes.characters.effects.PeriodicDamageEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
@@ -100,22 +95,6 @@ public class SkillPoisonDart extends ActiveSkill
 		return SkillResult.NORMAL;
 	}
 	
-	public void addPotionGraphicalEffect(LivingEntity entity, int color, int duration) {
-        final EntityLiving el = ((CraftLivingEntity)entity).getHandle();
-        final DataWatcher dw = el.getDataWatcher();
-        dw.watch(8, Integer.valueOf(color));
- 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            public void run() {
-                int c = 0;
-                if (!el.effects.isEmpty()) {
-                    c = net.minecraft.server.v1_6_R2.PotionBrewer.a(el.effects.values());
-                }
-                dw.watch(8, Integer.valueOf(c));
-            }
-        }, duration);
-    }
-	
 	public class SkillHeroListener implements Listener
 	{
 		@EventHandler
@@ -135,8 +114,6 @@ public class SkillPoisonDart extends ActiveSkill
 				CharacterTemplate ct = plugin.getCharacterManager().getCharacter(event.getShotEntity());
 				
 				ct.addEffect(pEffect);
-				
-				addPotionGraphicalEffect(event.getShotEntity(), 0x02A000, duration);
 				
 				if(pde.getPlayer()!=null)
 				{
@@ -178,38 +155,6 @@ public class SkillPoisonDart extends ActiveSkill
 		{
 			super.removeFromHero(hero);
 			Messaging.send(hero.getPlayer(), "You no longer have " + ChatColor.WHITE + "PoisonDart" + ChatColor.GRAY + "!", new Object());
-		}
-	}
-	
-	public class PoisonEffect extends PeriodicDamageEffect
-	{
-		public PoisonEffect(Skill skill, long period, long duration, double damage, Player applier) 
-		{
-			super(skill, "Poison", period, duration, damage, applier);
-		}
-		
-		public void applyToHero(Hero hero)
-		{
-			skill.broadcast(hero.getPlayer().getLocation(), hero.getPlayer().getDisplayName() + ChatColor.GRAY + " is poisoned!");
-			super.applyToHero(hero);
-		}
-		
-		public void removeFromHero(Hero hero)
-		{
-			skill.broadcast(hero.getPlayer().getLocation(), hero.getPlayer().getDisplayName() + ChatColor.GRAY  + " is no longer poisoned!");
-			super.removeFromHero(hero);
-		}
-		
-		public void applyToMonster(Monster monster)
-		{
-			skill.broadcast(monster.getEntity().getLocation(), ChatColor.WHITE + monster.getEntity().getType().getName() + ChatColor.GRAY + " is poisoned!");
-			super.applyToMonster(monster);
-		}
-		
-		public void removeFromMonster(Monster monster)
-		{
-			skill.broadcast(monster.getEntity().getLocation(), ChatColor.WHITE + monster.getEntity().getType().getName() + ChatColor.GRAY + " is no longer poisoned!");
-			super.removeFromMonster(monster);
 		}
 	}
 }
