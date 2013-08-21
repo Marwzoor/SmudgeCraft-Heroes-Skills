@@ -16,16 +16,21 @@ import com.herocraftonline.heroes.characters.skill.Skill;
 
 public class PoisonEffect extends PeriodicDamageEffect
 {
-	public PoisonEffect(Skill skill, long period, long duration, double damage, Player applier) 
+	private boolean particleEffects;
+	
+	public PoisonEffect(Skill skill, long period, long duration, double damage, Player applier, boolean particleEffects) 
 	{
 		super(skill, "Poison", period, duration, damage, applier);
+		this.particleEffects=particleEffects;
 	}
 	
 	public void applyToHero(Hero hero)
 	{
 		skill.broadcast(hero.getPlayer().getLocation(), hero.getPlayer().getDisplayName() + ChatColor.GRAY + " is poisoned!");
-		addPotionGraphicalEffect(hero.getEntity(), 0x02A000, this.getDuration());
+		if(particleEffects)
+			addPotionGraphicalEffect(hero.getEntity(), 0x02A000, this.getDuration());
 		super.applyToHero(hero);
+		this.particleEffects=true;
 	}
 	
 	public void removeFromHero(Hero hero)
@@ -37,7 +42,8 @@ public class PoisonEffect extends PeriodicDamageEffect
 	public void applyToMonster(Monster monster)
 	{
 		skill.broadcast(monster.getEntity().getLocation(), ChatColor.WHITE + monster.getEntity().getType().getName() + ChatColor.GRAY + " is poisoned!");
-		addPotionGraphicalEffect(monster.getEntity(), 0x02A000, this.getDuration());
+		if(particleEffects)
+			addPotionGraphicalEffect(monster.getEntity(), 0x02A000, this.getDuration());
 		super.applyToMonster(monster);
 	}
 	
