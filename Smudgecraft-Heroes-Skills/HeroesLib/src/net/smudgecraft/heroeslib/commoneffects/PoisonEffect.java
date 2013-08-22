@@ -61,7 +61,7 @@ public class PoisonEffect extends PeriodicDamageEffect
 	public void addPotionGraphicalEffect(LivingEntity entity, int color, long duration) {
         final EntityLiving el = ((CraftLivingEntity)entity).getHandle();
         final DataWatcher dw = el.getDataWatcher();
-        dw.watch(8, Integer.valueOf(color));
+        dw.watch(8, (byte) color);
  
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             public void run() {

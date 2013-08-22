@@ -24,14 +24,9 @@ import com.herocraftonline.heroes.util.Messaging;
 
 public class SkillSlash extends ActiveSkill
 {
-	public static Heroes plugin;
-	public static SkillSlash skill;
-	
 	public SkillSlash(Heroes instance)
 	{
 		super(instance, "Slash");
-		plugin=instance;
-		skill=this;
 		setDescription("You slash your opponent, knocking them back and dealing $1% more damage.");
 		setIdentifiers(new String[] { "skill slash" });
 		setArgumentRange(0, 0);
@@ -42,10 +37,10 @@ public class SkillSlash extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
-		if(hero.hasAccessToSkill(skill))
+		if(hero.hasAccessToSkill(this))
 		{
 		String desc = super.getDescription();
-		double percentage = SkillConfigManager.getUseSetting(hero, skill, "percentage", Double.valueOf(1.25), false);
+		double percentage = SkillConfigManager.getUseSetting(hero, this, "percentage", Double.valueOf(1.25), false);
 		percentage = percentage-1;
 		percentage = percentage*100;
 		desc = desc.replace("$1", percentage + "");
@@ -67,15 +62,15 @@ public class SkillSlash extends ActiveSkill
 	
 	public SkillResult use(Hero hero, String[] args)
 	{
-		int duration = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, Integer.valueOf(15000), false);
-		double percent = SkillConfigManager.getUseSetting(hero, skill, "percentage", Double.valueOf(1.25), false);
+		int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, Integer.valueOf(15000), false);
+		double percent = SkillConfigManager.getUseSetting(hero, this, "percentage", Double.valueOf(1.25), false);
 
 		if(hero.hasEffect("Slash"))
 		{
 			hero.removeEffect(hero.getEffect("Slash"));
 		}
 		
-		SlashEffect sEffect = new SlashEffect(skill, duration, percent);
+		SlashEffect sEffect = new SlashEffect(this, duration, percent);
 		
 		hero.addEffect(sEffect);
 		
