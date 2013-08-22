@@ -28,7 +28,7 @@ public class SkillEnvenom extends ActiveSkill
 	public SkillEnvenom(Heroes instance)
 	{
 		super(instance, "Envenom");
-		setDescription("You imbue your blade with venom, making your next attack poison your enemy and dealing %1 damage every %2 for %3 seconds. D: %4 CD: %5 M: %6 DOT: %7");
+		setDescription("Your next attack from behind slits the throat of your enemy, instantly killing them. The effect wears off after %1 seconds. D: %2 CD: %3 M: %4");
 		setIdentifiers(new String[] { "skill envenom" });
 		setArgumentRange(0, 0);
 		setTypes(new SkillType[] { SkillType.BUFF });
@@ -41,23 +41,15 @@ public class SkillEnvenom extends ActiveSkill
 		if(hero.hasAccessToSkill(this))
 		{
 			int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, 10000, false)/1000;
-			int poisonDuration = SkillConfigManager.getUseSetting(hero, this, "poison-duration", 10000, false)/1000;
-			int poisonPeriod = SkillConfigManager.getUseSetting(hero, this, "poison-period", 1000, false)/1000;
 			
 			int mana = SkillConfigManager.getUseSetting(hero, this, SkillSetting.MANA, 0, false);
 			int cooldown = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.COOLDOWN, 0, false)/1000);
 			
-			double poisonDamage = (SkillConfigManager.getUseSetting(hero, this, "poison-damage", 30D, false)
-					+ (SkillConfigManager.getUseSetting(hero, this, "poison-damage-increase", 0.2D, false) * hero.getSkillLevel(this)));
-			
-			if(poisonPeriod==1)
-				return super.getDescription().replace("%1", poisonDamage + "").replace("%2", "second").replace("%3", poisonDuration + "").replace("%4", duration + "s").replace("%5", cooldown + "s").replace("%6", mana + "").replace("%7", poisonDamage + "");
-			else
-				return super.getDescription().replace("%1", poisonDamage + "").replace("%2", poisonPeriod + " seconds").replace("%3", poisonDuration + "").replace("%4", duration + "s").replace("%5", cooldown + "s").replace("%6", mana + "").replace("%7", poisonDamage + "");
+			return super.getDescription().replace("%1", duration + "").replace("%2", duration + "s").replace("%3", cooldown + "s").replace("%4", mana + "");
 		}
 		else
 		{
-			return super.getDescription().replace("%1", "X").replace("%2", "X second").replace("%3", "X").replace("%4", "Xs").replace("%5", "Xs").replace("%6", "X").replace("%7", "X");
+			return super.getDescription().replace("%1", "X").replace("%2", "Xs").replace("%3", "Xs").replace("%4", "X");
 		}
 	}
 	
@@ -67,10 +59,6 @@ public class SkillEnvenom extends ActiveSkill
 		node.set(SkillSetting.DURATION.node(), 10000);
 		node.set(SkillSetting.MANA.node(), 0);
 		node.set(SkillSetting.COOLDOWN.node(), 0);
-		node.set("poison-duration", 10000);
-		node.set("poison-period", 1000);
-		node.set("poison-damage", 30D);
-		node.set("poison-damage-increase", 0.2D);
 		
 		return node;
 	}
@@ -116,6 +104,7 @@ public class SkillEnvenom extends ActiveSkill
 				return;
 			
 			if(!(event.getEntity() instanceof LivingEntity))
+				return;
 			
 			if(!(event.getAttackerEntity() instanceof Player))
 				return;
