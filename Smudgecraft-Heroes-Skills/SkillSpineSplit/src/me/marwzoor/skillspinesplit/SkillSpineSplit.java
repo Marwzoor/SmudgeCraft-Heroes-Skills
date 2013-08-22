@@ -88,6 +88,9 @@ public class SkillSpineSplit extends PassiveSkill
 			if(event.getEntity().getLocation().getDirection().dot(event.getAttackerEntity().getLocation().getDirection()) <= 0.0D)
 				return;
 			
+			if(!isBlade(((Player)event.getAttackerEntity()).getItemInHand())
+				return;
+			
 			Hero hero = plugin.getCharacterManager().getHero((Player) event.getAttackerEntity());
 				
 			double chance = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE, 0.5D, false)
@@ -117,8 +120,24 @@ public class SkillSpineSplit extends PassiveSkill
 			}
 		}
 		
-		public boolean isVowel(char ch) { 
+		public boolean isVowel(char ch) 
+		{ 
 			return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
-			}
+		}
+			
+		public boolean isBlade(ItemStack is)
+		{
+		int id = is.getTypeId();
+		
+		switch(id)
+		{
+			case 268: return true;
+			case 272: return true;
+			case 276: return true;
+			case 283: return true;
+			case 267: return true;
+			default: return false;
+		}
+	}
 	}
 }
