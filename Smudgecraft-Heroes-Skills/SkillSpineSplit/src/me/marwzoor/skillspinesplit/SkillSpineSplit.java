@@ -88,7 +88,7 @@ public class SkillSpineSplit extends PassiveSkill
 			if(event.getEntity().getLocation().getDirection().dot(event.getAttackerEntity().getLocation().getDirection()) <= 0.0D)
 				return;
 			
-			if(!isBlade(((Player)event.getAttackerEntity()).getItemInHand())
+			if(!isBlade(((Player)event.getAttackerEntity()).getItemInHand()))
 				return;
 			
 			Hero hero = plugin.getCharacterManager().getHero((Player) event.getAttackerEntity());
