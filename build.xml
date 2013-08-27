@@ -67,6 +67,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSlash/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSlitThroat/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSmoke/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillSneakAttack/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSnipe/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSpineSplit/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSprint/build.xml" target="makejar" />
