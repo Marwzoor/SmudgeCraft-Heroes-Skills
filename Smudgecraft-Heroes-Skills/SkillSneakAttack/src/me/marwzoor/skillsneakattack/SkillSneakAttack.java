@@ -68,7 +68,7 @@ public class SkillSneakAttack extends PassiveSkill
 		}
 		
 		@EventHandler
-		public void onWeapeveonDamageEvent(WeaponDamageEvent event)
+		public void onWeaponDamageEvent(WeaponDamageEvent event)
 		{
 			if(event.isCancelled())
 				return;
@@ -91,11 +91,6 @@ public class SkillSneakAttack extends PassiveSkill
 				return;
 			
 			Hero tHero = plugin.getCharacterManager().getHero((Player) event.getEntity());
-			
-			if(tHero.hasEffect("Blind"))
-			{
-				tHero.removeEffect(tHero.getEffect("Blind"));
-			}
 			
 			int duration = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, 3000, false)
 					+ (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION_INCREASE, 50, false) * hero.getSkillLevel(skill)));
@@ -138,6 +133,7 @@ public class SkillSneakAttack extends PassiveSkill
 		public void removeFromHero(Hero hero)
 		{
 			super.removeFromHero(hero);
+			hero.getEntity().removePotionEffect(PotionEffectType.BLINDNESS);
 			Messaging.send(hero.getPlayer(), "You are no longer " + ChatColor.WHITE + "Blinded" + ChatColor.GRAY + "!");
 		}
 	}
