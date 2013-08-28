@@ -6,12 +6,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.herocraftonline.heroes.Heroes;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.effects.ExpirableEffect;
 import com.herocraftonline.heroes.characters.skill.PassiveSkill;
@@ -26,7 +26,7 @@ public class SkillSneakAttack extends PassiveSkill
 	public SkillSneakAttack(Heroes instance)
 	{
 		super(instance, "SneakAttack");
-		setDescription("Striking your enemy with the back of your blade from behind while stealthed have a chance of blinding them for %1 seconds. (right-click with sword) D: %2 C: %3");
+		setDescription("Striking your enemy with your blade from behind while stealthed blinds them for %1 seconds. D: %2");
 		setIdentifiers(new String[] { "skill sneakattack" });
 		setTypes(new SkillType[] { SkillType.STEALTHY, SkillType.DEBUFF});
 	
@@ -37,16 +37,14 @@ public class SkillSneakAttack extends PassiveSkill
 	{
 		if(hero.hasAccessToSkill(this))
 		{
-			int duration = SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, 3000, false)/1000;
+			int duration = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, 3000, false)
+					+ (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, 50, false) * hero.getSkillLevel(this)))/1000;
 			
-			double chance = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.CHANCE, 0.5D, false)
-					+ (SkillConfigManager.getUseSetting(hero, this, "chance-increase", 0.001D, false) * hero.getSkillLevel(this))) * 100;
-			
-			return super.getDescription().replace("%1", duration + "").replace("%2", duration + "s").replace("%3", chance + "%");
+			return super.getDescription().replace("%1", duration + "").replace("%2", duration + "s");
 		}
 		else
 		{
-			return super.getDescription().replace("%1", "X").replace("%2", "Xs").replace("%3", "X").replace("%4", "Xs").replace("%5", "X%");
+			return super.getDescription().replace("%1", "X").replace("%2", "Xs");
 		}
 	}
 	
@@ -54,8 +52,7 @@ public class SkillSneakAttack extends PassiveSkill
 	{
 		ConfigurationSection node = super.getDefaultConfig();
 		node.set(SkillSetting.DURATION.node(), 3000);
-		node.set(SkillSetting.CHANCE.node(), 0.5D);
-		node.set("chance-increase", 0.001D);
+		node.set(SkillSetting.DURATION_INCREASE.node(), 50);
 		return node;
 	}
 	
@@ -71,39 +68,37 @@ public class SkillSneakAttack extends PassiveSkill
 		}
 		
 		@EventHandler
-		public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event)
+		public void onWeapeveonDamageEvent(WeaponDamageEvent event)
 		{
 			if(event.isCancelled())
 				return;
 			
-			if(!(event.getRightClicked() instanceof Player))
+			if(!(event.getAttackerEntity() instanceof Player))
 				return;
 			
-			if(event.getPlayer().getLocation().getDirection().dot(event.getRightClicked().getLocation().getDirection()) <= 0.0D)
+			if(!(event.getEntity() instanceof Player))
 				return;
 			
-			if(!isBlade(event.getPlayer().getItemInHand()))
+			if(event.getAttackerEntity().getLocation().getDirection().dot(event.getEntity().getLocation().getDirection()) <= 0.0D)
 				return;
 			
-			Hero hero = plugin.getCharacterManager().getHero(event.getPlayer());
+			if(!isBlade(((Player)event.getAttackerEntity()).getItemInHand()))
+				return;
+			
+			Hero hero = plugin.getCharacterManager().getHero((Player) event.getAttackerEntity());
 			
 			if(!hero.hasEffect("Stealth"))
 				return;
 			
-			double chance = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.CHANCE, 0.5D, false)
-					+ (SkillConfigManager.getUseSetting(hero, skill, "chance-increase", 0.001D, false) * hero.getSkillLevel(skill));
-			
-			if(!(Math.random()<=chance))
-				return;
-			
-			Hero tHero = plugin.getCharacterManager().getHero((Player) event.getRightClicked());
+			Hero tHero = plugin.getCharacterManager().getHero((Player) event.getEntity());
 			
 			if(tHero.hasEffect("Blind"))
 			{
 				tHero.removeEffect(tHero.getEffect("Blind"));
 			}
 			
-			int duration = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, 3000, false);
+			int duration = (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION, 3000, false)
+					+ (SkillConfigManager.getUseSetting(hero, skill, SkillSetting.DURATION_INCREASE, 50, false) * hero.getSkillLevel(skill)));
 			
 			tHero.addEffect(new BlindEffect(skill, duration));
 			
