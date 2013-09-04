@@ -2,8 +2,9 @@ package me.marwzoor.skillcompanion;
 
 import java.util.Random;
 
-import net.smudgecraft.heroeslib.companions.ComWolf;
-import net.smudgecraft.heroeslib.HeroesLib;
+import net.smudgecraft.heroeslib.companions.CompanionPlayer;
+import net.smudgecraft.heroeslib.companions.Companions;
+import net.smudgecraft.heroeslib.companions.companiontypes.Companion;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,12 +12,11 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
@@ -30,13 +30,11 @@ import com.herocraftonline.heroes.util.Messaging;
 
 public class SkillCompanion extends ActiveSkill
 {
-	public static Heroes plugin;
 	public static SkillCompanion skill;
 	
 	public SkillCompanion(Heroes instance)
 	{
 		super(instance, "Companion");
-		plugin=instance;
 		skill=this;
 		setDescription("You spawn your wolf companion to aid you in battle. HP: %1 DMG: %2");
 		setArgumentRange(0, 0);
@@ -48,14 +46,21 @@ public class SkillCompanion extends ActiveSkill
 	
 	public String getDescription(Hero hero)
 	{
-		String desc = super.getDescription();
-		int health = SkillConfigManager.getUseSetting(hero, skill, "wolfhealth", Integer.valueOf(300), false);
-		health += SkillConfigManager.getUseSetting(hero, skill, "wolfhealth-increase", Integer.valueOf(5), false) * hero.getSkillLevel(skill);
-		double damage = SkillConfigManager.getUseSetting(hero, skill, "wolfdamage", Double.valueOf(40), false);
-		damage += SkillConfigManager.getUseSetting(hero, skill, "wolfdamage-increase", Double.valueOf(0.2), false) * hero.getSkillLevel(skill);
-		desc = desc.replace("%1", health + "");
-		desc = desc.replace("%2", damage + "");
-		return desc;
+		if(hero.hasAccessToSkill(skill))
+		{
+			String desc = super.getDescription();
+			int health = SkillConfigManager.getUseSetting(hero, skill, "wolfhealth", Integer.valueOf(300), false);
+			health += SkillConfigManager.getUseSetting(hero, skill, "wolfhealth-increase", Integer.valueOf(5), false) * hero.getSkillLevel(skill);
+			double damage = SkillConfigManager.getUseSetting(hero, skill, "wolfdamage", Double.valueOf(40), false);
+			damage += SkillConfigManager.getUseSetting(hero, skill, "wolfdamage-increase", Double.valueOf(0.2), false) * hero.getSkillLevel(skill);
+			desc = desc.replace("%1", health + "");
+			desc = desc.replace("%2", damage + "");
+			return desc;
+		}
+		else
+		{
+			return super.getDescription().replace("%1", "X").replace("%2", "X");
+		}
 	}
 	
 	public ConfigurationSection getDefaultDescription()
@@ -78,23 +83,19 @@ public class SkillCompanion extends ActiveSkill
 		
 		Player player = hero.getPlayer();
 		
-		if(HeroesLib.cwolves.hasWolf(player))
+		if(!Companions.getPlayerManager().contains(player))
+		{
+			player.sendMessage(ChatColor.RED + "You are not a CompanionPlayer, tell the admins about this.");
+			return SkillResult.FAIL;
+		}
+		
+		CompanionPlayer cplayer = Companions.getPlayerManager().getCompanionPlayer(player);
+		
+		if(hasWolfCompanion(cplayer))
 		{
 			Messaging.send(player, ChatColor.RED + "You already have your companion spawned!");
 			
 			return SkillResult.CANCELLED;
-		}
-		
-		FileConfiguration config = HeroesLib.getFileConfig();
-		
-		if(!config.contains("players"))
-		{
-			config.createSection("players");
-		}
-		
-		if(config.getConfigurationSection("players").contains(player.getName()) && config.getConfigurationSection("players").getString(player.getName() + ".wolf.name")!=null)
-		{
-			name = config.getConfigurationSection("players").getString(player.getName() + ".wolf.name");
 		}
 		
 		Location loc = hero.getPlayer().getLocation();
@@ -105,9 +106,9 @@ public class SkillCompanion extends ActiveSkill
 		double damage = SkillConfigManager.getUseSetting(hero, skill, "wolfdamage", Double.valueOf(40), false);
 		damage += SkillConfigManager.getUseSetting(hero, skill, "wolfdamage-increase", Double.valueOf(0.2), false) * hero.getSkillLevel(skill);
 		
-		ComWolf cwolf = HeroesLib.spawnNewComWolf(loc, player.getName(), maxhealth, (int) damage, maxhealth, name, DyeColor.BLUE);
+		Companion cwolf = new Companion(EntityType.WOLF.toString(), player.getName(), "0", name, damage, maxhealth, maxhealth, loc, randomDyeColor());
 		
-		HeroesLib.saveWolf(cwolf);
+		cplayer.addCompanion(cwolf);
 		
 		Messaging.send(hero.getPlayer(), "You have summoned your" + ChatColor.WHITE + " Companion " + ChatColor.GRAY + "to aid you in battle!", new Object());
 		
@@ -123,9 +124,27 @@ public class SkillCompanion extends ActiveSkill
 			{
 				Hero hero = event.getHero();
 				Player player = hero.getPlayer();
-				if(HeroesLib.cwolves.hasWolf(player))
-				{
-					ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
+				
+				if(!Companions.getPlayerManager().contains(player))
+					return;
+				
+				CompanionPlayer cplayer = Companions.getPlayerManager().getCompanionPlayer(player);
+				
+				if(hasWolfCompanion(cplayer))
+				{				
+					Companion cwolf = null;
+					
+					for(Companion c : cplayer.getCompanions())
+					{
+						if(c.getLivingEntity()!=null && c.getLivingEntity() instanceof Wolf)
+						{
+							cwolf=c;
+							continue;
+						}
+					}
+					
+					if(cwolf==null)
+						return;
 					
 					int maxhealth = SkillConfigManager.getUseSetting(hero, skill, "wolfhealth", Integer.valueOf(300), false);
 					maxhealth += SkillConfigManager.getUseSetting(hero, skill, "wolfhealth-increase", Integer.valueOf(5), false) * hero.getSkillLevel(skill);
@@ -137,8 +156,6 @@ public class SkillCompanion extends ActiveSkill
 					cwolf.setHealth(maxhealth);
 					
 					cwolf.setDamage((int) damage);
-					
-					HeroesLib.saveWolf(cwolf);
 				}
 			}
 		}
@@ -147,76 +164,55 @@ public class SkillCompanion extends ActiveSkill
 		public void onHeroChangeClassEvent(ClassChangeEvent event)
 		{
 			final Hero hero = event.getHero();
+			
+			if(Companions.getPlayerManager().contains(hero.getPlayer()))
+				return;
+			
 			if(event.getFrom().getSkillNames().contains("companion"))
 			{
 				if(event.getTo().isPrimary())
 				{
-					if(HeroesLib.cwolves.hasWolf(hero.getPlayer()))
+					if(hasWolfCompanion(Companions.getPlayerManager().getCompanionPlayer(hero.getPlayer())))
 					{
 						if(!event.getTo().getSkillNames().contains("companion"))
 						{
-							ComWolf cwolf = HeroesLib.cwolves.getComWolf(hero.getPlayer());
-							cwolf.kill();
-							cwolf.getLocation().getWorld().playSound(cwolf.getLocation(), Sound.WOLF_WHINE, 10, 1);
-							hero.getPlayer().sendMessage(ChatColor.GRAY + "Your " + ChatColor.WHITE + "Companion" + ChatColor.GRAY + " is very sad because it has to leave you now...");
-							HeroesLib.cwolves.removeComWolf(cwolf);
+							for(Companion c : Companions.getPlayerManager().getCompanionPlayer(hero.getPlayer()).getCompanions())
+							{
+								c.getLocation().getWorld().playSound(c.getLocation(), Sound.WOLF_WHINE, 10, 1);
+								c.getLivingEntity().remove();
+								hero.getPlayer().sendMessage(ChatColor.GRAY + "Your " + ChatColor.WHITE + "Companion" + ChatColor.GRAY + " is very sad because it has to leave you now...");
+								Companions.getPlayerManager().getCompanionPlayer(hero.getPlayer()).removeCompanion(c);
+							}
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	public boolean hasWolfCompanion(CompanionPlayer cplayer)
+	{
+		return getAmountOfWolves(cplayer)!=0;
+	}
+	
+	public int getAmountOfWolves(CompanionPlayer cplayer)
+	{
+		int i = 0;
 		
-		@EventHandler
-		public void onPlayerJoinEvent(PlayerJoinEvent event)
+		for(Companion c : cplayer.getCompanions())
 		{
-			Player player = event.getPlayer();
-			Hero hero = plugin.getCharacterManager().getHero(player);
-			
-			if(hero.hasAccessToSkill("Companion"))
-			{		
-				FileConfiguration config = HeroesLib.getFileConfig();
-				
-				ConfigurationSection players = config.getConfigurationSection("players");
-				
-				String pname = player.getName();
-				
-				if(players.contains(pname + ".wolf.location.world"))
-				{
-				int health = players.getInt(pname + ".wolf.health");
-				int maxhealth = players.getInt(pname + ".wolf.maxhealth");
-				String name = players.getString(pname + ".wolf.name");
-				String owner = pname;
-				int damage = players.getInt(pname + ".wolf.damage");
-				
-				if(health!=0)
-				{
-				ComWolf cwolf = HeroesLib.spawnNewComWolf(player.getLocation(), owner, maxhealth, (int) damage, health, name, DyeColor.BLUE);
-				
-				HeroesLib.saveWolf(cwolf);
-				}
-				}
-			}
+			if(c.getLivingEntity() != null && c.getLivingEntity() instanceof Wolf)
+				++i;
 		}
 		
-		@EventHandler
-		public void onPlayerQuitEvent(PlayerQuitEvent event)
-		{
-			Player player = event.getPlayer();
-			Hero hero = plugin.getCharacterManager().getHero(player);
-			
-			if(hero.hasAccessToSkill("Companion"))
-			{
-				if(HeroesLib.cwolves.hasWolf(player))
-				{
-					ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
-					
-					HeroesLib.saveWolf(cwolf);
-					
-					cwolf.kill();
-					
-					HeroesLib.cwolves.removeComWolf(cwolf);
-				}
-			}
-		}
+		return i;
+	}
+	
+	public DyeColor randomDyeColor()
+	{
+		int i = DyeColor.values().length;
+		int r = new Random().nextInt(i);
+		
+		return DyeColor.values()[r];
 	}
 }
