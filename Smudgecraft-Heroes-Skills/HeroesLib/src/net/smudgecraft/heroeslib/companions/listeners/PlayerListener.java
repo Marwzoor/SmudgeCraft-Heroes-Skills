@@ -1,8 +1,6 @@
 package net.smudgecraft.heroeslib.companions.listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
@@ -16,9 +14,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
+import net.smudgecraft.heroeslib.companions.Companion;
 import net.smudgecraft.heroeslib.companions.CompanionPlayer;
 import net.smudgecraft.heroeslib.companions.Companions;
-import net.smudgecraft.heroeslib.companions.companiontypes.Companion;
 
 import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 
@@ -40,18 +38,6 @@ public class PlayerListener implements Listener
 	public void onPlayerJoinEvent(PlayerJoinEvent event)
 	{
 		CompanionPlayer cplayer = Companions.getCompanionStorageManager().loadPlayer(event.getPlayer());
-		
-		int count = 0;
-		
-		for(Companion comp : cplayer.getCompanions())
-		{
-			if(Integer.parseInt(comp.getId())>=count)
-				count = Integer.parseInt(comp.getId())+1;
-		}
-		
-		Companion c = new Companion(EntityType.WOLF.getName(), event.getPlayer().getName(),Integer.toString(count), "§4Wolfie", 200D, 200D, 200D, cplayer.getPlayer().getLocation(), DyeColor.RED);
-		
-		cplayer.addCompanion(c);
 		
 		Companions.getPlayerManager().addCompanionPlayer(cplayer);
 	}

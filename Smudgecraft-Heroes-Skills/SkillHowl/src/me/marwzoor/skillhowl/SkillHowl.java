@@ -1,12 +1,13 @@
 package me.marwzoor.skillhowl;
 
-import net.smudgecraft.heroeslib.companions.ComWolf;
-import net.smudgecraft.heroeslib.HeroesLib;
+import net.smudgecraft.heroeslib.companions.Companion;
+import net.smudgecraft.heroeslib.companions.Companions;
 import net.smudgecraft.heroeslib.util.ParticleEffects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.herocraftonline.heroes.Heroes;
@@ -63,20 +64,23 @@ public class SkillHowl extends ActiveSkill
 	{
 		final Player player = hero.getPlayer();
 		
-		if(HeroesLib.cwolves.hasWolf(player))
+		if(Companions.getPlayerManager().getCompanionPlayer(player).hasCompanionOfType(EntityType.WOLF))
 		{
-			final ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
+			final Companion cwolf = Companions.getPlayerManager().getCompanionPlayer(player).getFirstCompanionOfType(EntityType.WOLF);
+			
+			if(cwolf==null)
+				return SkillResult.FAIL;
 			
 			int radius = SkillConfigManager.getUseSetting(hero, skill, "radius", Integer.valueOf(30), false);
 			
-			if(!player.getWorld().equals(cwolf.getWolf().getWorld()) || cwolf.getWolf().getLocation().distance(player.getLocation())>radius)
+			if(!player.getWorld().equals(cwolf.getLivingEntity().getWorld()) || cwolf.getLivingEntity().getLocation().distance(player.getLocation())>radius)
 			{
 				Messaging.send(player, "Your companion is too far away from you!");
 				return SkillResult.FAIL;
 			}
 			else
 			{
-				final int standarddamage = cwolf.getDamage();
+				final double standarddamage = cwolf.getDamage();
 				
 				double damageperc = SkillConfigManager.getUseSetting(hero, skill, "damage-percent", Double.valueOf(1.25), false);
 				damageperc += SkillConfigManager.getUseSetting(hero, skill, "damage-percent-increase", Double.valueOf(0.01), false) * hero.getSkillLevel(skill);
@@ -89,7 +93,7 @@ public class SkillHowl extends ActiveSkill
 				long dur = duration/1000;
 				dur = dur*20;
 				
-				cwolf.setDamage((int) damage);
+				cwolf.setDamage(damage);
 				
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
@@ -111,11 +115,11 @@ public class SkillHowl extends ActiveSkill
 				ParticleEffects pe = ParticleEffects.LAVA;
 				
 				try {
-					pe.sendToLocation(cwolf.getWolf().getEyeLocation(), 0, 0, 0, 1, 10);
+					pe.sendToLocation(cwolf.getLivingEntity().getEyeLocation(), 0, 0, 0, 1, 10);
 				} catch (Exception e) {
 				}
 				
-				cwolf.getWolf().getWorld().playSound(cwolf.getLocation(), Sound.WOLF_HOWL, 10F, 1);
+				cwolf.getLivingEntity().getWorld().playSound(cwolf.getLocation(), Sound.WOLF_HOWL, 10F, 1);
 				return SkillResult.NORMAL;
 			}
 		}

@@ -1,4 +1,4 @@
-package net.smudgecraft.heroeslib.companions.companiontypes;
+package net.smudgecraft.heroeslib.companions;
 
 import java.io.Serializable;
 
@@ -45,6 +45,6 @@ public class SerializableCompanion implements Serializable
 	
 	public Companion unserialize()
 	{
-		return new Companion(entityType, owner, id, name, damage, health, maxHealth, new Location(Bukkit.getWorld(worldName),x,y,z), DyeColor.getByDyeData(dyeData));
+		return new Companion(entityType, owner, id, name, damage, health, maxHealth, new Location(Bukkit.getWorld(worldName),x,y,z), DyeColor.getByDyeData(dyeData), true);
 	}
 }

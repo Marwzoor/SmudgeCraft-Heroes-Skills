@@ -1,4 +1,4 @@
-package net.smudgecraft.heroeslib.companions.companiontypes;
+package net.smudgecraft.heroeslib.companions;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,8 +27,9 @@ public class Companion
 	private double damage;
 	private String owner;
 	private String id;
+	private boolean shouldSave;
 	
-	public Companion(String entity, String owner, String id, String name, double damage, double health, double maxHealth, Location loc, DyeColor dc)
+	public Companion(String entity, String owner, String id, String name, double damage, double health, double maxHealth, Location loc, DyeColor dc, boolean shouldSave)
 	{
 		EntityType entityType = EntityType.fromName(entity);
 		
@@ -51,6 +52,7 @@ public class Companion
 		this.damage=damage;
 		this.owner=owner;
 		this.id=id;
+		this.shouldSave=shouldSave;
 		
 		if(livingEntity instanceof Wolf)
 		{
@@ -60,6 +62,16 @@ public class Companion
 			
 			wolf.setCollarColor(dc);
 		}
+	}
+	
+	public void setShouldSave(boolean bool)
+	{
+		this.shouldSave=bool;
+	}
+	
+	public boolean shouldSave()
+	{
+		return this.shouldSave;
 	}
 	
 	public boolean hasCustomDamage()

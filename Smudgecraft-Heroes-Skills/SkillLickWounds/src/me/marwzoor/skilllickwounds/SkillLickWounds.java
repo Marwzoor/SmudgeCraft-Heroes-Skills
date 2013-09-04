@@ -1,10 +1,11 @@
 package me.marwzoor.skilllickwounds;
 
-import net.smudgecraft.heroeslib.companions.ComWolf;
-import net.smudgecraft.heroeslib.HeroesLib;
+import net.smudgecraft.heroeslib.companions.Companion;
+import net.smudgecraft.heroeslib.companions.Companions;
 
 import org.bukkit.EntityEffect;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.herocraftonline.heroes.Heroes;
@@ -52,17 +53,20 @@ public class SkillLickWounds extends ActiveSkill
 	{
 		Player player = hero.getPlayer();
 		
-		if(HeroesLib.cwolves.hasWolf(player))
+		if(Companions.getPlayerManager().getCompanionPlayer(player).hasCompanionOfType(EntityType.WOLF))
 		{
-			ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
+			Companion cwolf = Companions.getPlayerManager().getCompanionPlayer(player).getFirstCompanionOfType(EntityType.WOLF);
 			
-			if(cwolf.getWolf().getLocation().distance(player.getLocation())<25)
+			if(cwolf==null)
+				return SkillResult.FAIL;
+			
+			if(cwolf.getLivingEntity().getLocation().distance(player.getLocation())<25)
 			{
 				double heal = SkillConfigManager.getUseSetting(hero, skill, "heal", Double.valueOf(50), false);
 				heal += SkillConfigManager.getUseSetting(hero, skill, "heal-increase", Double.valueOf(1), false) * hero.getSkillLevel(skill);
 				
-				cwolf.heal((int) heal);
-				cwolf.getWolf().playEffect(EntityEffect.WOLF_SHAKE);
+				cwolf.heal(heal);
+				cwolf.getLivingEntity().playEffect(EntityEffect.WOLF_SHAKE);
 				
 				Messaging.send(player, "Your companion licks its wounds!");
 				

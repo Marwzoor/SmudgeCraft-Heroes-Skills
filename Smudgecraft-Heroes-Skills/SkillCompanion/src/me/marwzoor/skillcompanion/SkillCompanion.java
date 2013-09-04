@@ -2,9 +2,9 @@ package me.marwzoor.skillcompanion;
 
 import java.util.Random;
 
+import net.smudgecraft.heroeslib.companions.Companion;
 import net.smudgecraft.heroeslib.companions.CompanionPlayer;
 import net.smudgecraft.heroeslib.companions.Companions;
-import net.smudgecraft.heroeslib.companions.companiontypes.Companion;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -91,7 +91,7 @@ public class SkillCompanion extends ActiveSkill
 		
 		CompanionPlayer cplayer = Companions.getPlayerManager().getCompanionPlayer(player);
 		
-		if(hasWolfCompanion(cplayer))
+		if(cplayer.hasCompanionOfType(EntityType.WOLF))
 		{
 			Messaging.send(player, ChatColor.RED + "You already have your companion spawned!");
 			
@@ -106,7 +106,7 @@ public class SkillCompanion extends ActiveSkill
 		double damage = SkillConfigManager.getUseSetting(hero, skill, "wolfdamage", Double.valueOf(40), false);
 		damage += SkillConfigManager.getUseSetting(hero, skill, "wolfdamage-increase", Double.valueOf(0.2), false) * hero.getSkillLevel(skill);
 		
-		Companion cwolf = new Companion(EntityType.WOLF.toString(), player.getName(), "0", name, damage, maxhealth, maxhealth, loc, randomDyeColor());
+		Companion cwolf = new Companion(EntityType.WOLF.toString(), player.getName(), "0", name, damage, maxhealth, maxhealth, loc, randomDyeColor(), true);
 		
 		cplayer.addCompanion(cwolf);
 		
@@ -130,7 +130,7 @@ public class SkillCompanion extends ActiveSkill
 				
 				CompanionPlayer cplayer = Companions.getPlayerManager().getCompanionPlayer(player);
 				
-				if(hasWolfCompanion(cplayer))
+				if(cplayer.hasCompanionOfType(EntityType.WOLF))
 				{				
 					Companion cwolf = null;
 					
@@ -172,7 +172,7 @@ public class SkillCompanion extends ActiveSkill
 			{
 				if(event.getTo().isPrimary())
 				{
-					if(hasWolfCompanion(Companions.getPlayerManager().getCompanionPlayer(hero.getPlayer())))
+					if(Companions.getPlayerManager().getCompanionPlayer(hero.getPlayer()).hasCompanionOfType(EntityType.WOLF))
 					{
 						if(!event.getTo().getSkillNames().contains("companion"))
 						{
@@ -188,24 +188,6 @@ public class SkillCompanion extends ActiveSkill
 				}
 			}
 		}
-	}
-	
-	public boolean hasWolfCompanion(CompanionPlayer cplayer)
-	{
-		return getAmountOfWolves(cplayer)!=0;
-	}
-	
-	public int getAmountOfWolves(CompanionPlayer cplayer)
-	{
-		int i = 0;
-		
-		for(Companion c : cplayer.getCompanions())
-		{
-			if(c.getLivingEntity() != null && c.getLivingEntity() instanceof Wolf)
-				++i;
-		}
-		
-		return i;
 	}
 	
 	public DyeColor randomDyeColor()

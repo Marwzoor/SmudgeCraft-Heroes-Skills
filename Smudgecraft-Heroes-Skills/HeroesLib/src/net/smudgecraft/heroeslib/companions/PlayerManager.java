@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import net.smudgecraft.heroeslib.companions.companiontypes.Companion;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

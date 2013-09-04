@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import net.smudgecraft.heroeslib.companions.companiontypes.Companion;
 
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class CompanionPlayer 
@@ -17,6 +18,76 @@ public class CompanionPlayer
 	{
 		this.player=player;
 		companions = new ArrayList<Companion>();
+	}
+	
+	public boolean hasCompanionOfType(EntityType entityType)
+	{
+		for(Companion c : companions)
+		{
+			if(c.getLivingEntity() != null && c.getLivingEntity().getType().equals(entityType))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean hasSpecificCompanion(LivingEntity livingEntity)
+	{
+		for(Companion c : companions)
+		{
+			if(c.getLivingEntity() != null && c.getLivingEntity().equals(livingEntity))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public Companion getCompanion(LivingEntity livingEntity)
+	{
+		for(Companion c : companions)
+		{
+			if(c.getLivingEntity() != null && c.getLivingEntity().equals(livingEntity))
+				return c;
+		}
+		
+		return null;
+	}
+	
+	public List<Companion> getCompanionsOfType(EntityType entityType)
+	{
+		List<Companion> comps = new ArrayList<Companion>();
+		
+		for(Companion c : companions)
+		{
+			if(c.getLivingEntity() != null && c.getLivingEntity().getType().equals(entityType))
+				comps.add(c);
+		}
+		
+		return comps;
+	}
+	
+	public int getAmountOfType(EntityType entityType)
+	{
+		int count=0;
+		
+		for(Companion c : companions)
+		{
+			if(c.getLivingEntity() != null && c.getLivingEntity().getType().equals(entityType))
+				++count;
+		}
+		
+		return count;
+	}
+	
+	public Companion getFirstCompanionOfType(EntityType entityType)
+	{
+		for(Companion c : companions)
+		{
+			if(c.getLivingEntity() != null && c.getLivingEntity().getType().equals(entityType))
+				return c;
+		}
+		
+		return null;
 	}
 	
 	public Player getPlayer()

@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.zip.ZipInputStream;
 
 import net.smudgecraft.heroeslib.HeroesLib;
-import net.smudgecraft.heroeslib.companions.companiontypes.Companion;
-import net.smudgecraft.heroeslib.companions.companiontypes.SerializableCompanion;
 
 import org.bukkit.entity.Player;
 
@@ -34,7 +32,10 @@ public class CompanionStorageManager
 			{
 				for(Companion c : Companions.getPlayerManager().getCompanionPlayer(p).getCompanions())
 				{
-					c.save();
+					if(c.shouldSave())
+					{
+						c.save();
+					}
 				}
 			}
 		}
@@ -46,7 +47,10 @@ public class CompanionStorageManager
 		{
 			for(Companion c : cplayer.getCompanions())
 			{
-				c.save();
+				if(c.shouldSave())
+				{
+					c.save();
+				}
 			}
 		}
 	}
@@ -57,7 +61,10 @@ public class CompanionStorageManager
 		{
 			for(Companion c : Companions.getPlayerManager().getCompanionPlayer(player).getCompanions())
 			{
-				c.save();
+				if(c.shouldSave())
+				{
+					c.save();
+				}
 			}
 		}
 	}
@@ -66,7 +73,10 @@ public class CompanionStorageManager
 	{
 		for(Companion c : cplayer.getCompanions())
 		{
-			c.save();
+			if(c.shouldSave())
+			{
+				c.save();
+			}
 		}
 	}
 	

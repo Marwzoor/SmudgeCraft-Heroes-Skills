@@ -1,10 +1,13 @@
 package me.marwzoor.skillenrage;
 
-import net.smudgecraft.heroeslib.companions.ComWolf;
-import net.smudgecraft.heroeslib.HeroesLib;
+import net.smudgecraft.heroeslib.companions.Companion;
+import net.smudgecraft.heroeslib.companions.CompanionPlayer;
+import net.smudgecraft.heroeslib.companions.Companions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
@@ -55,13 +58,24 @@ public class SkillEnrage extends ActiveSkill
 	{
 		final Player player = hero.getPlayer();
 		
-		if(HeroesLib.cwolves.hasWolf(player))
+		if(Companions.getPlayerManager().contains(player))
 		{
-			final ComWolf cwolf = HeroesLib.cwolves.getComWolf(player);
+			player.sendMessage(ChatColor.RED + "You are not a CompanionPlayer, contact the admins about this.");
+			return SkillResult.FAIL;
+		}
+		
+		CompanionPlayer cplayer = Companions.getPlayerManager().getCompanionPlayer(player);
+		
+		if(cplayer.hasCompanionOfType(EntityType.WOLF))
+		{
+			final Companion cwolf = cplayer.getFirstCompanionOfType(EntityType.WOLF);
+			
+			if(cwolf==null)
+				return SkillResult.FAIL;
 			
 			int radius = SkillConfigManager.getUseSetting(hero, this, "radius", 30, false);
 			
-			if(!player.getWorld().equals(cwolf.getWolf().getWorld()) || cwolf.getWolf().getLocation().distance(player.getLocation())>radius)
+			if(!player.getWorld().equals(cwolf.getLivingEntity().getWorld()) || cwolf.getLivingEntity().getLocation().distance(player.getLocation())>radius)
 			{
 				Messaging.send(player, "Your companion is too far away from you!");
 				return SkillResult.FAIL;
@@ -74,7 +88,7 @@ public class SkillEnrage extends ActiveSkill
 				int dur = duration/1000;
 				dur = dur*20;
 				
-				cwolf.addPotionEffect(PotionEffectType.SPEED, dur, 1);
+				cwolf.getLivingEntity().addPotionEffect(PotionEffectType.SPEED.createEffect(dur, 1));
 				
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 				{
