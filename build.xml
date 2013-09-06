@@ -13,6 +13,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillAdrenaline/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillAggressiveCombos/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillAgility/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillArachneNightmare/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillArrowRain/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillAxeThrow/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillBloodBath/build.xml" target="makejar" />
@@ -51,6 +52,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillPoisonDart/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillPulverize/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRageRoar/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillRaiseMinions/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRapidFire/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRavingSlice/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRecklessSlam/build.xml" target="makejar" />
@@ -81,6 +83,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTrack/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTrinityShot/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTaunt/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillUndeadArchers/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillVault/build.xml" target="makejar" />
 	</target>
 	
