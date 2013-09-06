@@ -17,6 +17,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillArrowRain/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillAxeThrow/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillBloodBath/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillBloodMoon/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillBloodPact/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillBloodstorm/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCageofBlood/build.xml" target="makejar" />
