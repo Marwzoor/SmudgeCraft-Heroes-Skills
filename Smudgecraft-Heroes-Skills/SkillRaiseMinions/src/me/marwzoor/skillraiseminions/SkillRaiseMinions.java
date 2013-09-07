@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Zombie;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
@@ -35,7 +36,7 @@ public class SkillRaiseMinions extends ActiveSkill
 	{
 		super(instance, "RaiseMinions");
 		skill=this;
-		setDescription("You summon up to $X zombies with $Y health and $Z damage for $Q seconds. M: $1 CD: $2");
+		setDescription("You summon up to $X Zombies with $Y health and $Z damage for $Q seconds. M: $1 CD: $2");
 		setUsage("/skill raiseminions");
 		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill raiseminions" });
@@ -101,6 +102,7 @@ public class SkillRaiseMinions extends ActiveSkill
 		Location loc = b.getLocation().add(0,1,0);
 		CompanionPlayer cp = Companions.getPlayerManager().getCompanionPlayer(hero.getPlayer());
 		Companion cmp = new Companion(EntityType.ZOMBIE.getName(), hero.getName(), cp.getCompanions().size() + "", "", damage, health, health, loc, null, false);
+		((Zombie)cmp.getLivingEntity()).setBaby(true);
 		cp.addCompanion(cmp);
 		cmps.add(cmp);
 		if(amount > 1)
@@ -111,6 +113,7 @@ public class SkillRaiseMinions extends ActiveSkill
 				if(Math.random() > multiSpawn)
 					break;
 				Companion temp = new Companion(EntityType.ZOMBIE.getName(), hero.getName(), cp.getCompanions().size() + "", "", damage, health, health, loc, null, false);
+				((Zombie)temp.getLivingEntity()).setBaby(true);
 				cp.addCompanion(temp);
 				cmps.add(temp);
 			}
@@ -124,7 +127,7 @@ public class SkillRaiseMinions extends ActiveSkill
 		}
 		hero.addEffect(new RaiseMinionsEffect(this, duration, cmps));
 		broadcast(hero.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " + ChatColor.DARK_RED + hero.getName() + ChatColor.GRAY + 
-				" has raised " + cmps.size() + " zombie minions!");
+				" has raised " + ChatColor.WHITE + cmps.size() + ChatColor.DARK_GREEN + " Zombie" + ChatColor.GRAY + " minions!");
 		return SkillResult.NORMAL;
 	}
 	
@@ -156,7 +159,7 @@ public class SkillRaiseMinions extends ActiveSkill
 				itr.remove();
 			}
 			if(check)
-				Messaging.send(hero.getPlayer(), "Your zombie minions has perished!");
+				Messaging.send(hero.getPlayer(), "Your " + ChatColor.DARK_GREEN + "Zombie" + ChatColor.GRAY + " minions has perished!");
 			super.removeFromHero(hero);
 		}
 	}

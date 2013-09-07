@@ -123,7 +123,7 @@ public class SkillDemonicKnights extends ActiveSkill
 		}
 		hero.addEffect(new DemonicKnightsEffect(this, duration, cmps));
 		broadcast(hero.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " + ChatColor.DARK_RED + hero.getName() + ChatColor.GRAY + 
-				" has summoned two Demonic Knights!");
+				" has summoned " + ChatColor.WHITE + "2" + ChatColor.DARK_GREEN + " Demonic Knights" + ChatColor.GRAY + "!");
 		return SkillResult.NORMAL;
 	}
 	
@@ -155,7 +155,7 @@ public class SkillDemonicKnights extends ActiveSkill
 				itr.remove();
 			}
 			if(check)
-				Messaging.send(hero.getPlayer(), "Your Demonic Knights has perished!");
+				Messaging.send(hero.getPlayer(), "Your " + ChatColor.DARK_GREEN + "Demonic Knights" + ChatColor.GRAY + " has perished!");
 			super.removeFromHero(hero);
 		}
 	}

@@ -35,7 +35,7 @@ public class SkillArachneNightmare extends ActiveSkill
 	{
 		super(instance, "ArachneNightmare");
 		skill=this;
-		setDescription("You summon up to $X spiders with $Y health and $Z damage for $Q seconds. M: $1 CD: $2");
+		setDescription("You summon up to $X Nightmare Spiders with $Y health and $Z damage for $Q seconds. M: $1 CD: $2");
 		setUsage("/skill arachnenightmare");
 		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill arachnenightmare" });
@@ -124,7 +124,7 @@ public class SkillArachneNightmare extends ActiveSkill
 		}
 		hero.addEffect(new ArachneNightmareEffect(this, duration, cmps));
 		broadcast(hero.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " + ChatColor.DARK_RED + hero.getName() + ChatColor.GRAY + 
-				" has summoned " + cmps.size() + " nightmare spiders!");
+				" has summoned " + ChatColor.WHITE + cmps.size() + ChatColor.DARK_GREEN + " Nightmare Spiders!");
 		return SkillResult.NORMAL;
 	}
 	
@@ -156,7 +156,7 @@ public class SkillArachneNightmare extends ActiveSkill
 				itr.remove();
 			}
 			if(check)
-				Messaging.send(hero.getPlayer(), "Your spider minions has perished!");
+				Messaging.send(hero.getPlayer(), "Your " + ChatColor.DARK_GREEN + "Nightmare Spiders " + ChatColor.GRAY + " has perished!");
 			super.removeFromHero(hero);
 		}
 	}

@@ -1,7 +1,10 @@
 package net.smudgecraft.heroeslib.companions.listeners;
 
+import java.util.Iterator;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
@@ -61,24 +64,58 @@ public class PlayerListener implements Listener
 		if(!(event.getAttackerEntity() instanceof LivingEntity))
 			return;
 		
-		if(!Companions.getPlayerManager().hasOwner((LivingEntity) event.getAttackerEntity()))
-			return;
-		
-		Companion companion = (Companion) Companions.getPlayerManager().getCompanionByEntity((LivingEntity) event.getAttackerEntity());
-		
-		if(!companion.hasCustomDamage())
-			return;
-		
-		if(event.getEntity() instanceof Player)
+		if(event.getAttackerEntity() instanceof Player)
 		{
-			if(Companions.getPlayerManager().getCompanionPlayer(companion).getPlayer().equals(event.getEntity()))
-			{
-				event.setCancelled(true);
+			if(!(event.getEntity() instanceof LivingEntity))
 				return;
+			CompanionPlayer cp = Companions.getPlayerManager().getCompanionPlayer((Player)event.getAttackerEntity());
+			if(!cp.hasCompanion())
+				return;
+			Iterator<Companion> itr = cp.getCompanions().iterator();
+			while(itr.hasNext())
+			{
+				LivingEntity temp = itr.next().getLivingEntity();
+				if(!(temp instanceof Monster))
+					continue;
+				((Monster)temp).setTarget((LivingEntity)event.getEntity());
 			}
 		}
+		else
+		{
+			if(event.getEntity() instanceof Player)
+			{
+				CompanionPlayer cp = Companions.getPlayerManager().getCompanionPlayer((Player)event.getEntity());
+				if(!cp.hasCompanion())
+					return;
+				Iterator<Companion> itr = cp.getCompanions().iterator();
+				while(itr.hasNext())
+				{
+					LivingEntity temp = itr.next().getLivingEntity();
+					if(!(temp instanceof Monster))
+						continue;
+					((Monster)temp).setTarget((LivingEntity)event.getAttackerEntity());
+				}
+			}
+			
+			if(!Companions.getPlayerManager().hasOwner((LivingEntity) event.getAttackerEntity()))
+				return;
 		
-		event.setDamage(companion.getDamage());
+			Companion companion = (Companion) Companions.getPlayerManager().getCompanionByEntity((LivingEntity) event.getAttackerEntity());
+			
+			if(!companion.hasCustomDamage())
+				return;
+			
+			if(event.getEntity() instanceof Player)
+			{
+				if(Companions.getPlayerManager().getCompanionPlayer(companion).getPlayer().equals(event.getEntity()))
+				{
+					event.setCancelled(true);
+					return;
+				}
+			}
+			
+			event.setDamage(companion.getDamage());
+		}
 	}
 	
 	@EventHandler

@@ -31,13 +31,13 @@ import com.herocraftonline.heroes.util.Messaging;
 
 public class SkillUndeadArchers extends ActiveSkill
 {
-public static SkillUndeadArchers skill;	
+	public static SkillUndeadArchers skill;	
 	
 	public SkillUndeadArchers(Heroes instance)
 	{
 		super(instance, "UndeadArchers");
 		skill=this;
-		setDescription("You summon up to $X dead archers with $Y health and $Z damage for $Q seconds. M: $1 CD: $2");
+		setDescription("You summon up to $X Dead Archers with $Y health and $Z damage for $Q seconds. M: $1 CD: $2");
 		setUsage("/skill undeadarchers");
 		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill undeadarchers" });
@@ -128,7 +128,7 @@ public static SkillUndeadArchers skill;
 		}
 		hero.addEffect(new UndeadArchersEffect(this, duration, cmps));
 		broadcast(hero.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] " + ChatColor.DARK_RED + hero.getName() + ChatColor.GRAY + 
-				" has raised " + cmps.size() + " undead archer!");
+				" has raised " + ChatColor.WHITE + cmps.size() + ChatColor.DARK_GREEN + " Undead Archer" + ChatColor.GRAY + "!");
 		return SkillResult.NORMAL;
 	}
 	
@@ -160,7 +160,7 @@ public static SkillUndeadArchers skill;
 				itr.remove();
 			}
 			if(check)
-				Messaging.send(hero.getPlayer(), "Your skeleton minions has perished!");
+				Messaging.send(hero.getPlayer(), "Your " + ChatColor.DARK_GREEN + "Undead Archers" + ChatColor.GRAY + " has perished!");
 			super.removeFromHero(hero);
 		}
 	}

@@ -5,6 +5,7 @@ import net.smudgecraft.heroeslib.util.ParticleEffects;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +13,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
+import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.effects.PeriodicDamageEffect;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
@@ -121,6 +123,21 @@ public class SkillUndead extends ActiveSkill
 				event.setCancelled(true);
 				return;
 			}
+		}
+		
+		@EventHandler
+		public void onWeaponDamageEvent(WeaponDamageEvent event)
+		{
+			Entity en = event.getAttackerEntity();
+			if(!(en instanceof Player))
+				return;
+			Entity target = event.getEntity();
+			if(target instanceof Player || !(target instanceof Monster))
+				return;
+			Hero hero = plugin.getCharacterManager().getHero((Player)en);
+			if(!hero.hasEffect("Undead"))
+				return;
+			((Monster)target).setTarget(hero.getPlayer());
 		}
 	}
 }
