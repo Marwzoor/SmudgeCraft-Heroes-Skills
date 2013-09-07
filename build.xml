@@ -53,6 +53,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillParry/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillPinDown/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillPoisonDart/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillPoisonedTip/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillPulverize/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRageRoar/build.xml" target="makejar" />
         <ant antfile="Smudgecraft-Heroes-Skills/SkillRaiseMinions/build.xml" target="makejar" />
