@@ -28,20 +28,20 @@ import com.herocraftonline.heroes.characters.skill.SkillType;
 
 public class SkillBloodMoon extends ActiveSkill
 {
-	public static SkillBloodMoon skill;	
-	
+	public static SkillBloodMoon skill;
+
 	public SkillBloodMoon(Heroes instance)
 	{
 		super(instance, "BloodMoon");
 		skill=this;
-		setDescription("You call upon the blood moon and your and your party members’ minions deal $X% more damage for $Y seconds. M: $1 CD: $2");
+		setDescription("You call upon the blood moon and your and your party members' minions deal $X% more damage for $Y seconds. M: $1 CD: $2");
 		setUsage("/skill bloodmoon");
 		setArgumentRange(0,0);
 		setIdentifiers(new String[] { "skill bloodmoon" });
 		setTypes(new SkillType[] { SkillType.BUFF });
 		Bukkit.getPluginManager().registerEvents(new BloodMoonLinstener(), plugin);
 	}
-	
+
 	public String getDescription(Hero hero)
 	{
 		if(hero.hasAccessToSkill(skill))
@@ -61,7 +61,7 @@ public class SkillBloodMoon extends ActiveSkill
 			return super.getDescription().replace("%1", "X");
 		}
 	}
-	
+
 	public ConfigurationSection getDefaultConfig()
 	{
 		ConfigurationSection node = super.getDefaultConfig();
@@ -71,7 +71,7 @@ public class SkillBloodMoon extends ActiveSkill
 		node.set("damage-percent-increase", 0.005);
 		return node;
 	}
-	
+
 	@Override
 	public SkillResult use(Hero hero, String[] args)
 	{
@@ -80,21 +80,21 @@ public class SkillBloodMoon extends ActiveSkill
 		double damagePercent = (SkillConfigManager.getUseSetting(hero, skill, "damage-percent", 0.5, false) +
 				(SkillConfigManager.getUseSetting(hero, skill, "damage-percent-increase", 0.005, false) * hero.getSkillLevel(skill)));
 		hero.addEffect(new BloodMoonEffect(this, (long) duration, damagePercent));
-		broadcast(hero.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] The Blood Moon has been summoned by " 
+		broadcast(hero.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] The Blood Moon has been summoned by "
 				+ ChatColor.DARK_RED + hero.getName() + ChatColor.GRAY + "!");
 		return SkillResult.NORMAL;
 	}
-	
+
 	public class BloodMoonEffect extends ExpirableEffect
 	{
 		protected double damagePercent;
-		
+
 		public BloodMoonEffect(Skill skill, long duration, double damagePercent)
 		{
 			super(skill, "BloodMoon", duration);
 			this.damagePercent = damagePercent;
 		}
-		
+
 		@Override
 		public void applyToHero(Hero hero)
 		{
@@ -122,22 +122,22 @@ public class SkillBloodMoon extends ActiveSkill
 			}
 			super.applyToHero(hero);
 		}
-		
+
 		@Override
 		public void applyToMonster(Monster monster)
 		{
 			super.applyToMonster(monster);
 		}
-		
+
 		@Override
 		public void removeFromHero(Hero hero)
 		{
-			broadcast(hero.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] The Blood Moon summoned by " + ChatColor.DARK_RED + 
+			broadcast(hero.getPlayer().getLocation(), ChatColor.GRAY + "[" + ChatColor.DARK_RED + "Skill" + ChatColor.GRAY + "] The Blood Moon summoned by " + ChatColor.DARK_RED +
 					hero.getName() + ChatColor.GRAY + " has disappeared!");
 			super.removeFromHero(hero);
 		}
 	}
-	
+
 	public class BloodMoonLinstener implements Listener
 	{
 		@EventHandler(priority = EventPriority.HIGH)
@@ -145,17 +145,17 @@ public class SkillBloodMoon extends ActiveSkill
 		{
 			if(!(event.getAttackerEntity() instanceof LivingEntity))
 				return;
-			
+
 			if(!Companions.getPlayerManager().hasOwner((LivingEntity) event.getAttackerEntity()))
 				return;
-			
+
 			Companion cmp = Companions.getPlayerManager().getCompanionByEntity((LivingEntity) event.getAttackerEntity());
-			
+
 			Monster monster = plugin.getCharacterManager().getMonster(cmp.getLivingEntity());
-			
+
 			if(!monster.hasEffect("BloodMoon"))
 				return;
-			
+
 			event.setDamage(cmp.getDamage() + (cmp.getDamage() * ((BloodMoonEffect)monster.getEffect("BloodMoon")).damagePercent));
 		}
 	}
