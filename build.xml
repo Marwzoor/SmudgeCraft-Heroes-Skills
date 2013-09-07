@@ -27,6 +27,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCompanion/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCounterAttack/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCritical/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillDarkWhip/build.xml" target="makejar" />
         <ant antfile="Smudgecraft-Heroes-Skills/SkillDemonicKnights/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillDualShot/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillEnrage/build.xml" target="makejar" />

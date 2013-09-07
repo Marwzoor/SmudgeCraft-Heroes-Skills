@@ -106,6 +106,7 @@ public class SkillDemonicKnights extends ActiveSkill
 		{
 			Companion cmp = new Companion(EntityType.SKELETON.getName(), hero.getName(), cp.getCompanions().size() + "", "", damage, health, health, loc, null, false);
 			((Skeleton)cmp.getLivingEntity()).setSkeletonType(SkeletonType.WITHER);
+			((Skeleton)cmp.getLivingEntity()).getEquipment().setItemInHand(new ItemStack(Material.IRON_SWORD));
 			((Skeleton)cmp.getLivingEntity()).getEquipment().setHelmet(new ItemStack(Material.IRON_HELMET));
 			((Skeleton)cmp.getLivingEntity()).getEquipment().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
 			((Skeleton)cmp.getLivingEntity()).getEquipment().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
