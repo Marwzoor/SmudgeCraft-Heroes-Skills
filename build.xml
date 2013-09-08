@@ -47,6 +47,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillHealingWord/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillLickWounds/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillLifeDrain/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillLightningbolt/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillMorality/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillMoribund/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillMotivatingWound/build.xml" target="makejar" />
