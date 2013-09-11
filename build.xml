@@ -45,6 +45,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFury/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillHeadshot/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillHealingWord/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillIcespike/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillLickWounds/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillLifeDrain/build.xml" target="makejar" />
         <ant antfile="Smudgecraft-Heroes-Skills/SkillLightningbolt/build.xml" target="makejar" />
