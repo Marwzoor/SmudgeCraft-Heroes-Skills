@@ -74,6 +74,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRuthless/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSacrifice/build.xml" target="makejar" />
         <ant antfile="Smudgecraft-Heroes-Skills/SkillScorch/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillSearingFlames/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSever/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSharpshooter/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillShield/build.xml" target="makejar" />
