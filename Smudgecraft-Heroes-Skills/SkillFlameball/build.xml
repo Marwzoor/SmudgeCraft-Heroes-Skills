@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="SkillFlameBall" default="makejar" basedir=".">
+<project name="SkillFlameball" default="makejar" basedir=".">
 	
 	<path id="classpath">
 		<fileset dir="libs" includes="**/*.jar"/>
@@ -11,17 +11,17 @@
 		<delete failonerror="false">
 			<fileset dir="bin" includes="**/*"/>
 		</delete>
-		<delete file="Skills/SkillFlameBall.jar"/>
+		<delete file="Skills/SkillFlameball.jar"/>
 		<mkdir dir="bin"/>
 	</target>
 	
 	<target name="compile">
-		<javac srcdir="Smudgecraft-Heroes-Skills/SkillFlameBall" destdir="bin" classpathref="classpath" includeantruntime="false"/>
-		<copy file="Smudgecraft-Heroes-Skills/SkillFlameBall/src/skill.info" tofile="bin/skill.info"/>
+		<javac srcdir="Smudgecraft-Heroes-Skills/SkillFlameball" destdir="bin" classpathref="classpath" includeantruntime="false"/>
+		<copy file="Smudgecraft-Heroes-Skills/SkillFlameball/src/skill.info" tofile="bin/skill.info"/>
 	</target>
 	
 	<target name="compress">
-		<jar jarfile="Skills/SkillFlameBall.jar" includes="**/*, skill.info" basedir="bin"/>
+		<jar jarfile="Skills/SkillFlameball.jar" includes="**/*, skill.info" basedir="bin"/>
 		<delete dir="bin"/>
 	</target>
 	
