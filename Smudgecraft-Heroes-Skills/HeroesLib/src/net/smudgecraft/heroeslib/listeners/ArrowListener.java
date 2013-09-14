@@ -11,6 +11,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 
 import com.herocraftonline.heroes.api.events.WeaponDamageEvent;
@@ -64,6 +66,19 @@ public class ArrowListener implements Listener
 				}
 			}
 		}
+	}
+	
+	@EventHandler
+	public void onEntityDamageEvent(EntityDamageEvent event)
+	{
+		if(!(event.getEntity() instanceof LivingEntity))
+			return;
+		if(!event.getCause().equals(DamageCause.FIRE_TICK))
+			return;
+		LivingEntity le = (LivingEntity)event.getEntity();
+		if(!HeroesLib.heroes.getCharacterManager().getCharacter(le).hasEffect("Burn"))
+			return;
+		event.setCancelled(true);
 	}
 	
 	public boolean hasImbueEffect(Hero hero)

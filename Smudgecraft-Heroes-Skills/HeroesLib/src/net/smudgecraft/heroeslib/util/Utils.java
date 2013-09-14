@@ -18,7 +18,6 @@ public class Utils
 		Location second_location = target.add(0, 1, 0);
 		Vector vector = second_location.toVector().subtract(first_location.toVector());
 		return vector;
-		
 	}
 	
     public static Entity getTarget(Player player)
@@ -95,7 +94,6 @@ public class Utils
         double ex, ey, ez;
         while (bItr.hasNext())
         {
- 
             block = bItr.next();
             bx = block.getX();
             by = block.getY();

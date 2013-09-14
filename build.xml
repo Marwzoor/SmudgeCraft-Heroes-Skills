@@ -21,6 +21,7 @@
         <ant antfile="Smudgecraft-Heroes-Skills/SkillBloodMoon/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillBloodPact/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillBloodstorm/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillBurningCorpse/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCageofBlood/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCamouflage/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillCleave/build.xml" target="makejar" />
@@ -36,6 +37,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFade/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFarsight/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFlameArrow/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillFlameBall/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFletchArrows/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFletchBow/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFocus/build.xml" target="makejar" />
@@ -45,6 +47,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFury/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillHeadshot/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillHealingWord/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillHeatWave/build.xml" target="makejar" />
         <ant antfile="Smudgecraft-Heroes-Skills/SkillIcespike/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillLickWounds/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillLifeDrain/build.xml" target="makejar" />
@@ -70,6 +73,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRushingBlood/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillRuthless/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSacrifice/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillScorch/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSever/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSharpshooter/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillShield/build.xml" target="makejar" />
