@@ -37,7 +37,7 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFade/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFarsight/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFlameArrow/build.xml" target="makejar" />
-        <ant antfile="Smudgecraft-Heroes-Skills/SkillFlameBall/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillFlameball/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFletchArrows/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFletchBow/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFocus/build.xml" target="makejar" />
