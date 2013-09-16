@@ -94,10 +94,11 @@
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillStormArrow/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillSwiftness/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTactics/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillTaunt/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillTeleport/build.xml" target="makejar" />
+		<ant antfile="Smudgecraft-Heroes-Skills/SkillTerror/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTrack/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillTrinityShot/build.xml" target="makejar" />
-		<ant antfile="Smudgecraft-Heroes-Skills/SkillTaunt/build.xml" target="makejar" />
-        <ant antfile="Smudgecraft-Heroes-Skills/SkillTerror/build.xml" target="makejar" />
         <ant antfile="Smudgecraft-Heroes-Skills/SkillTwinLash/build.xml" target="makejar" />
         <ant antfile="Smudgecraft-Heroes-Skills/SkillUndead/build.xml" target="makejar" />
         <ant antfile="Smudgecraft-Heroes-Skills/SkillUndeadArchers/build.xml" target="makejar" />
