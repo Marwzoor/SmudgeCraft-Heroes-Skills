@@ -7,7 +7,6 @@ import net.smudgecraft.heroeslib.companions.Companions;
 import net.smudgecraft.heroeslib.listeners.ArrowListener;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.herocraftonline.heroes.Heroes;
@@ -21,14 +20,29 @@ public class HeroesLib extends JavaPlugin
 	public void onEnable()
 	{
 		plugin=this;
-		heroes = (Heroes) Bukkit.getPluginManager().getPlugin("Heroes");
 		
-		if(heroes==null)
+		if(!Bukkit.getPluginManager().isPluginEnabled("Heroes"))
 		{
 			Bukkit.getLogger().log(Level.SEVERE, "Could not find dependency: Heroes.jar! Disabling HeroesLib...");
 			this.setEnabled(false);
 			return;
 		}
+		
+		if(!Bukkit.getPluginManager().isPluginEnabled("Factions"))
+		{
+			Bukkit.getLogger().log(Level.SEVERE, "Could not find dependency: Factions.jar! Disabling HeroesLib...");
+			this.setEnabled(false);
+			return;
+		}
+		
+		if(!Bukkit.getPluginManager().isPluginEnabled("mcore"))
+		{
+			Bukkit.getLogger().log(Level.SEVERE, "Could not find dependency: MCore.jar! Disabling HeroesLib...");
+			this.setEnabled(false);
+			return;
+		}
+		
+		heroes = (Heroes) Bukkit.getPluginManager().getPlugin("Heroes");
 		
 		Companions.init();
 		Bukkit.getPluginManager().registerEvents(new ArrowListener(), plugin);
@@ -45,10 +59,5 @@ public class HeroesLib extends JavaPlugin
 		}
 		
 		Companions.getPlayerManager().getCompanionPlayers().clear();
-	}
-	
-	public static Server getServ()
-	{
-		return Bukkit.getServer();
 	}
 }
