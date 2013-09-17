@@ -2,6 +2,7 @@ package net.smudgecraft.heroeslib.util;
 
 import net.smudgecraft.heroeslib.HeroesLib;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.herocraftonline.heroes.characters.Hero;
@@ -38,6 +39,25 @@ public class PlayerUtils
 		if(aplayer.getFaction().getRelationTo(tplayer.getFaction()).equals(Rel.ENEMY))
 			return true;
 		
+		return false;
+	}
+	
+	public static boolean areEnemies(Player aPlayer, Player bPlayer)
+	{
+		UPlayer aplayer = UPlayer.get(aPlayer);
+		UPlayer tplayer = UPlayer.get(bPlayer);
+		
+		//Do a check if the players factions are enemies
+		if(aplayer.getFaction().getRelationTo(tplayer.getFaction()).equals(Rel.ENEMY))
+			return true;
+		
+		return false;
+	}
+	
+	public static boolean isPvPZone(Location loc)
+	{
+		if(BoardColls.get().getFactionAt(PS.valueOf(loc)).getFlag(FFlag.PVP)==false)
+			return true;
 		return false;
 	}
 }
