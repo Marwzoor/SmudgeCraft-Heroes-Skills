@@ -5,7 +5,6 @@ import net.smudgecraft.heroeslib.util.PlayerUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +32,7 @@ public class SkillEnergyCold extends ActiveSkill
 		setIdentifiers(new String[] { "skill energycold" });
 		setTypes(new SkillType[] { SkillType.MANA, SkillType.DEBUFF});
 		
-		Bukkit.getPluginManager().registerEvents(new SkillHeroListener(this, plugin), plugin);
+		Bukkit.getPluginManager().registerEvents(new SkillHeroListener(plugin), plugin);
 	}
 	
 	public String getDescription(Hero hero)
@@ -77,10 +76,7 @@ public class SkillEnergyCold extends ActiveSkill
 		int duration = (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION, 10000, false)
 				+ (SkillConfigManager.getUseSetting(hero, this, SkillSetting.DURATION_INCREASE, 100, false) * hero.getSkillLevel(this)));
 		
-		Location loc = hero.getPlayer().getLocation();
-		
-		CuboidArea ca = new CuboidArea(loc.clone().add(radius, radius, radius), loc.clone().subtract(radius, radius, radius));
-		EnergyColdEffect ecEffect = new EnergyColdEffect(this, duration, radius, ca);
+		EnergyColdEffect ecEffect = new EnergyColdEffect(this, duration, radius, new CuboidArea(hero.getPlayer().getLocation(), radius));
 		
 		hero.addEffect(ecEffect);
 		
@@ -93,7 +89,7 @@ public class SkillEnergyCold extends ActiveSkill
 	{
 		private Heroes plugin;
 		
-		public SkillHeroListener(SkillEnergyCold skill, Heroes plugin)
+		public SkillHeroListener(Heroes plugin)
 		{
 			this.plugin=plugin;
 		}
@@ -110,10 +106,8 @@ public class SkillEnergyCold extends ActiveSkill
 			{
 				EnergyColdEffect ecEffect = (EnergyColdEffect) hero.getEffect("EnergyCold");
 				
-				Location loc = hero.getPlayer().getLocation();
-				
 				int radius = ecEffect.getRadius();
-				ecEffect.setCuboidArea(new CuboidArea(loc.clone().add(radius, radius, radius), loc.clone().subtract(radius, radius, radius)));
+				ecEffect.setCuboidArea(new CuboidArea(hero.getPlayer().getLocation(), radius));
 			}
 		}
 		
