@@ -7,6 +7,7 @@ import net.smudgecraft.heroeslib.companions.Companions;
 import net.smudgecraft.heroeslib.listeners.ArrowListener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.herocraftonline.heroes.Heroes;
@@ -44,5 +45,10 @@ public class HeroesLib extends JavaPlugin
 		}
 		
 		Companions.getPlayerManager().getCompanionPlayers().clear();
+	}
+	
+	public static Server getServ()
+	{
+		return Bukkit.getServer();
 	}
 }

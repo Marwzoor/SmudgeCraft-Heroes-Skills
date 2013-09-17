@@ -87,7 +87,7 @@ public class Utils
             }
         }
         Entity target = null;
-        BlockIterator bItr = new BlockIterator(player, 20);
+        BlockIterator bItr = new BlockIterator(player, range);
         Block block;
         Location loc;
         int bx, by, bz;
