@@ -128,4 +128,18 @@ public class Utils
         }
         return target;
     }
+    
+    public static Location getTargetLocation(Player player, int range)
+    {
+    	Location loc = player.getEyeLocation().clone();
+    	Vector dir = loc.getDirection().normalize();
+    	for(int i=0;i<range;++i)
+    	{
+    		Block b = loc.add(dir).getBlock();
+    		if(!b.getType().isSolid())
+    			continue;
+    		return loc;
+    	}
+    	return loc;
+    }
 }
