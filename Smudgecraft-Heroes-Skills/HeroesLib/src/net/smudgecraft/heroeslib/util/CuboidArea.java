@@ -10,16 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import net.smudgecraft.heroeslib.HeroesLib;
-
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
 
-/**
- *
- * @author Administrator
- */
 public class CuboidArea
 {
     private Location highPoints;
@@ -182,7 +177,7 @@ public class CuboidArea
     public static CuboidArea load(DataInputStream in, int version) throws IOException
     {
         CuboidArea newArea = new CuboidArea();
-        Server server = HeroesLib.getServ();
+        Server server = Bukkit.getServer();
         World world = server.getWorld(in.readUTF());
         int highx = in.readInt();
         int highy = in.readInt();
