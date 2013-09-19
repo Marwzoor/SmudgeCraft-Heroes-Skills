@@ -10,16 +10,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
+import net.smudgecraft.heroeslib.HeroesLib;
+
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
 
+/**
+ *
+ * @author Administrator
+ */
 public class CuboidArea
 {
     private Location highPoints;
     private Location lowPoints;
-    
+    private Location center;
     
     protected CuboidArea()
     {
@@ -66,7 +71,8 @@ public class CuboidArea
     public CuboidArea(Location center, int radius)
     {
     	highPoints = center.clone().add(radius, radius, radius);
-    	lowPoints = center.clone().add(-radius, -radius, -radius);
+    	lowPoints = center.clone().subtract(radius, radius, radius);
+    	this.center = center;
     }
 
     public boolean isAreaWithinArea(CuboidArea area)
@@ -177,7 +183,7 @@ public class CuboidArea
     public static CuboidArea load(DataInputStream in, int version) throws IOException
     {
         CuboidArea newArea = new CuboidArea();
-        Server server = Bukkit.getServer();
+        Server server = HeroesLib.getServ();
         World world = server.getWorld(in.readUTF());
         int highx = in.readInt();
         int highy = in.readInt();
@@ -257,6 +263,83 @@ public class CuboidArea
         	}
     	}
     	return locs;
+    }
+    
+    public List<Location> getSphereLocations(boolean filled)
+    {
+    	
+    	double radiusX = getXSize()/2;
+    	double radiusY = getYSize()/2;
+    	double radiusZ = getZSize()/2;
+    	
+    	radiusX += 0.5D;
+        radiusY += 0.5D;
+        radiusZ += 0.5D;
+
+        double invRadiusX = 1.0D / radiusX;
+        double invRadiusY = 1.0D / radiusY;
+        double invRadiusZ = 1.0D / radiusZ;
+
+        int ceilRadiusX = (int)Math.ceil(radiusX);
+        int ceilRadiusY = (int)Math.ceil(radiusY);
+        int ceilRadiusZ = (int)Math.ceil(radiusZ);
+        
+    	List<Location> locs = new ArrayList<Location>();
+    	double nextXn = 0;
+        forX: for (int x = 0; x <= ceilRadiusX; ++x)
+        {
+            final double xn = nextXn;
+            nextXn = (x + 1) * invRadiusX;
+            double nextYn = 0;
+            forY: for (int y = 0; y <= ceilRadiusY; ++y)
+            {
+                final double yn = nextYn;
+                nextYn = (y + 1) * invRadiusY;
+                double nextZn = 0;
+                forZ: for (int z = 0; z <= ceilRadiusZ; ++z)
+                {
+                    final double zn = nextZn;
+                    nextZn = (z + 1) * invRadiusZ;
+
+                    double distanceSq = lengthSq(xn, yn, zn);
+                    if (distanceSq > 1)
+                    {
+                        if (z == 0)
+                        {
+                            if (y == 0)
+                            {
+                                break forX;
+                            }
+                            break forY;
+                        }
+                        break forZ;
+                    }
+
+                    if (!filled)
+                    {
+                        if (lengthSq(nextXn, yn, zn) <= 1 && lengthSq(xn, nextYn, zn) <= 1 && lengthSq(xn, yn, nextZn) <= 1)
+                        {
+                            continue;
+                        }
+                    }
+
+                    locs.add(center.clone().add(x,y,z));
+                    locs.add(center.clone().add(-x,y,z));
+                    locs.add(center.clone().add(x,-y,z));
+                    locs.add(center.clone().add(x,y,-z));
+                    locs.add(center.clone().add(-x,-y,z));
+                    locs.add(center.clone().add(x,-y,-z));
+                    locs.add(center.clone().add(-x,y,-z));
+                    locs.add(center.clone().add(-x,-y,-z));
+                }
+            }
+        }
+    	return locs;
+    }
+    
+    private final double lengthSq(double x, double y, double z)
+    {
+        return (x * x) + (y * y) + (z * z);
     }
     
     public Location getCenter()
