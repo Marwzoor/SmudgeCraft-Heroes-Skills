@@ -49,6 +49,7 @@
         <ant antfile="Smudgecraft-Heroes-Skills/SkillFrostBite/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFuriousStrike/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillFury/build.xml" target="makejar" />
+        <ant antfile="Smudgecraft-Heroes-Skills/SkillGlacialShards/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillHeadshot/build.xml" target="makejar" />
 		<ant antfile="Smudgecraft-Heroes-Skills/SkillHealingWord/build.xml" target="makejar" />
         <ant antfile="Smudgecraft-Heroes-Skills/SkillHeatWave/build.xml" target="makejar" />
